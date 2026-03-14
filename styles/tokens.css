@@ -1,0 +1,384 @@
+/* ============================================================
+   GLOBO STUDIO — Design Tokens
+   Source: Figma Design System (node 994:43401)
+   Figma variable path convention: group/name → --group-name
+   ============================================================ */
+
+/* ── Register color tokens for CSS transition support ──────────────────────
+ * @property lets the browser interpolate custom property values between
+ * light and dark states. Without it, custom property changes are instant.
+ * inherits: true → the transitioning value propagates to all descendants.
+ * initial-value → must match the light-mode (:root) default.
+ * ─────────────────────────────────────────────────────────────────────── */
+@property --bg-page {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f8f8f7;
+}
+@property --text-primary {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #000000;
+}
+@property --text-secondary {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #171717;
+}
+@property --text-muted {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(0, 0, 0, 0.42);
+}
+@property --text-nav-item {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --text-nav-item-selected {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #000000;
+}
+@property --bg-nav {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #000000;
+}
+@property --bg-nav-selected {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f8f8f7;
+}
+@property --bg-nav-hover {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #484b53;
+}
+@property --bg-clock-face {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #d4d4d4;
+}
+@property --border-default-light {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+@property --border-default {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(0, 0, 0, 0.12);
+}
+@property --bg-project-card {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ffffff;
+}
+
+:root {
+
+  /* -------------------------------------------------------
+     TYPOGRAPHY — Font Families
+     ------------------------------------------------------- */
+
+  --font-sans:  'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+
+
+  /* -------------------------------------------------------
+     TYPOGRAPHY — Desktop Type Scale
+
+     Each token pair: -size (font-size) + -leading (line-height)
+     Named after Figma layer labels (H1-Helvetica, H2-Instrument, …)
+     ------------------------------------------------------- */
+
+  /* H1 — Helvetica Neue, 64 / 84 */
+  --text-h1-size:           4rem;        /* 64px */
+  --text-h1-leading:        5.25rem;     /* 84px */
+
+  /* H1 Serif — Instrument Serif, 64 / 84 */
+  --text-h1-serif-size:     4rem;        /* 64px */
+  --text-h1-serif-leading:  5.25rem;     /* 84px */
+
+  /* H2 — Helvetica Neue, 48 / 56 */
+  --text-h2-size:           3rem;        /* 48px */
+  --text-h2-leading:        3.5rem;      /* 56px */
+
+  /* H2 Serif — Instrument Serif, 32 / 42 */
+  --text-h2-serif-size:     2rem;        /* 32px */
+  --text-h2-serif-leading:  2.625rem;    /* 42px */
+
+  /* H3 Serif — Instrument Serif, 24 / 32 */
+  --text-h3-size:           1.5rem;      /* 24px */
+  --text-h3-leading:        2rem;        /* 32px */
+
+  /* Intro — Helvetica Neue, 32 / 40 */
+  --text-intro-size:        2rem;        /* 32px */
+  --text-intro-leading:     2.5rem;      /* 40px */
+
+  /* Intro Small — Helvetica Neue, 20 / 28 */
+  --text-intro-sm-size:     1.25rem;     /* 20px */
+  --text-intro-sm-leading:  1.75rem;     /* 28px */
+
+  /* Body — Helvetica Neue, 16 / 24 */
+  --text-body-size:         1rem;        /* 16px */
+  --text-body-leading:      1.5rem;      /* 24px */
+
+  /* Small — Helvetica Neue, 14 / 21 */
+  --text-sm-size:           0.875rem;    /* 14px */
+  --text-sm-leading:        1.3125rem;   /* 21px */
+
+  /* Label — Helvetica Neue, 16 / 24 (interactive elements) */
+  --text-label-size:        1rem;        /* 16px */
+  --text-label-leading:     1.5rem;      /* 24px */
+
+  /* Label Small — Helvetica Neue, 14 / 18 */
+  --text-label-sm-size:     0.875rem;    /* 14px */
+  --text-label-sm-leading:  1.125rem;    /* 18px */
+
+  /* Hero Label — Helvetica Neue, 42 / 52 (year + "Portfolio" below hero) */
+  --text-hero-label-size:           2.625rem;   /* 42px */
+  --text-hero-label-leading:        3.25rem;    /* 52px */
+
+
+  /* -------------------------------------------------------
+     TYPOGRAPHY — Mobile Type Scale
+     ------------------------------------------------------- */
+
+  /* H1 mobile — Helvetica Neue, 40 / 54 */
+  --text-h1-mobile-size:          2.5rem;       /* 40px */
+  --text-h1-mobile-leading:       3.375rem;     /* 54px */
+
+  /* H1 Serif mobile — Instrument Serif, 40 / 54 */
+  --text-h1-serif-mobile-size:    2.5rem;       /* 40px */
+  --text-h1-serif-mobile-leading: 3.375rem;     /* 54px */
+
+  /* H2 mobile — Helvetica Neue, 32 / 40 */
+  --text-h2-mobile-size:          2rem;         /* 32px */
+  --text-h2-mobile-leading:       2.5rem;       /* 40px */
+
+  /* H2 Serif mobile — Instrument Serif, 32 / 42 */
+  --text-h2-serif-mobile-size:    2rem;         /* 32px */
+  --text-h2-serif-mobile-leading: 2.625rem;     /* 42px */
+
+  /* H3 Serif mobile — Instrument Serif, 16 / 24 */
+  --text-h3-mobile-size:          1rem;         /* 16px */
+  --text-h3-mobile-leading:       1.5rem;       /* 24px */
+
+  /* Intro mobile — Helvetica Neue, 24 / 29 */
+  --text-intro-mobile-size:       1.5rem;       /* 24px */
+  --text-intro-mobile-leading:    1.8125rem;    /* 29px */
+
+  /* Intro Small mobile — Helvetica Neue, 16 / 21 */
+  --text-intro-sm-mobile-size:    1rem;         /* 16px */
+  --text-intro-sm-mobile-leading: 1.3125rem;    /* 21px */
+
+  /* Body mobile — Helvetica Neue, 14 / 21 */
+  --text-body-mobile-size:        0.875rem;     /* 14px */
+  --text-body-mobile-leading:     1.3125rem;    /* 21px */
+
+  /* XS / Small mobile — Helvetica Neue, 12 / 18 */
+  --text-xs-size:                 0.75rem;      /* 12px */
+  --text-xs-leading:              1.125rem;     /* 18px */
+
+  /* Hero Label mobile — Helvetica Neue, 24 / 32 */
+  --text-hero-label-mobile-size:    1.5rem;     /* 24px */
+  --text-hero-label-mobile-leading: 2rem;       /* 32px */
+
+
+  /* -------------------------------------------------------
+     COLORS — Base Palette
+     ------------------------------------------------------- */
+
+  --color-black:    #000000;
+  --color-white:    #ffffff;
+  --color-gray-50:  #f8f8f7;   /* near-white — nav selected pill */
+  --color-gray-100: #f5f5f5;
+  --color-gray-150: #eeeeee;   /* light grey — image block background option */
+  --color-gray-200: #e5e5e5;
+  --color-gray-300: #d4d4d4;
+  --color-gray-400: #bfc4cc;   /* nav hover pill — dark mode */
+  --color-gray-600: #484b53;   /* nav hover pill — light mode */
+  --color-gray-900: #171717;
+
+
+  /* -------------------------------------------------------
+     TEXT COLORS
+     Figma path: text/*
+     ------------------------------------------------------- */
+
+  --text-primary:            var(--color-black);      /* text/primary */
+  --text-secondary:          var(--color-gray-900);   /* text/secondary */
+  --text-muted:              rgba(0, 0, 0, 0.42);     /* text/muted — captions, secondary labels */
+  --text-nav-item:           var(--color-white);      /* text/nav-item */
+  --text-nav-item-selected:  var(--color-black);      /* text/nav-item-selected */
+
+
+  /* -------------------------------------------------------
+     BACKGROUNDS
+     Figma path: background/*
+     ------------------------------------------------------- */
+
+  --bg-page:          var(--color-gray-50);           /* background/page */
+  --bg-page-white:    var(--color-white);             /* white variant for project wrappers */
+  --bg-nav:           var(--color-black);             /* background/nav-bkg */
+  --bg-nav-selected:  var(--color-gray-50);           /* background/nav-selected — #f8f8f7 per Figma */
+  --bg-nav-hover:     var(--color-gray-600);           /* background/nav-bkg-hover */
+  --bg-clock-face:    var(--color-gray-300);          /* background/clock-face */
+  --bg-project-card:  #ffffff;                        /* background/project-card — Single Image White Card */
+
+
+  /* -------------------------------------------------------
+     BORDERS
+     Figma path: border/*
+     ------------------------------------------------------- */
+
+  --border-default-light: transparent;                /* border/default-light — removed per Figma */
+  --border-default:       rgba(0, 0, 0, 0.12);        /* border/default */
+
+
+  /* -------------------------------------------------------
+     SHADOWS
+     ------------------------------------------------------- */
+
+  --shadow-nav:
+    0px 0px  4px 0px rgba(0, 0, 0, 0.04),
+    0px 8px 16px 0px rgba(0, 0, 0, 0.08);
+
+
+  /* -------------------------------------------------------
+     BORDER RADIUS
+     ------------------------------------------------------- */
+
+  --radius-pill:          100px;   /* nav bar, pill buttons */
+  --radius-card:           40px;   /* project card desktop — default state */
+  --radius-card-mobile:    24px;   /* project card mobile  — default state */
+  --radius-card-circle:  1000px;   /* project card — hover (circle morph) */
+  --radius-block:          56px;   /* project page content blocks — desktop/tablet */
+  --radius-block-mobile:   16px;   /* project page content blocks — mobile */
+
+
+  /* -------------------------------------------------------
+     SPACING — Page Layout
+     ------------------------------------------------------- */
+
+  --page-padding-desktop:  32px;
+  --page-padding-tablet:   32px;
+  --page-padding-mobile:   20px;
+
+  --content-width-desktop: 1664px;
+  --content-width-tablet:   960px;
+  --content-width-mobile:   353px;
+
+
+  /* -------------------------------------------------------
+     SPACING — Component
+     ------------------------------------------------------- */
+
+  --nav-height-desktop:  54px;
+  --nav-height-mobile:   48px;
+
+  --nav-top-desktop:     32px;
+  --nav-top-mobile:      max(20px, calc(env(safe-area-inset-top, 0px) + 8px));
+
+  /* Figma: 4 px top/bottom, 4 px left, 6 px right — inner <ul> padding */
+  --nav-inner-padding:   4px 6px 4px 4px;
+  /* Figma: 11 px top/bottom, 16 px left/right — per-item <a> padding */
+  --nav-item-padding:    11px 16px;
+
+  --hero-padding-top-desktop: 168px;
+  --hero-padding-top-mobile:  104px;   /* clears nav: 20px top + 48px height + 36px gap */
+
+  --section-padding-top-desktop: 168px; /* work + about section top padding on desktop */
+  --section-padding-top-mobile: 104px;  /* work section top padding — mobile */
+  --section-padding-bottom-desktop: 82px; /* work section bottom padding — desktop */
+
+  --card-gap:            32px;
+  --card-gap-mobile:     48px;
+
+  --clock-gap:           16px;   /* face → city label: desktop / tablet */
+  --clock-gap-mobile:     4px;   /* face → city label: mobile */
+
+  --carousel-height:          64px;
+  --carousel-height-mobile:   48px;
+  --carousel-logo-gap:        56px;   /* gap between logos in the marquee track */
+  --carousel-logo-gap-mobile: 24px;
+  --carousel-logo-h:          64px;   /* logo render height — desktop/tablet */
+  --carousel-logo-h-mobile:   48px;   /* logo render height — mobile */
+
+  --intro-section-gap:        136px;   /* gap between heading and carousel in IntroSection */
+  --intro-section-gap-mobile: 72px;    /* gap between heading and carousel — mobile */
+  --content-width-heading:  1266px;    /* intro heading max-width cap (Figma desktop) */
+
+  /* Card text area — fixed height used in image flex-1 calc */
+  --card-text-area-h: 138px;   /* desktop */
+
+  /* Card image area — minimum height guard */
+  --card-image-min-h: 324px;   /* desktop — ~40% of 810px Figma card height */
+
+  /* About section layout */
+  --about-padding-y-desktop:          200px;   /* section top/bottom padding — desktop + tablet */
+  --about-padding-y-mobile:           100px;   /* section top/bottom padding — mobile */
+  --about-heading-bio-gap-desktop:    246px;   /* gap between heading and bio — desktop */
+  --about-text-gap-mobile:             24px;   /* gap between heading and bio — mobile */
+  --about-caption-gap:                 16px;   /* gap between photo and name/title caption — tablet/desktop */
+  --about-caption-gap-mobile:          8px;    /* gap between photo and name/title caption — mobile */
+  --about-photo-height-mobile:        380px;   /* portrait photo clip height — mobile */
+  --about-photo-width-tablet:         464px;   /* portrait photo width — tablet */
+  --about-photo-width-desktop:        533px;   /* portrait photo width — desktop */
+  --about-text-col-width:             816px;   /* text column width — tablet cap + desktop fixed width */
+
+
+  /* -------------------------------------------------------
+     PROJECT COLORS — Per-case-study brand tints
+     Used as background for Single Image — Project Color
+     Background content blocks. Set via color prop (not a
+     semantic token — no dark-mode override).
+     ------------------------------------------------------- */
+
+  --bg-project-ow: #e0e2e8;   /* Officeworks — blue-grey tint */
+  --bg-block-grey: var(--color-gray-150);   /* neutral light-grey — image content block background */
+
+}
+
+
+/* ============================================================
+   DARK MODE — token overrides
+   Figma variable collection: Colours → Dark mode
+   Only semantic tokens change; raw palette stays the same.
+   ============================================================ */
+
+/* ── dark token values (shared) ──────────────────────────────────────────── */
+
+/* Class-based: used by Storybook decorators and JS-driven dark mode */
+:root.dark {
+  --text-primary:           var(--color-white);
+  --text-secondary:         var(--color-gray-200);
+  --text-muted:             rgba(255, 255, 255, 0.42);
+  --text-nav-item:          var(--color-black);
+  --text-nav-item-selected: var(--color-white);
+
+  --bg-page:         var(--color-black);
+  --bg-nav:          var(--color-white);
+  --bg-nav-selected: var(--color-black);
+  --bg-nav-hover:    var(--color-gray-400);
+  --bg-clock-face:   var(--color-gray-900);
+  --bg-project-card: #1a1a1a;
+
+  --border-default-light: transparent;
+  --border-default:       rgba(255, 255, 255, 0.12);
+
+  --shadow-nav:
+    0px 0px  4px 0px rgba(0, 0, 0, 0.12),
+    0px 8px 20px 0px rgba(0, 0, 0, 0.28);
+}
+
+
+@media (max-width: 767px) {
+  :root {
+    --carousel-logo-gap: var(--carousel-logo-gap-mobile);
+    --card-text-area-h: 171px;   /* mobile */
+    --card-image-min-h: 182px;   /* mobile — ~40% of 455px Figma card height */
+  }
+}

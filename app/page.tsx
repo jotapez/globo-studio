@@ -1,103 +1,281 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+/**
+ * Homepage — Globo Studio
+ *
+ * Figma: 1016:1761 (home-page section, node 994:44022 desktop)
+ * Spec:  docs/screens/homepage-spec.md
+ *
+ * Sections (scroll order):
+ *   #hero     → <Hero>           full-viewport shader + Studio wordmark
+ *   #intro    → <IntroSection>   large heading + client carousel
+ *   #work     → inline JSX       2×2 main cards + interlude + 2 personal cards
+ *   #about    → <AboutSection>   designer portrait + bio
+ *   #contact  → <ContactFooter>  contact links + 4 clocks + footer
+ *
+ * Interactivity wired here:
+ *   • Nav active pill      — useActiveSection (IntersectionObserver)
+ *   • Dark mode toggle     — click on Hero area → manual toggle
+ *   • Dark mode on scroll  — #about entering viewport inverts theme; restores on scroll-back
+ *   • Theme persistence    — useTheme (localStorage 'gs-theme'; fallback: prefers-color-scheme)
+ *
+ * Layout notes from Figma (node 994:44022 desktop, 1728×7479):
+ *   Main cards grid:   2-col desktop (816px cards, 32px gap)  / 1-col mobile (48px gap)
+ *   Row A → Row B gap: 80px on desktop (same row gap on mobile: cards just stack)
+ *   Interlude spacing: 200px before + after on desktop / 100px mobile
+ *   Interlude width:   1271px centred (≈ --content-width-heading: 1266px)
+ */
+
+import { useCallback, useEffect, useRef } from 'react';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { Nav } from '@/components/ui/Nav';
+import { Hero } from '@/components/ui/Hero';
+import { IntroSection } from '@/components/ui/IntroSection';
+import { AboutSection } from '@/components/ui/AboutSection';
+import { ContactFooter } from '@/components/ui/ContactFooter';
+import { ProjectCard } from '@/components/ui/ProjectCard';
+import { cn } from '@/lib/utils';
+import { useTheme } from '@/hooks/useTheme';
+import { useActiveSection } from '@/hooks/useActiveSection';
+
+// ─── project data ──────────────────────────────────────────────────────────────
+
+/**
+ * Rows A + B — main case studies. Navigate to /work/[slug] in the same tab.
+ * Add hero images to /public/images/ to replace the placeholder src values.
+ */
+const MAIN_PROJECTS = [
+  {
+    title: 'Officeworks B2B Digital Experience',
+    description:
+      'End-to-end product design for Officeworks B2B — discovery to delivery — including their foundational design system and coaching designers on systematic workflows.',
+    href: '/work/officeworks',
+    imageSrc: '/Officeworks/OW-hero.png',
+    targetBg: '#001db0',
+  },
+  {
+    title: 'Taronga Zoo',
+    description:
+      "Product experience design for Taronga Zoo's new website, crafting an immersive and accessible digital presence for one of Australia's most iconic destinations.",
+    href: '/work/taronga-zoo',
+    imageSrc: '/projects/project-2.png',
+    targetBg: '#1a3d2b',
+  },
+  {
+    title: 'Open Insurance',
+    description:
+      'Product design for car and home insurance products from strategy to delivery, while building and governing the design system at Open Insurance.',
+    href: '/work/open-insurance',
+    imageSrc: '/projects/project-3.png',
+    targetBg: '#1c1c3a',
+  },
+  {
+    title: 'Levo',
+    description:
+      'Leading product design across multiple client engagements at Levo, a leading technology consultancy delivering impactful digital experiences.',
+    href: '/work/levo',
+    imageSrc: '/projects/project-4.png',
+    targetBg: '#2d1a00',
+  },
+] as const;
+
+/**
+ * Row C — personal / side projects.
+ * `external: true` opens in a new tab with an external-link icon.
+ */
+const PERSONAL_PROJECTS = [
+  {
+    title: 'Compaire',
+    description:
+      'A personal exploration in design and creativity.',
+    href: 'https://compaire.app',
+    imageSrc: '/side-projects/compaire-1.png',
+    external: true,
+  },
+  {
+    title: 'Only Me',
+    description: 'A personal exploration in design and creativity.',
+    href: 'https://onlyme.app',
+    imageSrc: '/side-projects/OnlyMe-1.png',
+    external: true,
+  },
+] as const;
+
+// ─── CardMotion ───────────────────────────────────────────────────────────────
+// Must be module-level — defining this inside HomePage would create a new
+// component type on every render, causing React to unmount/remount the card
+// and replay the fade-in animation whenever activeSection changes.
+
+function CardMotion({
+  index,
+  reduceMotion,
+  children,
+}: {
+  index: number;
+  reduceMotion: boolean;
+  children: React.ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.1 });
+  const delay = (index % 2) * 0.15;
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <motion.div
+      ref={ref}
+      initial={reduceMotion ? false : { opacity: 0, y: 40 }}
+      animate={inView || reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+      transition={{ duration: 0.5, ease: 'easeOut', delay }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+// ─── component ────────────────────────────────────────────────────────────────
+
+export default function HomePage() {
+  const { theme, setTheme, toggleTheme, themeBeforeAboutRef } = useTheme();
+  const { activeSection, scrollToSection } = useActiveSection();
+  const shouldReduceMotion = useReducedMotion();
+
+  // ── Scroll-triggered dark mode — sentinel at top of #about ───────────────
+  // Spec §5: inverts current theme once on entry; restores only when user scrolls
+  // fully back above #about (sentinel exits below viewport, top > 0).
+  useEffect(() => {
+    const sentinel = document.getElementById('about-sentinel');
+    if (!sentinel) return;
+
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        // Top of #about entered viewport — only invert once per downward pass
+        if (themeBeforeAboutRef.current === null) {
+          setTheme((current) => {
+            themeBeforeAboutRef.current = current;
+            return current === 'light' ? 'dark' : 'light';
+          });
+        }
+      } else if (entry.boundingClientRect.top > 0) {
+        // Sentinel below viewport — user scrolled fully back above #about — restore
+        if (themeBeforeAboutRef.current !== null) {
+          setTheme(themeBeforeAboutRef.current);
+          themeBeforeAboutRef.current = null;
+        }
+      }
+      // top < 0 → sentinel above viewport (user scrolled down into about) → do nothing
+    });
+
+    obs.observe(sentinel);
+    return () => obs.disconnect();
+  }, [setTheme, themeBeforeAboutRef]);
+
+  // ── Hero click → manual dark mode toggle ─────────────────────────────────
+  // `toggleTheme` resets themeBeforeAboutRef so the sentinel doesn't restore
+  // a stale value if the user manually toggles while inside #about.
+  const handleHeroClick = useCallback(() => {
+    toggleTheme();
+    document.getElementById('intro')?.scrollIntoView({ behavior: 'smooth' });
+  }, [toggleTheme]);
+
+  return (
+    <>
+      {/* Fixed navigation — always on top */}
+      <Nav activeSection={activeSection === 'intro' ? 'hero' : activeSection} onItemClick={scrollToSection} entranceDelay={0.4} cursorActive />
+
+      <main>
+
+        {/* ── §1 Hero ──────────────────────────────────────────────────────── */}
+        <Hero onToggle={handleHeroClick} />
+
+        {/* ── §2 Intro ─────────────────────────────────────────────────────── */}
+        <IntroSection theme={theme} />
+
+        {/* ── §3 Work ──────────────────────────────────────────────────────── */}
+        {/*
+         * Internal layout (Figma desktop, node 994:44157 + 994:44165):
+         *   Cards same row:  32px gap (--card-gap)
+         *   Mobile card gap: 48px   (--card-gap-mobile)
+         *   Row A → Row B:   80px   (--intro-section-gap)
+         *   Interlude:       200px before + after desktop / 100px mobile
+         *   Row C:           same card gap as rows A + B
+         *
+         * On mobile all 4 main cards render as a single column (no row split).
+         * The grid handles this automatically via grid-cols-1 / md:grid-cols-2.
+         */}
+        <section
+          id="work"
+          aria-label="Work"
+          className="bg-[var(--bg-page)] text-[var(--text-primary)] px-[var(--page-padding-mobile)] md:px-[var(--page-padding-desktop)] pt-[104px] md:pt-[var(--section-padding-top-desktop)]"
+          style={{
+            '--card-top-offset': 'var(--section-padding-top-desktop)',
+            '--card-top-offset-mobile': 'var(--section-padding-top-mobile)',
+            '--card-bottom-offset': 'var(--section-padding-bottom-desktop)',
+          } as React.CSSProperties}
+        >
+          <h2 className="sr-only">Work</h2>
+          <div className="w-full">
+
+            {/* ── Rows A + B — all 4 main case studies ───────────────────── */}
+            {/*
+             * grid-cols-2 creates the 2×2 layout on desktop.
+             * On mobile: single column, 48px gap between every card.
+             * The row gap on desktop (between row A and row B) is 80px,
+             * which matches --intro-section-gap. The column gap is 32px.
+             */}
+            <div id="work-trigger" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-[48px] md:gap-y-[var(--intro-section-gap)] md:gap-x-[var(--card-gap)]">
+              {MAIN_PROJECTS.map((project, i) => (
+                <CardMotion key={project.title} index={i} reduceMotion={!!shouldReduceMotion}>
+                  <ProjectCard {...project} priority={i < 2} />
+                </CardMotion>
+              ))}
+            </div>
+
+            {/* ── Interlude text ──────────────────────────────────────────── */}
+            {/*
+             * Figma: x=196.5, width=1271 → centred ((1664-1271)/2 = 196.5).
+             * Uses --content-width-heading (1266px ≈ 1271px) with mx-auto.
+             * Mixed typeface: same sans/serif alternation as IntroSection heading.
+             * Spec: "Large display", same font scale as #intro heading.
+             */}
+            <div className="py-[var(--about-padding-y-mobile)] md:py-[var(--about-padding-y-desktop)]">
+              <p
+                className={cn(
+                  'font-normal not-italic',
+                  'max-w-[var(--content-width-heading)] mx-auto',
+                  '[font-size:var(--text-h1-mobile-size)] [line-height:var(--text-h1-mobile-leading)]',
+                  'md:[font-size:var(--text-h1-size)] md:[line-height:var(--text-h1-leading)]',
+                )}
+              >
+                <span className="font-sans">Designed</span>
+                <span className="font-serif"> and built with the help of the globo crew – </span>
+                <span className="font-sans">Claude code, Cursor, Figma Make, Lovable</span>
+                <span className="font-serif"> and </span>
+                <span className="font-sans">Paper</span>
+              </p>
+            </div>
+
+            {/* ── Row C — personal / side projects ────────────────────────── */}
+            {/*
+             * Same grid structure as Rows A + B.
+             * `external: true` on each project opens in a new tab.
+             */}
+            <div className="grid grid-cols-1 md:grid-cols-2 pb-[var(--about-padding-y-mobile)] md:pb-[var(--about-padding-y-desktop)] gap-y-[48px] md:gap-y-[var(--intro-section-gap)] md:gap-x-[var(--card-gap)]">
+              {PERSONAL_PROJECTS.map((project, i) => (
+                <CardMotion key={project.title} index={i} reduceMotion={!!shouldReduceMotion}>
+                  <ProjectCard {...project} />
+                </CardMotion>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
+        {/* ── §4 About ─────────────────────────────────────────────────────── */}
+        <AboutSection />
+
+        {/* ── §5 Contact + Footer ──────────────────────────────────────────── */}
+        <ContactFooter theme={theme} />
+
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    </>
   );
 }

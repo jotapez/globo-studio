@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Design tokens — must come before @theme so vars are resolved */
+@import "../styles/tokens.css";
+
+/* Load Tailwind config (extends theme with CSS var references) */
+@config "../tailwind.config.js";
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg-page);
+  --color-foreground: var(--text-primary);
+
+  /* Fonts are set via next/font in layout.tsx and injected as
+     --font-sans / --font-serif CSS vars on <html>.
+     The fallback stacks below are used server-side / before hydration. */
+  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, 'Courier New', monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/**
+ * Dark mode crossfade — Collins-matching easing cubic-bezier(.5,.3,0,1).
+ *
+ * Transitions all registered color tokens so every element that references
+ * them (via var(--token)) crossfades rather than snapping.
+ * background-color + color are kept as a fallback for browsers that don't
+ * support @property (Firefox < 128).
+ */
+:root {
+  color-scheme: light;
+  transition:
+    color                    700ms ease-in-out,
+    --bg-page                700ms ease-in-out,
+    --text-primary           700ms ease-in-out,
+    --text-secondary         700ms ease-in-out,
+    --text-muted             700ms ease-in-out,
+    --text-nav-item          200ms ease-in-out,
+    --text-nav-item-selected 200ms ease-in-out,
+    --bg-nav                 0ms linear,
+    --bg-nav-selected        0ms linear,
+    --bg-nav-hover           200ms ease-in-out,
+    --bg-clock-face          700ms ease-in-out,
+    --border-default-light   200ms ease-in-out,
+    --border-default         700ms ease-in-out;
+}
+
+/* Suppress theme crossfade when forcing instant light mode (e.g. on project pages) */
+html.no-theme-transition {
+  transition: none !important;
+}
+
+html,
+body {
+  overflow-x: hidden;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
 }

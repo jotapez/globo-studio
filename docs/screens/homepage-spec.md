@@ -100,7 +100,7 @@ The nav is a **pill-shaped bar** centered horizontally, fixed at the top of the 
 
 ### Acceptance criteria
 - Active pill must never jump — always animates between positions
-- Nav must remain legible over all section backgrounds (use backdrop blur or solid background)
+- Nav must remain legible over all section backgrounds (solid background via `--bg-nav` token)
 - On mobile, nav items may collapse to icons or abbreviate — maintain all 4 links
 
 ---
@@ -154,11 +154,27 @@ Full-viewport first impression. Displays the "Globo" shader image with the "Stud
 - After the loading screen exits, the hero image fades in with a subtle scale-up: `scale: 0.98 → 1, opacity: 0 → 1`
 - Duration: 600ms, delay: 100ms after loading screen completes
 
+### Dark mode toggle interaction
+Clicking the shader image **or** the "Studio" SVG wordmark toggles the page between light and dark mode.
+
+- **Trigger:** `onClick` on either the shader `<img>` container or the `<Studio />` SVG element
+- **Transition:** Soft crossfade — apply/remove the `.dark` class on `<html>` with a CSS transition on `background-color` and `color` (duration: `400ms`, easing: `ease-in-out`)
+- **State persistence:** Store the user's preference in `localStorage` (`key: 'gs-theme'`) so it survives page refresh
+- **Initial state:** Read `localStorage` on mount; fall back to `prefers-color-scheme` system preference
+- **Cursor:** `cursor: pointer` on both clickable elements; add a subtle `title` tooltip: `"Toggle dark mode"`
+- **Interaction with scroll-triggered dark mode (§5):** The click-toggle and scroll-triggered dark mode share the same theme state. When the user scrolls down to the about section, the page always switches to the **opposite** of whatever theme is active at that moment — whether it was set manually or by default. See §5 for full logic.
+
+#### Implementation note
+Use a React context (`ThemeContext`) or a lightweight state atom to hold `'light' | 'dark'`. All sections that change appearance based on theme consume this value. Do not rely solely on CSS `prefers-color-scheme` for runtime toggling — the `.dark` class approach on `<html>` is already used by Storybook and `tokens.css`.
+
 ### Acceptance criteria
 - Hero must always fill exactly 100vh regardless of device
 - The shader image and Studio SVG must never overflow the viewport horizontally
 - On viewport resize, the layout re-centres without a flash of incorrect layout
 - No vertical scrollbar introduced by hero on any viewport
+- Clicking shader or Studio SVG toggles dark/light mode with a 400ms crossfade
+- Theme preference persists across page refreshes via `localStorage`
+- On first visit with no stored preference, system `prefers-color-scheme` is respected
 
 ---
 
@@ -217,13 +233,14 @@ The text block + carousel should be **vertically centred** within the section (w
 - The carousel is **masked/clipped** — logos outside the visible window are hidden
 - No pause-on-hover required for MVP
 
-| Property | Value |
-|----------|-------|
-| Track height | 52px (desktop/tablet), 52px (mobile) |
-| Visible width | 800px (desktop/tablet), full width – padding (mobile) |
-| Loop duration | ~20s (adjust for natural speed) |
-| Gap between logos | 16–32px |
-| Logo height | 39.5px (matching Figma) |
+| Property | Desktop / Tablet | Mobile |
+|----------|-----------------|--------|
+| Track height (`--carousel-height`) | `64px` | `48px` |
+| Logo height (`--carousel-logo-h`) | `64px` | `48px` |
+| Gap between logos (`--carousel-logo-gap`) | `56px` | `32px` |
+| One full-track cycle | `50s` | `50s` |
+| Visible width | 800px (desktop/tablet) | full width – padding |
+| Gap from intro heading to carousel | `136px` | `72px` |
 
 **Logo list (17 items, placeholder images for now):**
 1–17: Use placeholder rectangles or actual logo images when available. Names visible in Figma layer panel (screenshots of logos 1–17).
@@ -248,20 +265,20 @@ The text block + carousel should be **vertically centred** within the section (w
 
 ### Layout structure
 
-The work section is split into two visual groups, separated by an interlude text band:
+The work section has 4 main case-study cards, an interlude text band, and 2 personal project cards below it:
 
 ```
-[ card 1 ]  [ card 2 ]   ← Row A
-[ card 3 ]  [ card 4 ]   ← Row B
+[ card 1 ]  [ card 2 ]   ← Row A  (main case studies)
+[ card 3 ]  [ card 4 ]   ← Row B  (main case studies)
 
    "Designed and built with the help of the
     globo crew – Claude code, Cursor,
     Figma Make, Lovable and Paper"
 
-[ card 5 ]  [ card 6 ]   ← Row C (secondary works, if applicable)
+[ personal 1 ]  [ personal 2 ]   ← Row C  (personal projects — open external URL in new tab)
 ```
 
-> **Note:** Figma shows 6 project card slots. Clarify with designer whether Row C holds 2 additional works or is reserved. For MVP, populate Row A+B with the 4 main case studies. Row C can use "Coming Soon" cards.
+There are no "Coming Soon" placeholders. All 6 card slots are populated at launch.
 
 ### Project card
 
@@ -270,10 +287,11 @@ The work section is split into two visual groups, separated by an interlude text
 
 #### Card anatomy
 ```
-┌──────────────────────────────┐
-│                              │
-│         [image]              │  ← rectangular by default
-│                              │
+┌──────────────────────────────┐  ↑
+│                              │  │  image area — scales with viewport height
+│         [image]              │  │  height: calc(100vh - var(--card-text-area-h))
+│                              │  ↓  object-fit: cover; width: 100%
+├──────────────────────────────┤  ← fixed-height text area
 │  Project Title               │
 │  Short description           │
 └──────────────────────────────┘
@@ -282,9 +300,31 @@ The work section is split into two visual groups, separated by an interlude text
 | Property | Desktop | Tablet | Mobile |
 |----------|---------|--------|--------|
 | Card width | 816px | 464px | 353px |
-| Card height | 810px | 560px | 455px |
+| Card height | `100vh` | `100vh` | `100vh` |
+| Image height | `calc(100vh - var(--card-text-area-h))` | `calc(100vh - var(--card-text-area-h))` | `calc(100svh - var(--card-text-area-h))` |
+| Text area height (`--card-text-area-h`) | Fixed — confirm from Figma | Fixed — confirm from Figma | Fixed — confirm from Figma |
 | Gap between cards | 32px | 32px | 48px |
 | Columns | 2 | 2 | 1 |
+
+**Viewport-height scaling — goal:**
+The entire card — image, title, and description — must always be **fully visible within one viewport height**, with no scrolling required to see any part of it. The card is `100vh` tall; the image is the flexible element that absorbs viewport height variation. The text (title + description) is always fully rendered and never clipped.
+
+**How it works:**
+- Card root = `100vh` (desktop/tablet) / `100svh` (mobile — accounts for dynamic browser chrome)
+- Text area = `flex-shrink: 0` at its natural/fixed height; always fully visible
+- Image area = `flex: 1; min-height: var(--card-image-min-h)` — grows or shrinks to fill the remaining height
+- `object-fit: cover; width: 100%` on the `<img>` tag so it fills its container proportionally at any height
+
+**CSS variables (confirm values from Figma per breakpoint):**
+
+| Variable | Purpose | Derived from |
+|----------|---------|-------------|
+| `--card-text-area-h` | Fixed height of title + description block | Figma `project-card` layer |
+| `--card-image-min-h` | Minimum image height before it stops shrinking | ~40% of reference card height |
+
+- On very short viewports (below `--card-image-min-h + --card-text-area-h`), the card is allowed to grow beyond `100vh` to prevent content loss — but this should not occur on any standard device.
+
+**Implementation note:** Card root: `display: flex; flex-direction: column; height: 100vh` (mobile: `100svh`). Image wrapper: `flex: 1; min-height: var(--card-image-min-h); overflow: hidden`. Text wrapper: `flex-shrink: 0`.
 
 #### Hover interaction (desktop/tablet)
 Triggered when the user hovers anywhere on the card:
@@ -296,17 +336,17 @@ Triggered when the user hovers anywhere on the card:
    - Use CSS `text-decoration-color` with opacity transition, duration: 200ms
 3. On mouse leave: both effects reverse
 
-#### Click behaviour
-- Clicking anywhere on the card navigates to `/work/[slug]`
+#### Click behaviour — main case study cards (Row A + B)
+- Clicking anywhere on the card navigates to `/work/[slug]` (same tab)
 - The entire card is wrapped in a `<Link>` or has an `onClick` handler
 - Cursor: `pointer` on hover
 
-#### "Coming Soon" state
-For placeholder case studies:
-- Image area shows a neutral placeholder (grey background or pattern)
-- Title shows "Coming Soon"
-- Card is not clickable (no link, cursor: `default`)
-- No hover effects applied
+#### Click behaviour — personal project cards (Row C)
+- Clicking anywhere on the card opens an external URL in a **new tab**
+- Use `<a href={url} target="_blank" rel="noopener noreferrer">`
+- Cursor: `pointer` on hover
+- Same hover effects (image→circle morph, title underline) apply
+- Add a small external-link indicator icon (decorative, `aria-hidden="true"`) in the card corner to signal it opens externally
 
 ### Interlude text band
 **Copy:** *"Designed and built with the help of the globo crew – Claude code, Cursor, Figma Make, Lovable and Paper"*
@@ -318,16 +358,56 @@ For placeholder case studies:
 | Font size | Large display | Scales | Scales |
 | Alignment | Left | Left | Left |
 
+### Scroll-triggered dark mode transition
+
+When the user scrolls into the **about section** (`#about`), the page transitions softly to the **opposite** of the currently active theme — regardless of whether that theme was set manually via the hero click (§3) or by default. Scrolling back above that threshold restores the theme that was active before the transition.
+
+#### Logic
+```
+themeBeforeAbout = null   // captured at the moment about section first enters view
+
+// Fires when the TOP sentinel of #about enters the viewport (user scrolled down into about)
+onAboutTopEntersViewport():
+  if themeBeforeAbout === null:         // only trigger once per downward pass
+    themeBeforeAbout = currentTheme
+    setTheme(opposite(currentTheme))    // light→dark  OR  dark→light
+
+// Fires when the TOP sentinel of #about exits the viewport upward
+// (user has fully scrolled back above the about section)
+onAboutTopExitsViewportUpward():
+  if themeBeforeAbout !== null:
+    setTheme(themeBeforeAbout)
+    themeBeforeAbout = null
+```
+
+**Key distinction:** The theme restores **only when the top of `#about` leaves the viewport upward** — meaning the user has scrolled completely back above the section. Scrolling up from the contact section while still inside `#about` does **not** trigger a theme change. The theme stays inverted for the entire time any part of `#about` is visible or below.
+
+**Implementation:** Place a zero-height sentinel `<div>` at the very top of `#about`. Use `IntersectionObserver` on it:
+- `isIntersecting: true` → top of about entered viewport (scrolling down) → call `onAboutTopEntersViewport()`
+- `isIntersecting: false` AND `entry.boundingClientRect.top < 0` → sentinel exited upward → call `onAboutTopExitsViewportUpward()`
+- `isIntersecting: false` AND `entry.boundingClientRect.top > 0` → sentinel is below viewport (page load / not yet reached) → do nothing
+
+**Examples:**
+- Default (light) → scrolls down to about → **dark**; scrolls down to contact → stays dark; scrolls up into about → stays dark; scrolls above about → **back to light**
+- Manually toggled to dark → scrolls to about → **light**; scrolls back above about → **back to dark**
+
+- **Transition:** Same 400ms `ease-in-out` CSS crossfade as the hero click toggle
+- **Mobile:** Same behaviour applies
+
 ### Scroll entrance animations
 - Each card row fades and slides up on scroll: `y: 40px → 0, opacity: 0 → 1`
 - Cards in a row stagger by 150ms (left card first, then right card)
-- Interlude text fades in at 80% scroll progress past the second row
+- Interlude text fades in after Row B is fully in view
+- Row C (personal projects) fades and slides up after the interlude text, staggered 150ms
 
 ### Acceptance criteria
 - Image-to-circle transition must be smooth at 60fps
-- Cards must not lose their aspect ratio when columns change on smaller breakpoints
-- On mobile, cards are full-width single column with 48px gap
-- "Coming Soon" cards must be visually distinct but maintain layout integrity
+- The full card content — image, title, and description — must be simultaneously visible within one viewport height at all breakpoints, with no scrolling required
+- Card image scales proportionally to fill remaining height after the text area (`object-fit: cover`); text area is never clipped or hidden
+- On mobile, cards are full-width single column with 48px gap; each card fills the viewport individually
+- Scrolling into the about section triggers a 400ms crossfade that inverts the current theme; theme stays inverted while anywhere in or below `#about`; restores only when the user scrolls fully back above `#about`
+- Row C cards open external URLs in a new tab with `rel="noopener noreferrer"`
+- All 6 card slots are populated — no placeholder or "Coming Soon" cards
 
 ---
 
@@ -402,17 +482,26 @@ For placeholder case studies:
 **Section ID:** `#contact`
 **Figma frame:** `Contact footer` (desktop: 1664×834)
 
+### Viewport height
+The contact section fills the full viewport height, matching the behaviour of the Hero (§3) and Intro (§4) sections.
+
+- `min-height: 100vh` on the section root
+- Internal content is **vertically centred** within the available height using flexbox (`flex-direction: column; justify-content: center`)
+- On very short viewports (< 600px tall) the section can grow beyond `100vh` to avoid content overlap — use `min-height: 100svh` (small viewport height) for mobile to account for dynamic browser chrome
+
 ### Layout
 ```
-┌──────────────────────────────────────────────────┐
+┌──────────────────────────────────────────────────┐  100vh (min)
+│                                                  │
 │  Get in touch          Stalk me                  │  ← contact links row
 │  hello@globo.studio    LinkedIn                  │
 │  04 3252 0578          OnlyMe                    │
-├──────────────────────────────────────────────────┤
+│                                                  │
 │  [Clock: Sydney]  [Clock: Santiago]  [Clock: London]  [Clock: NYC]  │
-├──────────────────────────────────────────────────┤
-│  [Logo]  © Globo Studio 2026                Built with ♥ and good vibes (coding)  │
+│                                                  │
+│  [Logo]  © Globo Studio 2026    Built with ♥ and good vibes (coding)  │
 │  Designer person born in Chile. Based in Sydney, NSW  │
+│                                                  │
 └──────────────────────────────────────────────────┘
 ```
 
@@ -487,10 +576,11 @@ For placeholder case studies:
 |-----------|---------|-----------|
 | `<LoadingScreen />` | Page root | `onComplete: () => void` |
 | `<Nav />` | Layout | `activeSection: string`, `variant: 'home' \| 'case-study'` |
-| `<ProjectCard />` | Work section | `title`, `description`, `image`, `slug`, `isComingSoon` |
+| `<ProjectCard />` | Work section | `title`, `description`, `image`, `slug`, `href?`, `external?: boolean` |
 | `<Clock />` | Contact section | `timezone: string`, `city: string` |
 | `<ClientCarousel />` | Intro section | `logos: Logo[]` |
 | `<DesignerPhoto />` | Intro section (hover) | `src`, `alt` — shown on hover over name |
+| `<ThemeProvider />` | App root | `defaultTheme?: 'light' \| 'dark'` — wraps entire page, exposes `useTheme()` |
 
 ---
 
@@ -501,26 +591,32 @@ For placeholder case studies:
 | LoadingScreen exit | Page load | Fade/slide out | 600ms |
 | Nav entrance | After loading screen | Slide down from top | 400ms |
 | Hero image | After loading screen | Fade in + scale 0.98→1 | 600ms |
+| **Dark mode toggle** | **Click shader or Studio SVG** | **CSS crossfade (bg + color tokens)** | **400ms** |
 | Intro text | Scroll into view | Slide up + fade in | 500ms |
-| Client carousel | Always | Infinite horizontal loop | 20s |
+| Client carousel | Always | Infinite horizontal loop | 40s |
 | Designer photo | Hover on name | Scale + fade in | 200ms |
 | Project card hover | Mouse enter | Image→circle, title underline | 400ms |
-| Project card rows | Scroll into view | Staggered slide up + fade | 500ms |
+| Project card rows A+B | Scroll into view | Staggered slide up + fade | 500ms |
+| **Dark mode (scroll)** | **About section enters viewport** | **CSS crossfade — inverts current theme** | **400ms** |
 | Interlude text | Scroll into view | Fade in | 500ms |
+| Project card row C | Scroll into view | Staggered slide up + fade | 500ms |
 | About (photo) | Scroll into view | Slide in from right | 500ms |
 | About (text) | Scroll into view | Slide in from left | 500ms |
 | Contact section | Scroll into view | Fade in | 400ms |
 
 **Global rule:** All scroll-triggered animations use `once: true` (replay only on full page refresh).
 **Reduced motion:** When `prefers-reduced-motion: reduce` is set, replace all transitions with instant opacity changes only.
+**Theme state:** Managed via a shared `ThemeContext`. The `.dark` class on `<html>` drives all token overrides (see `tokens.css`). Both the hero click and the scroll trigger write to this context.
 
 ---
 
 ## 10. Open Questions
 
-1. What are the 4 case study slugs/titles to use for the work cards?
+1. What are the 4 case study slugs/titles to use for the work cards (Row A + B)?
 2. What timezone cities should the 4 clocks display? (Assumed: Sydney, Santiago, London, New York)
-3. Should the 2 extra card slots (Row C) be "Coming Soon" or hidden at launch?
+3. ~~Should the 2 extra card slots (Row C) be "Coming Soon" or hidden at launch?~~ **Resolved:** Row C holds 2 personal projects that open external URLs in a new tab. No "Coming Soon" cards.
 4. What font is used for the display headings? (To confirm from Figma design tokens)
 5. Does the clock show seconds, or only hour and minute hands?
 6. What is the LinkedIn and OnlyMe URL?
+7. What are the titles, descriptions, and external URLs for the 2 personal projects (Row C)?
+8. Should the scroll-triggered dark mode also fire on mobile, or is it desktop/tablet only?
