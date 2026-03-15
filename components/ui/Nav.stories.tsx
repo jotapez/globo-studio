@@ -320,6 +320,106 @@ export const ActiveFollowsCursor: Story = {
   },
 };
 
+// ─── mobile viewport ──────────────────────────────────────────────────────────
+
+/**
+ * Mobile viewport — verifies the 3-item project variant layout, 14px label
+ * size, and 48px nav height at narrow widths. Use the Storybook viewport
+ * toolbar to toggle between breakpoints.
+ */
+export const MobileViewport: Story = {
+  name: 'Mobile viewport · Home',
+  parameters: {
+    viewport: { defaultViewport: 'mobile1' },
+    docs: {
+      description: {
+        story:
+          'Rendered at mobile width. Checks: 48 px height, Label-Small 14/18, 20 px side padding, ' +
+          '`--nav-top-mobile` top offset (tracks `env(safe-area-inset-top)`).',
+      },
+    },
+  },
+  args: { activeSection: 'hero' },
+};
+
+export const MobileViewportProject: Story = {
+  name: 'Mobile viewport · Project variant',
+  parameters: {
+    viewport: { defaultViewport: 'mobile1' },
+    docs: {
+      description: {
+        story:
+          'Three-item layout at mobile width. First and last items shrink to content width; ' +
+          'the centre item fills remaining space.',
+      },
+    },
+  },
+  args: {
+    variant: 'project',
+    activeSection: 'client',
+    items: [
+      { id: 'home',   label: 'Globo',        href: '/'                 },
+      { id: 'client', label: 'Officeworks',  href: ''                  },
+      { id: 'next',   label: 'Next project', href: '/work/taronga-zoo' },
+    ],
+  },
+};
+
+// ─── entrance / exit animations ───────────────────────────────────────────────
+
+/**
+ * Entrance animation — the nav slides down from above on mount.
+ * Remount the story (use the ↺ button) to replay the spring animation.
+ */
+export const EntranceAnimation: Story = {
+  name: 'Animation · Entrance (slide-down)',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Nav slides down from `y: -100` on mount. ' +
+          'Default `entranceDelay` is 0.1 s; spring stiffness 300 / damping 28. ' +
+          'Remount the story to replay.',
+      },
+    },
+  },
+  args: { activeSection: 'hero', animateEntrance: true },
+};
+
+/**
+ * Exit animation — pass `isExiting={true}` to watch the nav slide back up.
+ * In production this is triggered by the project-page transition context.
+ */
+export const ExitAnimation: Story = {
+  name: 'Animation · Exit (slide-up)',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'When `isExiting` is `true` the nav animates to `y: -100` with `duration: 0` ' +
+          '(instant, so the page-slide transition dominates). Toggle the control to preview.',
+      },
+    },
+  },
+  args: { activeSection: 'hero', isExiting: true },
+};
+
+/**
+ * No entrance animation — used when the nav should appear immediately
+ * (e.g. project→project navigation where the layout stays mounted).
+ */
+export const NoEntrance: Story = {
+  name: 'Animation · No entrance',
+  parameters: {
+    docs: {
+      description: {
+        story: '`animateEntrance={false}` — nav is visible immediately with no slide-in.',
+      },
+    },
+  },
+  args: { activeSection: 'hero', animateEntrance: false },
+};
+
 // ─── all variants at a glance ─────────────────────────────────────────────────
 
 /**

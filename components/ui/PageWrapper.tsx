@@ -1,5 +1,3 @@
-'use client';
-
 /**
  * PageWrapper — rounded inset-card container for project page content
  *
@@ -52,9 +50,9 @@ export const PageWrapper = forwardRef<HTMLDivElement, PageWrapperProps>(
           'flex flex-col',
           'bg-[var(--bg-page)] text-[var(--text-primary)]',
           // Mobile
-          'rounded-[24px] p-[12px] gap-[12px]',
+          'rounded-[var(--radius-wrapper-mobile)] p-[var(--wrapper-padding-mobile)] gap-[var(--wrapper-gap-mobile)]',
           // Tablet / Desktop
-          'md:rounded-[80px] md:p-[32px] md:gap-[32px] md:max-w-[var(--content-width-desktop)] md:mx-auto',
+          'md:rounded-[var(--radius-wrapper-desktop)] md:p-[var(--page-padding-desktop)] md:gap-[var(--page-padding-desktop)] md:max-w-[var(--content-width-desktop)] md:mx-auto',
           className,
         )}
       >

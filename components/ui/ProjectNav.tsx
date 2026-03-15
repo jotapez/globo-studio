@@ -66,6 +66,12 @@ export interface ProjectNavProps {
   className?: string;
 }
 
+// ─── constants ────────────────────────────────────────────────────────────────
+
+/** Matches --bg-page light-mode value (#f8f8f7). Used as the transition target
+ *  background when navigating back to the homepage. */
+const BG_PAGE_LIGHT = '#f8f8f7';
+
 // ─── local type ───────────────────────────────────────────────────────────────
 
 type NavItemWithBg = NavItem & { targetBg: string };
@@ -107,7 +113,7 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
     // Desktop: Globo + one item per project, all navigable except the active one.
     const desktopItems = useMemo<NavItemWithBg[]>(
       () => [
-        { id: 'home', label: 'Globo', href: '/', targetBg: '#f8f8f7' },
+        { id: 'home', label: 'Globo', href: '/', targetBg: BG_PAGE_LIGHT },
         ...allProjects.map((p) => ({
           id: p.slug,
           label: p.clientName,
@@ -121,7 +127,7 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
     // Mobile: unchanged — Globo, active client name, Next project.
     const mobileItems = useMemo<NavItemWithBg[]>(
       () => [
-        { id: 'home',   label: 'Globo',    href: '/',      targetBg: '#f8f8f7' },
+        { id: 'home',   label: 'Globo',    href: '/',      targetBg: BG_PAGE_LIGHT },
         { id: 'client', label: clientName, href: '',       targetBg: ''        },
         { id: 'next',   label: nextLabel,  href: nextHref, targetBg: nextBgColor },
       ],

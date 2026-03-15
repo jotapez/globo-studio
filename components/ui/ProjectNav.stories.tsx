@@ -219,6 +219,44 @@ export const DarkModeDisabled: Story = {
   args: { disabled: true },
 };
 
+// ─── mobile viewport ──────────────────────────────────────────────────────────
+
+/**
+ * Mobile viewport — verifies 3-item layout: outer items shrink to content width,
+ * centre item fills remaining space, 48px height, Label-Small 14/18 font.
+ */
+export const MobileViewport: Story = {
+  name: 'Mobile viewport',
+  parameters: {
+    viewport: { defaultViewport: 'mobile1' },
+    docs: {
+      description: {
+        story:
+          'Three-item layout at mobile width. "Globo" and "Next project" shrink to ' +
+          'content width; the client name fills the remaining space.',
+      },
+    },
+  },
+};
+
+/**
+ * Desktop viewport — verifies 5-item layout (Globo + all projects), equal-width
+ * items, 54px height, Label 16/24 font.
+ */
+export const DesktopViewport: Story = {
+  name: 'Desktop viewport · 5 items',
+  parameters: {
+    viewport: { defaultViewport: 'desktop' },
+    docs: {
+      description: {
+        story:
+          'Five equal-width items at desktop width: Globo + one item per project. ' +
+          'Active item (Officeworks) fills; others are navigable.',
+      },
+    },
+  },
+};
+
 // ─── all variants at a glance ─────────────────────────────────────────────────
 
 /**

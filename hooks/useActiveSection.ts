@@ -13,17 +13,24 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { NavSection } from '@/components/ui/Nav';
 
-export const SECTION_ORDER: NavSection[] = ['hero', 'intro', 'work', 'about', 'contact'];
+/**
+ * Extends NavSection with 'intro' — an in-between state used internally
+ * while the intro section is visible (before the observer snaps to 'work').
+ * 'intro' is never passed directly to Nav; the homepage maps it to 'hero'.
+ */
+type ActiveSectionId = NavSection | 'intro';
+
+export const SECTION_ORDER: ActiveSectionId[] = ['hero', 'intro', 'work', 'about', 'contact'];
 
 export interface UseActiveSectionReturn {
-  activeSection: NavSection;
-  setActiveSection: (id: NavSection) => void;
+  activeSection: ActiveSectionId;
+  setActiveSection: (id: ActiveSectionId) => void;
   scrollToSection: (id: string) => void;
 }
 
 export function useActiveSection(): UseActiveSectionReturn {
-  const [activeSection, setActiveSection] = useState<NavSection>('hero');
-  const scrollingToRef   = useRef<NavSection | null>(null);
+  const [activeSection, setActiveSection] = useState<ActiveSectionId>('hero');
+  const scrollingToRef   = useRef<ActiveSectionId | null>(null);
   const scrollEndTimer   = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const scrollListenerRef = useRef<(() => void) | null>(null);
 
@@ -110,9 +117,9 @@ export function useActiveSection(): UseActiveSectionReturn {
       window.removeEventListener('scroll', scrollListenerRef.current);
     }
 
-    scrollingToRef.current = id as NavSection;
+    scrollingToRef.current = id as ActiveSectionId;
     clearTimeout(scrollEndTimer.current);
-    setActiveSection(id as NavSection);
+    setActiveSection(id as ActiveSectionId);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
     const onScroll = () => {

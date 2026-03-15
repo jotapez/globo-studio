@@ -4,10 +4,24 @@ import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
+type ChildProps = {
+  'data-id': string;
+  className?: string;
+  children?: React.ReactNode;
+};
+
+type CloneExtraProps = React.Attributes & {
+  onClick: () => void;
+  'data-checked': boolean;
+  className: string;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+};
+
 type AnimatedBackgroundProps = {
   children:
-    | React.ReactElement<{ 'data-id': string; className?: string; children?: React.ReactNode }>
-    | React.ReactElement<{ 'data-id': string; className?: string; children?: React.ReactNode }>[];
+    | React.ReactElement<ChildProps>
+    | React.ReactElement<ChildProps>[];
   defaultValue?: string;
   onValueChange?: (newActiveId: string | null) => void;
   className?: string;
@@ -61,7 +75,7 @@ export function AnimatedBackground({
             }),
             'data-checked': isActive,
             className: cn('relative inline-flex', child.props.className),
-          } as object,
+          } as CloneExtraProps,
           <>
             <AnimatePresence initial={false}>
               {isActive && (

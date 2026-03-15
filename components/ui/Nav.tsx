@@ -62,7 +62,7 @@ export const NAV_ITEMS = [
   { id: 'contact', label: 'Contact', href: '#contact' },
 ] as const;
 
-export type NavSection = (typeof NAV_ITEMS)[number]['id'] | 'intro';
+export type NavSection = (typeof NAV_ITEMS)[number]['id'];
 
 /** A single navigation item — used for both the home and project variants. */
 export type NavItem = { id: string; label: string; href: string };
@@ -123,6 +123,9 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
   // be ignored on hydration.
   const [visible, setVisible] = useState(!animateEntrance);
   useEffect(() => { setVisible(true); }, []);
+  // When reduced motion is on, treat the nav as already visible so the
+  // animate prop resolves to { y: 0 } immediately — no invisible-then-snap flash.
+
   // Unique per Nav instance — prevents layoutId collisions when multiple Nav
   // components are mounted simultaneously (e.g. desktop + mobile variants).
   const navId = useId();
@@ -142,7 +145,7 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
       animate={
         isExiting
           ? { y: -100 }
-          : visible
+          : (visible || !!prefersReducedMotion)
           ? { y: 0 }
           : { y: -100 }
       }
@@ -184,7 +187,6 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
       >
         <AnimatedBackground
           defaultValue={displayedActiveId}
-          onValueChange={(id) => id && onItemClick?.(id)}
           className="rounded-[var(--radius-pill)] bg-[var(--bg-nav-selected)]"
           transition={springTransition}
           layoutId={`nav-active-pill-${navId}`}
@@ -259,7 +261,7 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
                     <AnimatePresence>
                       {hoveredId === item.id && !isActive && (
                         <motion.div
-                          layoutId="nav-hover-pill"
+                          layoutId={`nav-hover-pill-${navId}`}
                           className="absolute inset-0 rounded-[var(--radius-pill)]"
                           style={{ background: 'var(--bg-nav-hover)' }}
                           transition={springTransition}

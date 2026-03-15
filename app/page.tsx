@@ -203,7 +203,7 @@ export default function HomePage() {
         <section
           id="work"
           aria-label="Work"
-          className="bg-[var(--bg-page)] text-[var(--text-primary)] px-[var(--page-padding-mobile)] md:px-[var(--page-padding-desktop)] pt-[104px] md:pt-[var(--section-padding-top-desktop)]"
+          className="bg-[var(--bg-page)] text-[var(--text-primary)] px-[var(--page-padding-mobile)] md:px-[var(--page-padding-desktop)] pt-[var(--section-padding-top-mobile)] md:pt-[var(--section-padding-top-desktop)]"
           style={{
             '--card-top-offset': 'var(--section-padding-top-desktop)',
             '--card-top-offset-mobile': 'var(--section-padding-top-mobile)',
