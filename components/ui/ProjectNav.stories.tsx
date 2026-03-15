@@ -106,7 +106,6 @@ client name fills remaining space. Desktop: all three equal-width.
     clientName:   'Officeworks',
     activeSlug:   'officeworks',
     nextHref:     '/work/taronga-zoo',
-    nextBgColor:  '#1a3d2b',
     allProjects:  ALL_PROJECTS,
   },
 
@@ -317,7 +316,6 @@ export const AllVariants: Story = {
                 clientName={clientName}
                 activeSlug={activeSlug}
                 nextHref="/work/taronga-zoo"
-                nextBgColor="#1a3d2b"
                 allProjects={ALL_PROJECTS}
                 disabled={disabled}
               />
@@ -383,7 +381,6 @@ function DarkRow({
         clientName={clientName}
         activeSlug={activeSlug}
         nextHref="/work/taronga-zoo"
-        nextBgColor="#1a3d2b"
         allProjects={ALL_PROJECTS}
         disabled={disabled}
       />
