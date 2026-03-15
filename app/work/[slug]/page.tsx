@@ -125,8 +125,8 @@ export default async function ProjectPage({
       <div
         className="
           px-[var(--page-padding-mobile)] md:px-[var(--page-padding-desktop)]
-          pt-[104px] md:pt-[168px]
-          pb-[104px] md:pb-[168px]
+          pt-[var(--hero-padding-top-mobile)] md:pt-[var(--hero-padding-top-desktop)]
+          pb-[var(--hero-padding-top-mobile)] md:pb-[var(--hero-padding-top-desktop)]
         "
       >
         <PageWrapper bgColor={project.wrapperColor}>

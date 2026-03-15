@@ -251,12 +251,17 @@
      BORDER RADIUS
      ------------------------------------------------------- */
 
-  --radius-pill:          100px;   /* nav bar, pill buttons */
-  --radius-card:           40px;   /* project card desktop — default state */
-  --radius-card-mobile:    24px;   /* project card mobile  — default state */
-  --radius-card-circle:  1000px;   /* project card — hover (circle morph) */
-  --radius-block:          56px;   /* project page content blocks — desktop/tablet */
-  --radius-block-mobile:   16px;   /* project page content blocks — mobile */
+  --radius-pill:              100px;   /* nav bar, pill buttons */
+  --radius-card:               40px;   /* project card desktop — default state */
+  --radius-card-mobile:        24px;   /* project card mobile  — default state */
+  --radius-card-circle:      1000px;   /* project card — hover (circle morph) */
+  --radius-block:              56px;   /* project page content blocks — desktop/tablet */
+  --radius-block-mobile:       16px;   /* project page content blocks — mobile */
+  --radius-wrapper-mobile:     24px;   /* PageWrapper rounded corner — mobile */
+  --radius-wrapper-desktop:    80px;   /* PageWrapper rounded corner — desktop */
+
+  --wrapper-padding-mobile:    12px;   /* PageWrapper inner padding — mobile */
+  --wrapper-gap-mobile:        12px;   /* PageWrapper child gap — mobile */
 
 
   /* -------------------------------------------------------
@@ -288,10 +293,14 @@
   --nav-item-padding:    11px 16px;
 
   --hero-padding-top-desktop: 168px;
-  --hero-padding-top-mobile:  104px;   /* clears nav: 20px top + 48px height + 36px gap */
+  /* Derives from --nav-top-mobile so it auto-tracks env(safe-area-inset-top).
+     On devices without a notch this resolves to 20 + 48 + 36 = 104px (same as
+     the old hard-coded value). On iPhone with Dynamic Island (~59px inset) it
+     expands to 67 + 48 + 36 = 151px, preventing content from sliding under the nav. */
+  --hero-padding-top-mobile:  calc(var(--nav-top-mobile) + var(--nav-height-mobile) + 36px);
 
   --section-padding-top-desktop: 168px; /* work + about section top padding on desktop */
-  --section-padding-top-mobile: 104px;  /* work section top padding — mobile */
+  --section-padding-top-mobile: calc(var(--nav-top-mobile) + var(--nav-height-mobile) + 36px); /* work section top padding — mobile */
   --section-padding-bottom-desktop: 82px; /* work section bottom padding — desktop */
 
   --card-gap:            32px;
