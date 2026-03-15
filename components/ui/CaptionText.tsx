@@ -54,6 +54,16 @@ export interface CaptionTextProps {
   className?: string;
 }
 
+// ─── shared class ─────────────────────────────────────────────────────────────
+
+const CAPTION_SPAN_CLS = cn(
+  'font-sans font-normal not-italic',
+  'text-[var(--text-muted)]',
+  '[font-size:16px] [line-height:24px]',
+  // Desktop: fixed 627px width; Mobile: full width
+  'w-full md:w-[627px]',
+);
+
 // ─── alignment map ────────────────────────────────────────────────────────────
 
 const alignmentCls: Record<CaptionAlignment, string> = {
@@ -97,29 +107,12 @@ export const CaptionText = forwardRef<HTMLDivElement, CaptionTextProps>(
         {/* Wrap each child in the text styles */}
         {Array.isArray(children)
           ? children.map((child, i) => (
-              <span
-                key={i}
-                className={cn(
-                  'font-sans font-normal not-italic',
-                  'text-[var(--text-muted)]',
-                  '[font-size:16px] [line-height:24px]',
-                  // Desktop: fixed 627px width; Mobile: full width
-                  'w-full md:w-[627px]',
-                )}
-              >
+              <span key={i} className={CAPTION_SPAN_CLS}>
                 {child}
               </span>
             ))
           : (
-              <span
-                className={cn(
-                  'font-sans font-normal not-italic',
-                  'text-[var(--text-muted)]',
-                  '[font-size:16px] [line-height:24px]',
-                  // Desktop: fixed 627px width; Mobile: full width
-                  'w-full md:w-[627px]',
-                )}
-              >
+              <span className={CAPTION_SPAN_CLS}>
                 {children}
               </span>
             )}

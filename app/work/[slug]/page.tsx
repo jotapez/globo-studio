@@ -29,12 +29,16 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return {};
-  return { title: `${project.clientName} — Globo Studio` };
+  return {
+    title: `${project.clientName} — Globo Studio`,
+    description: project.intro.description,
+  };
 }
 
 // ─── block renderer ───────────────────────────────────────────────────────────
 
-function renderBlock(block: ContentBlock, key: number): React.ReactNode {
+function renderBlock(block: ContentBlock, i: number): React.ReactNode {
+  const key = `${block.type}-${i}`;
   switch (block.type) {
     case 'hero':
       return (
@@ -126,7 +130,7 @@ export default async function ProjectPage({
         className="
           px-[var(--page-padding-mobile)] md:px-[var(--page-padding-desktop)]
           pt-[var(--hero-padding-top-mobile)] md:pt-[var(--hero-padding-top-desktop)]
-          pb-[var(--hero-padding-top-mobile)] md:pb-[var(--hero-padding-top-desktop)]
+          pb-[var(--page-padding-bottom-mobile)] md:pb-[var(--page-padding-bottom-desktop)]
         "
       >
         <PageWrapper bgColor={project.wrapperColor}>

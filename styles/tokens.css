@@ -262,6 +262,7 @@
 
   --wrapper-padding-mobile:    12px;   /* PageWrapper inner padding — mobile */
   --wrapper-gap-mobile:        12px;   /* PageWrapper child gap — mobile */
+  --wrapper-gap-desktop:       56px;   /* PageWrapper child gap — tablet/desktop */
 
 
   /* -------------------------------------------------------
@@ -298,6 +299,12 @@
      the old hard-coded value). On iPhone with Dynamic Island (~59px inset) it
      expands to 67 + 48 + 36 = 151px, preventing content from sliding under the nav. */
   --hero-padding-top-mobile:  calc(var(--nav-top-mobile) + var(--nav-height-mobile) + 36px);
+
+  /* Dedicated bottom-padding tokens for project page outer wrapper.
+     Same values as the top equivalents — symmetric vertical rhythm.
+     Named separately so top-padding changes don't inadvertently affect the bottom. */
+  --page-padding-bottom-desktop: 168px;
+  --page-padding-bottom-mobile:  calc(var(--nav-top-mobile) + var(--nav-height-mobile) + 36px);
 
   --section-padding-top-desktop: 168px; /* work + about section top padding on desktop */
   --section-padding-top-mobile: calc(var(--nav-top-mobile) + var(--nav-height-mobile) + 36px); /* work section top padding — mobile */

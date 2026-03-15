@@ -52,7 +52,7 @@ export const PageWrapper = forwardRef<HTMLDivElement, PageWrapperProps>(
           // Mobile
           'rounded-[var(--radius-wrapper-mobile)] p-[var(--wrapper-padding-mobile)] gap-[var(--wrapper-gap-mobile)]',
           // Tablet / Desktop
-          'md:rounded-[var(--radius-wrapper-desktop)] md:p-[var(--page-padding-desktop)] md:gap-[var(--page-padding-desktop)] md:max-w-[var(--content-width-desktop)] md:mx-auto',
+          'md:rounded-[var(--radius-wrapper-desktop)] md:p-[var(--page-padding-desktop)] md:gap-[var(--wrapper-gap-desktop)] md:max-w-[var(--content-width-desktop)] md:mx-auto',
           className,
         )}
       >

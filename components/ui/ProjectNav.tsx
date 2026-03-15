@@ -44,6 +44,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Nav, type NavItem } from '@/components/ui/Nav';
 import { useProjectTransition } from '@/components/ui/ProjectTransitionContext';
+import { BG_PAGE_LIGHT } from '@/lib/utils';
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -65,12 +66,6 @@ export interface ProjectNavProps {
   /** Extra classes forwarded to the <nav> element via Nav's className prop. */
   className?: string;
 }
-
-// ─── constants ────────────────────────────────────────────────────────────────
-
-/** Matches --bg-page light-mode value (#f8f8f7). Used as the transition target
- *  background when navigating back to the homepage. */
-const BG_PAGE_LIGHT = '#f8f8f7';
 
 // ─── local type ───────────────────────────────────────────────────────────────
 
