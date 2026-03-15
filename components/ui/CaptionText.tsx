@@ -60,7 +60,8 @@ const CAPTION_SPAN_CLS = cn(
   'font-sans font-normal not-italic',
   'text-[var(--text-muted)]',
   '[font-size:16px] [line-height:24px]',
-  // Desktop: fixed 627px width; Mobile: full width
+  // Desktop: 627px ≈ half the 1254px content column (PageWrapper max-width minus gaps).
+  // Mobile: full width.
   'w-full md:w-[627px]',
 );
 

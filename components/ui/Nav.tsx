@@ -65,7 +65,7 @@ export const NAV_ITEMS = [
 export type NavSection = (typeof NAV_ITEMS)[number]['id'];
 
 /** A single navigation item — used for both the home and project variants. */
-export type NavItem = { id: string; label: string; href: string };
+export type NavItem = { id: string; label: string; href?: string };
 
 export interface NavProps {
   /**
@@ -86,8 +86,6 @@ export interface NavProps {
   disabled?: boolean;
   /** Animate the nav sliding down on mount. Default true. Pass false to skip (project→project). */
   animateEntrance?: boolean;
-  /** When true, animate the nav sliding back up (exit). Used on project pages. */
-  isExiting?: boolean;
   /** Extra classes on the <nav> wrapper (e.g. for entrance animation). */
   className?: string;
   /** Delay (in seconds) before the entrance animation begins. Defaults to 0.1. */
@@ -106,7 +104,6 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
     onItemClick,
     disabled = false,
     animateEntrance = true,
-    isExiting = false,
     className = '',
     entranceDelay,
     cursorActive = false,
@@ -143,14 +140,10 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
       aria-label={isProject ? 'Project navigation' : 'Main navigation'}
       initial={animateEntrance && !prefersReducedMotion ? { y: -100 } : false}
       animate={
-        isExiting
-          ? { y: -100 }
-          : (visible || !!prefersReducedMotion)
-          ? { y: 0 }
-          : { y: -100 }
+        (visible || !!prefersReducedMotion) ? { y: 0 } : { y: -100 }
       }
       transition={
-        prefersReducedMotion || isExiting
+        prefersReducedMotion
           ? { duration: 0 }
           : { type: 'spring', stiffness: 300, damping: 28, delay: entranceDelay ?? 0.1 }
       }
