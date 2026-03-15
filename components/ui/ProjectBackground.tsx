@@ -11,7 +11,7 @@ interface ProjectBackgroundProps {
   bgColor: string;
 }
 
-export function ProjectBackground({ bgColor }: ProjectBackgroundProps) {
+export const ProjectBackground = function ProjectBackground({ bgColor }: ProjectBackgroundProps) {
   const prefersReducedMotion = useReducedMotion();
   const { isExiting, exitTargetBg } = useProjectTransition();
 
@@ -51,4 +51,6 @@ export function ProjectBackground({ bgColor }: ProjectBackgroundProps) {
       transition={{ duration: prefersReducedMotion ? 0 : 1, ease: 'easeOut' }}
     />
   );
-}
+};
+
+ProjectBackground.displayName = 'ProjectBackground';

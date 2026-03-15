@@ -6,6 +6,7 @@ import { ProjectTransitionProvider, useProjectTransition } from '@/components/ui
 import { ProjectNav } from '@/components/ui/ProjectNav';
 import { ProjectBackground } from '@/components/ui/ProjectBackground';
 import { getProject, getNavProjects } from '@/lib/projects';
+import { BG_PAGE_LIGHT } from '@/lib/utils';
 
 export function WorkTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -15,14 +16,14 @@ export function WorkTransition({ children }: { children: React.ReactNode }) {
   const project = getProject(slug);
   const navProjects = getNavProjects();
   const nextBgColor =
-    navProjects.find((p) => p.slug === project?.nextSlug)?.bgColor ?? '#f8f8f7';
+    navProjects.find((p) => p.slug === project?.nextSlug)?.bgColor ?? BG_PAGE_LIGHT;
 
   // Nav slides down on layout mount (first visit from homepage or direct URL).
   // Between projects the layout stays mounted, so the nav never re-animates.
 
   return (
     <ProjectTransitionProvider>
-      <ProjectBackground bgColor={project?.bgColor ?? '#f8f8f7'} />
+      <ProjectBackground bgColor={project?.bgColor ?? BG_PAGE_LIGHT} />
       {project && (
         <ProjectNav
           clientName={project.clientName}
