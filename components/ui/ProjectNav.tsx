@@ -56,7 +56,7 @@ export interface ProjectNavProps {
   nextHref: string;
   /** Ordered list of all projects, used to build the desktop nav items. */
   allProjects: Array<{ slug: string; clientName: string; bgColor: string }>;
-  /** Override the mobile right-hand item label. Defaults to "Next project". */
+  /** Override the mobile right-hand item label. Defaults to "Next". */
   nextLabel?: string;
   /** Disables all items — use during page transitions. */
   disabled?: boolean;
@@ -73,7 +73,7 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
       activeSlug,
       nextHref,
       allProjects,
-      nextLabel = 'Next project',
+      nextLabel = 'Next',
       disabled,
       className,
     },
