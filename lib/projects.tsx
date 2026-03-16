@@ -256,6 +256,7 @@ const PROJECTS: Project[] = [
         type: 'full-bleed',
         src: '/Open Insurance/OI-spec.png',
         alt: 'Open Insurance — Open Design System branding specifications',
+        color: 'var(--bg-project-oi)',
         aspectRatio: '4224/2896',
       },
       {
