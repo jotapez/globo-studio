@@ -386,6 +386,23 @@ export const EntranceAnimation: Story = {
   args: { activeSection: 'hero', animateEntrance: true },
 };
 
+/**
+ * Exit animation — pass `isExiting={true}` to watch the nav slide back up.
+ * In production this is triggered by the project-page transition context.
+ */
+export const ExitAnimation: Story = {
+  name: 'Animation · Exit (slide-up)',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'When `isExiting` is `true` the nav animates to `y: -100` with `duration: 0` ' +
+          '(instant, so the page-slide transition dominates). Toggle the control to preview.',
+      },
+    },
+  },
+  args: { activeSection: 'hero', isExiting: true },
+};
 
 /**
  * No entrance animation — used when the nav should appear immediately
