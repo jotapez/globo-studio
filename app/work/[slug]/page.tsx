@@ -125,7 +125,7 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   return (
-    <main aria-labelledby="project-heading">
+    <main>
       <div
         className="
           px-[var(--page-padding-mobile)] md:px-[var(--page-padding-desktop)]
@@ -135,7 +135,6 @@ export default async function ProjectPage({
       >
         <PageWrapper bgColor={project.wrapperColor}>
           <ProjectIntro
-            id="project-heading"
             heading={project.intro.heading}
             body={project.intro.body}
           />

@@ -70,8 +70,6 @@ export interface ProjectIntroProps {
    * Accepts a plain string or React elements for bolding / links.
    */
   body: React.ReactNode;
-  /** id forwarded to the <h1> — used with aria-labelledby on <main>. */
-  id?: string;
   /** Extra classes on the root <div>. */
   className?: string;
 }
@@ -79,7 +77,7 @@ export interface ProjectIntroProps {
 // ─── component ────────────────────────────────────────────────────────────────
 
 export const ProjectIntro = forwardRef<HTMLDivElement, ProjectIntroProps>(
-  function ProjectIntro({ heading, body, id, className }, ref) {
+  function ProjectIntro({ heading, body, className }, ref) {
     const shouldReduceMotion = useReducedMotion();
 
     const innerRef = useRef<HTMLDivElement>(null);
@@ -119,7 +117,6 @@ export const ProjectIntro = forwardRef<HTMLDivElement, ProjectIntroProps>(
         {/* ── Left column: heading ── */}
         <motion.div {...headingAnim} className="flex-1 min-w-0">
           <h1
-            id={id}
             className={cn(
               'font-serif font-normal not-italic',
               'text-[var(--text-primary)]',

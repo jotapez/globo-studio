@@ -1,9 +1,11 @@
 'use client';
 import { usePathname, useParams } from 'next/navigation';
-import { ProjectTransitionProvider } from '@/components/ui/ProjectTransitionContext';
+import { useState, useEffect } from 'react';
+import { AnimatePresence, motion, usePresence } from 'framer-motion';
+import { ProjectTransitionProvider, useProjectTransition } from '@/components/ui/ProjectTransitionContext';
 import { ProjectNav } from '@/components/ui/ProjectNav';
 import { ProjectBackground } from '@/components/ui/ProjectBackground';
-import { getNavProject, getNavProjects } from '@/lib/navProjects';
+import { getProject, getNavProjects } from '@/lib/projects';
 import { BG_PAGE_LIGHT } from '@/lib/utils';
 
 export function WorkTransition({ children }: { children: React.ReactNode }) {
@@ -11,8 +13,13 @@ export function WorkTransition({ children }: { children: React.ReactNode }) {
   const params = useParams<{ slug: string }>();
   const slug = params?.slug ?? '';
 
-  const project = getNavProject(slug);
+  const project = getProject(slug);
   const navProjects = getNavProjects();
+  const nextBgColor =
+    navProjects.find((p) => p.slug === project?.nextSlug)?.bgColor ?? BG_PAGE_LIGHT;
+
+  // Nav slides down on layout mount (first visit from homepage or direct URL).
+  // Between projects the layout stays mounted, so the nav never re-animates.
 
   return (
     <ProjectTransitionProvider>
@@ -22,12 +29,45 @@ export function WorkTransition({ children }: { children: React.ReactNode }) {
           clientName={project.clientName}
           activeSlug={project.slug}
           nextHref={`/work/${project.nextSlug}`}
+          nextBgColor={nextBgColor}
           allProjects={navProjects}
         />
       )}
-      <div style={{ backgroundColor: project?.bgColor ?? BG_PAGE_LIGHT }}>
-        {children}
-      </div>
+      <AnimatePresence mode="sync">
+        <PageSlide key={pathname}>{children}</PageSlide>
+      </AnimatePresence>
     </ProjectTransitionProvider>
+  );
+}
+
+function PageSlide({ children }: { children: React.ReactNode }) {
+  const [isPresent, safeToRemove] = usePresence();
+  const [settled, setSettled] = useState(false);
+  const { isExiting } = useProjectTransition();
+
+  useEffect(() => {
+    if (!isPresent) {
+      const t = setTimeout(safeToRemove!, 650);
+      return () => clearTimeout(t);
+    }
+  }, [isPresent, safeToRemove]);
+
+  if (isExiting) return null;
+
+  return (
+    <motion.div
+      style={{
+        position: settled ? 'relative' : 'fixed',
+        inset: settled ? undefined : 0,
+        zIndex: isPresent ? 10 : 0,
+        overflowY: settled ? undefined : 'auto',
+      }}
+      initial={{ y: '100%' }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+      onAnimationComplete={() => { if (isPresent) setSettled(true); }}
+    >
+      {children}
+    </motion.div>
   );
 }
