@@ -44,7 +44,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Nav, type NavItem } from '@/components/ui/Nav';
 import { useProjectTransition } from '@/components/ui/ProjectTransitionContext';
-import { BG_PAGE_LIGHT } from '@/lib/utils';
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -57,8 +56,6 @@ export interface ProjectNavProps {
   nextHref: string;
   /** Ordered list of all projects, used to build the desktop nav items. */
   allProjects: Array<{ slug: string; clientName: string; bgColor: string }>;
-  /** bgColor of the next project — used as exit target on the mobile "Next" button. */
-  nextBgColor: string;
   /** Override the mobile right-hand item label. Defaults to "Next project". */
   nextLabel?: string;
   /** Disables all items — use during page transitions. */
@@ -66,10 +63,6 @@ export interface ProjectNavProps {
   /** Extra classes forwarded to the <nav> element via Nav's className prop. */
   className?: string;
 }
-
-// ─── local type ───────────────────────────────────────────────────────────────
-
-type NavItemWithBg = NavItem & { targetBg: string };
 
 // ─── component ────────────────────────────────────────────────────────────────
 
@@ -79,7 +72,6 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
       clientName,
       activeSlug,
       nextHref,
-      nextBgColor,
       allProjects,
       nextLabel = 'Next project',
       disabled,
@@ -89,44 +81,43 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
   ) {
     const [desktopActive, setDesktopActive] = useState(activeSlug);
     const [mobileActive, setMobileActive]   = useState<string>('client');
-    const { startExit, isExiting } = useProjectTransition();
+    const { startExit } = useProjectTransition();
 
     useEffect(() => { setDesktopActive(activeSlug); }, [activeSlug]);
     useEffect(() => { setMobileActive('client'); }, [activeSlug]);
 
     function handleNavClick(
       itemId: string,
-      items: NavItemWithBg[],
+      items: NavItem[],
       setActive: (id: string) => void,
     ) {
       const item = items.find((i) => i.id === itemId);
       if (!item?.href) return;
       setActive(itemId);
-      startExit(item.targetBg, item.href);
+      startExit(item.href);
     }
 
     // Desktop: Globo + one item per project, all navigable except the active one.
-    const desktopItems = useMemo<NavItemWithBg[]>(
+    const desktopItems = useMemo<NavItem[]>(
       () => [
-        { id: 'home', label: 'Globo', href: '/', targetBg: BG_PAGE_LIGHT },
+        { id: 'home', label: 'Globo', href: '/' },
         ...allProjects.map((p) => ({
           id: p.slug,
           label: p.clientName,
           href: `/work/${p.slug}`,
-          targetBg: p.bgColor,
         })),
       ],
       [allProjects],
     );
 
     // Mobile: unchanged — Globo, active client name, Next project.
-    const mobileItems = useMemo<NavItemWithBg[]>(
+    const mobileItems = useMemo<NavItem[]>(
       () => [
-        { id: 'home',   label: 'Globo',    href: '/',      targetBg: BG_PAGE_LIGHT },
-        { id: 'client', label: clientName, href: '',       targetBg: ''        },
-        { id: 'next',   label: nextLabel,  href: nextHref, targetBg: nextBgColor },
+        { id: 'home',   label: 'Globo',    href: '/'       },
+        { id: 'client', label: clientName, href: ''          },
+        { id: 'next',   label: nextLabel,  href: nextHref   },
       ],
-      [clientName, nextLabel, nextHref, nextBgColor],
+      [clientName, nextLabel, nextHref],
     );
 
     return (
@@ -140,7 +131,6 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
             activeSection={desktopActive}
             onItemClick={(id) => handleNavClick(id, desktopItems, setDesktopActive)}
             disabled={disabled}
-            isExiting={isExiting}
             className={className}
             cursorActive
           />
@@ -154,7 +144,6 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
             activeSection={mobileActive}
             onItemClick={(id) => handleNavClick(id, mobileItems, setMobileActive)}
             disabled={disabled}
-            isExiting={isExiting}
             className={className}
             cursorActive
           />
