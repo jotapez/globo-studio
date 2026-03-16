@@ -232,7 +232,7 @@ const PROJECTS: Project[] = [
     slug: 'open-insurance',
     clientName: 'Open Insurance',
     nextSlug: 'levo',
-    bgColor: '#3638DE',
+    bgColor: '#1c1c3a',
     intro: {
       heading: (
         <>
@@ -246,61 +246,10 @@ const PROJECTS: Project[] = [
       description: 'Product design for Open Insurance — simplifying the insurance experience with a transparent, people-first digital product.',
     },
     contentBlocks: [
-      {
-        type: 'hero',
-        src: '/Open Insurance/OW-hero.png',
-        alt: 'Open Insurance — Huddle app on mobile, select and customise your cover',
-        priority: true,
-      },
-      {
-        type: 'full-bleed',
-        src: '/Open Insurance/OI-spec.png',
-        alt: 'Open Insurance — Open Design System branding specifications',
-        aspectRatio: '4224/2896',
-      },
-      {
-        type: 'single-white',
-        src: '/Open Insurance/OI-values-principles.gif',
-        alt: 'Open Insurance — values and principles',
-        aspectRatio: '1524/950',
-      },
-      {
-        type: 'full-bleed',
-        src: '/Open Insurance/OI-payment.png',
-        alt: 'Open Insurance — Huddle payment and confirmation screens',
-        color: 'var(--bg-project-oi)',
-        aspectRatio: '4224/2896',
-      },
-      {
-        type: 'single-color',
-        src: '/Open Insurance/OI-brand-icons-detail.png',
-        alt: 'Open Insurance — brand icon detail, 12 insurance category icons',
-        color: 'var(--bg-project-oi)',
-        aspectRatio: '4224/2896',
-      },
-      {
-        type: 'single-white',
-        src: '/Open Insurance/OI-brand-icons.png',
-        alt: 'Open Insurance — full brand icon library',
-        aspectRatio: '4536/3228',
-      },
-      {
-        type: 'single-color',
-        src: '/Open Insurance/OI-Characters.png',
-        alt: 'Open Insurance — character illustrations',
-        color: 'var(--bg-project-oi)',
-        aspectRatio: '4224/2896',
-      },
-      {
-        type: 'two-image',
-        srcA: '/Open Insurance/OI-telstra.png',
-        altA: 'Open Insurance — Telstra Home Insurance promotion card',
-        aspectRatioA: '1286/1820',
-        srcB: '/Open Insurance/OI-continue.png',
-        altB: 'Open Insurance — quote summary card for Mario Puzo',
-        aspectRatioB: '1286/1820',
-        color: 'var(--bg-project-oi)',
-      },
+      { type: 'hero', src: '/Officeworks/OW-hero.png', alt: 'Officeworks B2B platform overview — hand holding iPad showing catalogue management screen', priority: true },
+      { type: 'single-white', src: '/Officeworks/OW-icons-1.svg', alt: 'Officeworks B2B design system icon library — 200+ custom icons', aspectRatio: '2017/1380' },
+      { type: 'single-color', src: '/Officeworks/OW-DesignSystem-1.png', alt: 'Officeworks B2B design system — full component library overview', color: 'var(--bg-block-grey)', aspectRatio: '9665/10954' },
+      { type: 'full-bleed', src: '/Officeworks/OW-CustomCatalogues-1.png', alt: 'Officeworks B2B custom catalogues — create and manage curated product lists', color: 'var(--bg-block-grey)', aspectRatio: '6336/4344' },
     ],
   },
 
