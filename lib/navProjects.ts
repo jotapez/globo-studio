@@ -15,7 +15,7 @@ export interface NavProject {
 const NAV_PROJECTS: NavProject[] = [
   { slug: 'officeworks',    clientName: 'Officeworks',    bgColor: '#001db0', nextSlug: 'taronga-zoo'    },
   { slug: 'taronga-zoo',    clientName: 'Taronga Zoo',    bgColor: '#1a3d2b', nextSlug: 'open-insurance' },
-  { slug: 'open-insurance', clientName: 'Open Insurance', bgColor: '#1c1c3a', nextSlug: 'levo'           },
+  { slug: 'open-insurance', clientName: 'Open Insurance', bgColor: '#3638DE', nextSlug: 'levo'           },
   { slug: 'levo',           clientName: 'Levo',           bgColor: '#2d1a00', nextSlug: 'officeworks'    },
 ];
 
