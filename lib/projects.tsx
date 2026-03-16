@@ -232,7 +232,7 @@ const PROJECTS: Project[] = [
     slug: 'open-insurance',
     clientName: 'Open Insurance',
     nextSlug: 'levo',
-    bgColor: '#1c1c3a',
+    bgColor: '#3638DE',
     intro: {
       heading: (
         <>
