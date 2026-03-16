@@ -93,7 +93,7 @@ client name fills remaining space. Desktop: all three equal-width.
     nextLabel: {
       control: 'text',
       description: 'Override the right-hand item label.',
-      table: { defaultValue: { summary: 'Next project' } },
+      table: { defaultValue: { summary: 'Next' } },
     },
     disabled: {
       control: 'boolean',
