@@ -47,7 +47,7 @@
  * className — extra classes on the root <div>
  */
 
-import { forwardRef, useRef } from 'react';
+import { forwardRef, useLayoutEffect, useRef, useState } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -83,7 +83,16 @@ export const ProjectIntro = forwardRef<HTMLDivElement, ProjectIntroProps>(
     const shouldReduceMotion = useReducedMotion();
 
     const innerRef = useRef<HTMLDivElement>(null);
+    const [lockedMobileWidth, setLockedMobileWidth] = useState<number | null>(null);
     const isInView = useInView(innerRef, { once: true, amount: 0.2 });
+
+    useLayoutEffect(() => {
+      if (window.innerWidth >= 768) return;
+      const node = innerRef.current;
+      if (!node) return;
+      const measured = Math.round(node.getBoundingClientRect().width);
+      if (measured > 0) setLockedMobileWidth(measured);
+    }, []);
 
     const headingAnim = shouldReduceMotion
       ? {}
@@ -108,9 +117,10 @@ export const ProjectIntro = forwardRef<HTMLDivElement, ProjectIntroProps>(
           if (typeof ref === 'function') ref(node);
           else if (ref) ref.current = node;
         }}
+        style={lockedMobileWidth != null ? { maxWidth: `${lockedMobileWidth}px` } : undefined}
         className={cn(
           // Mobile: single column
-          'flex flex-col gap-[16px] pt-[8px] px-[8px]',
+          'flex flex-col gap-[16px] pt-[8px] px-[8px] mx-auto md:mx-0',
           // Tablet+: two equal columns
           'md:flex-row md:items-start md:gap-[32px] md:pt-[24px] md:px-[24px]',
           className,
