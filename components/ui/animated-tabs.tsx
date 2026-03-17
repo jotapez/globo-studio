@@ -33,6 +33,9 @@ type AnimatedBackgroundProps = {
   /** Set to false to disable the opacity fade-in/out on the pill (avoids flash
    *  when the pill colour changes across theme boundaries). Default: true. */
   animateOpacity?: boolean;
+  /** Optional inline styles for the pill (e.g. borderRadius: 9999 to prevent
+   *  distortion during layout morph between different-sized targets). */
+  pillStyle?: React.CSSProperties;
 };
 
 export function AnimatedBackground({
@@ -44,6 +47,7 @@ export function AnimatedBackground({
   enableHover = false,
   layoutId = 'animated-background',
   animateOpacity = true,
+  pillStyle,
 }: AnimatedBackgroundProps) {
   const [activeId, setActiveId] = useState<string | null>(defaultValue ?? null);
 
@@ -83,6 +87,7 @@ export function AnimatedBackground({
                   key={id}
                   layoutId={layoutId}
                   className={cn('absolute inset-0', className)}
+                  style={pillStyle}
                   transition={transition}
                   initial={animateOpacity ? { opacity: 0 } : false}
                   animate={animateOpacity ? { opacity: 1 } : undefined}

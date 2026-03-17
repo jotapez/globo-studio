@@ -25,6 +25,7 @@
  * • Active item    → click is suppressed             (no navigation)
  * • Other projects → navigate to their /work/[slug] (page link, same tab)
  * • "Next project" → navigates to `nextHref`         (mobile only, same tab)
+ * • On mobile, "Globo" and "Next" show the pill for 0.4s before navigating.
  *
  * Dark / light mode
  * ─────────────────
@@ -41,7 +42,7 @@
  * className    — extra classes forwarded to both <nav> wrappers
  */
 
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Nav, type NavItem } from '@/components/ui/Nav';
 import { useProjectTransition } from '@/components/ui/ProjectTransitionContext';
 
@@ -82,18 +83,37 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
     const [desktopActive, setDesktopActive] = useState(activeSlug);
     const [mobileActive, setMobileActive]   = useState<string>('client');
     const { startExit } = useProjectTransition();
+    const mobileDelayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => { setDesktopActive(activeSlug); }, [activeSlug]);
     useEffect(() => { setMobileActive('client'); }, [activeSlug]);
+
+    useEffect(() => {
+      return () => {
+        if (mobileDelayTimeoutRef.current) clearTimeout(mobileDelayTimeoutRef.current);
+      };
+    }, []);
 
     function handleNavClick(
       itemId: string,
       items: NavItem[],
       setActive: (id: string) => void,
+      isMobile: boolean,
     ) {
       const item = items.find((i) => i.id === itemId);
       if (!item?.href) return;
       setActive(itemId);
+
+      const shouldDelay = isMobile && (itemId === 'home' || itemId === 'next');
+      if (shouldDelay) {
+        if (mobileDelayTimeoutRef.current) clearTimeout(mobileDelayTimeoutRef.current);
+        mobileDelayTimeoutRef.current = setTimeout(() => {
+          mobileDelayTimeoutRef.current = null;
+          startExit(item.href);
+        }, 400);
+        return;
+      }
+
       startExit(item.href);
     }
 
@@ -129,10 +149,11 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
             variant="project"
             items={desktopItems}
             activeSection={desktopActive}
-            onItemClick={(id) => handleNavClick(id, desktopItems, setDesktopActive)}
+            onItemClick={(id) => handleNavClick(id, desktopItems, setDesktopActive, false)}
             disabled={disabled}
             className={className}
             cursorActive
+            clickFeedback
           />
         </div>
 
@@ -142,10 +163,11 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
             variant="project"
             items={mobileItems}
             activeSection={mobileActive}
-            onItemClick={(id) => handleNavClick(id, mobileItems, setMobileActive)}
+            onItemClick={(id) => handleNavClick(id, mobileItems, setMobileActive, true)}
             disabled={disabled}
             className={className}
             cursorActive
+            clickFeedback
           />
         </div>
       </>
