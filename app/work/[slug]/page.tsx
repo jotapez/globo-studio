@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import React from 'react';
 
 import { getProject, getAllSlugs, type ContentBlock } from '@/lib/projects';
+import { estimateContentBottomMobile } from '@/lib/estimateContentHeight';
 import { PageWrapper } from '@/components/ui/PageWrapper';
 import { ProjectIntro } from '@/components/ui/ProjectIntro';
 import { HeroImageLayout } from '@/components/ui/HeroImageLayout';
@@ -12,6 +13,7 @@ import { FullBleedImageLayout } from '@/components/ui/FullBleedImageLayout';
 import { CaptionText } from '@/components/ui/CaptionText';
 import { ContactFooter } from '@/components/ui/ContactFooter';
 import { TwoImageLayout } from '@/components/ui/TwoImageLayout';
+import { ScrollPaddingShell } from '@/components/ui/ScrollPaddingShell';
 
 // ─── static params ────────────────────────────────────────────────────────────
 
@@ -126,13 +128,13 @@ export default async function ProjectPage({
 
   return (
     <main aria-labelledby="project-heading">
-      <div
+      <ScrollPaddingShell
+        bgColor={project.bgColor}
+        estimatedContentBottom={estimateContentBottomMobile(project.contentBlocks)}
         className="
-          px-[var(--page-padding-mobile)] md:px-[var(--page-padding-desktop)]
           pt-[var(--hero-padding-top-mobile)] md:pt-[var(--hero-padding-top-desktop)]
           pb-[var(--page-padding-bottom-mobile)] md:pb-[var(--page-padding-bottom-desktop)]
         "
-        style={{ backgroundColor: project.bgColor }}
       >
         <PageWrapper bgColor={project.wrapperColor}>
           <ProjectIntro
@@ -142,7 +144,7 @@ export default async function ProjectPage({
           />
           {project.contentBlocks.map((block, i) => renderBlock(block, i))}
         </PageWrapper>
-      </div>
+      </ScrollPaddingShell>
 
       <ContactFooter showClocks={false} footerBarGap />
     </main>
