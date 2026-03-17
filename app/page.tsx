@@ -178,7 +178,13 @@ export default function HomePage() {
   return (
     <>
       {/* Fixed navigation — always on top */}
-      <Nav activeSection={activeSection === 'intro' ? 'hero' : activeSection} onItemClick={scrollToSection} entranceDelay={0.4} cursorActive />
+      <Nav
+        activeSection={activeSection === 'intro' ? 'hero' : activeSection}
+        onItemClick={scrollToSection}
+        entranceDelay={0.4}
+        cursorActive
+        clickFeedback
+      />
 
       <main>
 

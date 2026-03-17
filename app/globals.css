@@ -62,3 +62,14 @@ body {
   color: var(--text-primary);
   font-family: var(--font-sans);
 }
+
+/* Egstad-style: wiggle animation when clicking already-active nav item */
+[data-wiggling] {
+  animation: nav-wiggle 0.6s ease;
+}
+
+@keyframes nav-wiggle {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
+  20%, 40%, 60%, 80% { transform: translateX(6px); }
+}

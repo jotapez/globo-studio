@@ -94,6 +94,8 @@ export interface NavProps {
   entranceDelay?: number;
   /** When true, the active pill follows the cursor on hover instead of a separate hover pill. */
   cursorActive?: boolean;
+  /** When true, wiggle animation on active-item click (Egstad-style). */
+  clickFeedback?: boolean;
 }
 
 // ─── component ────────────────────────────────────────────────────────────────
@@ -110,10 +112,12 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
     className = '',
     entranceDelay,
     cursorActive = false,
+    clickFeedback = false,
   },
   ref,
 ) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [isWiggling, setIsWiggling] = useState(false);
   // Visual position of the active pill — follows cursor when cursorActive is on
   const displayedActiveId = cursorActive && hoveredId ? hoveredId : activeSection;
   const prefersReducedMotion = useReducedMotion();
@@ -140,6 +144,8 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
   return (
     <motion.nav
       ref={ref}
+      layoutRoot
+      layoutScroll
       aria-label={isProject ? 'Project navigation' : 'Main navigation'}
       initial={animateEntrance && !prefersReducedMotion ? { y: -100 } : false}
       animate={
@@ -170,6 +176,8 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
       <ul
         role="list"
         onTouchStart={() => setHoveredId(null)}
+        data-wiggling={isWiggling || undefined}
+        onAnimationEnd={() => setIsWiggling(false)}
         className={cn(
           'pointer-events-auto flex items-center w-full',
           'h-[var(--nav-height-mobile)] md:h-[var(--nav-height-desktop)]',
@@ -191,6 +199,7 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
           transition={springTransition}
           layoutId={`nav-active-pill-${navId}`}
           animateOpacity={false}
+          pillStyle={{ borderRadius: 9999 }}
         >
           {resolvedItems.map((item, index) => {
             const isActive = activeSection === item.id;
@@ -221,6 +230,8 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
                     undefined
                   }
                   onClick={(e) => {
+                    // Egstad-style: wiggle when clicking already-active item
+                    if (clickFeedback && isActive) setIsWiggling(true);
                     // Project variant: active item (client name) is non-navigable.
                     if (isProject && isActive) {
                       e.preventDefault();
