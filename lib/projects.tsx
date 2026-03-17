@@ -263,7 +263,7 @@ const PROJECTS: Project[] = [
       },
       {
         type: 'single-white',
-        src: '/Open Insurance/OI-brand-icons.png',
+        src: '/Open Insurance/OI-brand-icons.svg',
         alt: 'Open Insurance — full brand icon library',
         aspectRatio: '4536/3228',
       },
