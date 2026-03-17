@@ -54,7 +54,7 @@ const PROJECTS: Project[] = [
   {
     slug: 'officeworks',
     clientName: 'Officeworks',
-    nextSlug: 'taronga-zoo',
+    nextSlug: 'open-insurance',
     bgColor: '#001db0',
     wrapperColor: 'var(--bg-page)',
     intro: {
@@ -202,36 +202,11 @@ const PROJECTS: Project[] = [
     ],
   },
 
-  // ── Taronga Zoo (stub) ───────────────────────────────────────────────────────
-  {
-    slug: 'taronga-zoo',
-    clientName: 'Taronga Zoo',
-    nextSlug: 'open-insurance',
-    bgColor: '#1a3d2b',
-    intro: {
-      heading: (
-        <>
-          <span className="font-serif">Taronga Zoo</span>
-          <span className="font-sans"> — Connecting visitors with </span>
-          <span className="font-serif">wildlife</span>
-        </>
-      ),
-      body: 'Content coming soon.',
-      description: 'UX and digital design for Taronga Zoo — connecting visitors with wildlife through a reimagined digital experience.',
-    },
-    contentBlocks: [
-      { type: 'hero', src: '/Officeworks/OW-hero.png', alt: 'Officeworks B2B platform overview — hand holding iPad showing catalogue management screen', priority: true },
-      { type: 'single-white', src: '/Officeworks/OW-icons-1.svg', alt: 'Officeworks B2B design system icon library — 200+ custom icons', aspectRatio: '2017/1380' },
-      { type: 'single-color', src: '/Officeworks/OW-DesignSystem-1.png', alt: 'Officeworks B2B design system — full component library overview', color: 'var(--bg-block-grey)', aspectRatio: '9665/10954' },
-      { type: 'full-bleed', src: '/Officeworks/OW-CustomCatalogues-1.png', alt: 'Officeworks B2B custom catalogues — create and manage curated product lists', color: 'var(--bg-block-grey)', aspectRatio: '6336/4344' },
-    ],
-  },
-
-  // ── Open Insurance (stub) ────────────────────────────────────────────────────
+  // ── Open Insurance ───────────────────────────────────────────────────────────
   {
     slug: 'open-insurance',
     clientName: 'Open Insurance',
-    nextSlug: 'levo',
+    nextSlug: 'taronga-zoo',
     bgColor: '#3638DE',
     intro: {
       heading: (
@@ -260,6 +235,13 @@ const PROJECTS: Project[] = [
         aspectRatio: '4224/2896',
       },
       {
+        type: 'single-color',
+        src: '/Open Insurance/OI-design-system-1.png',
+        alt: 'Open Insurance — Open Design System component library',
+        color: 'var(--bg-project-oi)',
+        aspectRatio: '8727/11079',
+      },
+      {
         type: 'single-white',
         src: '/Open Insurance/OI-values-principles.gif',
         alt: 'Open Insurance — values and principles',
@@ -281,7 +263,7 @@ const PROJECTS: Project[] = [
       },
       {
         type: 'single-white',
-        src: '/Open Insurance/OI-brand-icons.png',
+        src: '/Open Insurance/OI-brand-icons.svg',
         alt: 'Open Insurance — full brand icon library',
         aspectRatio: '4536/3228',
       },
@@ -305,10 +287,35 @@ const PROJECTS: Project[] = [
     ],
   },
 
-  // ── Levo (stub) ──────────────────────────────────────────────────────────────
+  // ── kicbox (taronga-zoo) ─────────────────────────────────────────────────────
+  {
+    slug: 'taronga-zoo',
+    clientName: 'kicbox',
+    nextSlug: 'levo',
+    bgColor: '#1a3d2b',
+    intro: {
+      heading: (
+        <>
+          <span className="font-serif">Taronga Zoo</span>
+          <span className="font-sans"> — Connecting visitors with </span>
+          <span className="font-serif">wildlife</span>
+        </>
+      ),
+      body: 'Content coming soon.',
+      description: 'UX and digital design for Taronga Zoo — connecting visitors with wildlife through a reimagined digital experience.',
+    },
+    contentBlocks: [
+      { type: 'hero', src: '/Officeworks/OW-hero.png', alt: 'Officeworks B2B platform overview — hand holding iPad showing catalogue management screen', priority: true },
+      { type: 'single-white', src: '/Officeworks/OW-icons-1.svg', alt: 'Officeworks B2B design system icon library — 200+ custom icons', aspectRatio: '2017/1380' },
+      { type: 'single-color', src: '/Officeworks/OW-DesignSystem-1.png', alt: 'Officeworks B2B design system — full component library overview', color: 'var(--bg-block-grey)', aspectRatio: '9665/10954' },
+      { type: 'full-bleed', src: '/Officeworks/OW-CustomCatalogues-1.png', alt: 'Officeworks B2B custom catalogues — create and manage curated product lists', color: 'var(--bg-block-grey)', aspectRatio: '6336/4344' },
+    ],
+  },
+
+  // ── Multiple projects (levo) ──────────────────────────────────────────────────
   {
     slug: 'levo',
-    clientName: 'Levo',
+    clientName: 'Multiple projects',
     nextSlug: 'officeworks',
     bgColor: '#2d1a00',
     intro: {

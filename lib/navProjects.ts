@@ -13,10 +13,10 @@ export interface NavProject {
 }
 
 const NAV_PROJECTS: NavProject[] = [
-  { slug: 'officeworks',    clientName: 'Officeworks',    bgColor: '#001db0', nextSlug: 'taronga-zoo'    },
-  { slug: 'taronga-zoo',    clientName: 'Taronga Zoo',    bgColor: '#1a3d2b', nextSlug: 'open-insurance' },
-  { slug: 'open-insurance', clientName: 'Open Insurance', bgColor: '#3638DE', nextSlug: 'levo'           },
-  { slug: 'levo',           clientName: 'Levo',           bgColor: '#2d1a00', nextSlug: 'officeworks'    },
+  { slug: 'officeworks',    clientName: 'Officeworks',    bgColor: '#001db0', nextSlug: 'open-insurance' },
+  { slug: 'open-insurance', clientName: 'Open Insurance', bgColor: '#3638DE', nextSlug: 'taronga-zoo'   },
+  { slug: 'taronga-zoo',    clientName: 'kicbox',         bgColor: '#1a3d2b', nextSlug: 'levo'           },
+  { slug: 'levo',           clientName: 'Multiple projects', bgColor: '#2d1a00', nextSlug: 'officeworks' },
 ];
 
 /** Returns all projects — used to build the desktop nav item list. */
