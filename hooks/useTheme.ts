@@ -42,10 +42,15 @@ export function useTheme(): UseThemeReturn {
     setTheme(getInitialTheme());
   }, []);
 
-  // Apply to <html> and persist on every change
+  // Apply to <html>, persist, and sync the theme-color meta tag on every change
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
     localStorage.setItem('gs-theme', theme);
+    const newColor = theme === 'dark' ? '#000000' : '#f8f8f7';
+    const metas = document.querySelectorAll('meta[name="theme-color"]');
+    metas.forEach((meta) => {
+      meta.setAttribute('content', newColor);
+    });
   }, [theme]);
 
   const toggleTheme = useCallback(() => {

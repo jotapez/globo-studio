@@ -288,8 +288,8 @@
   --nav-top-desktop:     32px;
   --nav-top-mobile:      max(20px, calc(env(safe-area-inset-top, 0px) + 8px));
 
-  /* Figma: 4 px top/bottom, 4 px left, 6 px right — inner <ul> padding */
-  --nav-inner-padding:   4px 6px 4px 4px;
+  /* Figma: 4 px all sides — inner <ul> padding (symmetric gap around active pill) */
+  --nav-inner-padding:   4px;
   /* Figma: 11 px top/bottom, 16 px left/right — per-item <a> padding */
   --nav-item-padding:    11px 16px;
 

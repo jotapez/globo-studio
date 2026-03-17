@@ -132,6 +132,7 @@ export default async function ProjectPage({
           pt-[var(--hero-padding-top-mobile)] md:pt-[var(--hero-padding-top-desktop)]
           pb-[var(--page-padding-bottom-mobile)] md:pb-[var(--page-padding-bottom-desktop)]
         "
+        style={{ backgroundColor: project.bgColor }}
       >
         <PageWrapper bgColor={project.wrapperColor}>
           <ProjectIntro

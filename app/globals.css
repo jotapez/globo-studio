@@ -43,6 +43,10 @@
     --border-default         700ms ease-in-out;
 }
 
+:root.dark {
+  color-scheme: dark;
+}
+
 /* Suppress theme crossfade when forcing instant light mode (e.g. on project pages) */
 html.no-theme-transition {
   transition: none !important;
