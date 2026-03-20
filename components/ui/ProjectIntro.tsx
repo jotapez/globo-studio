@@ -146,7 +146,7 @@ export const ProjectIntro = forwardRef<HTMLDivElement, ProjectIntroProps>(
           <div
             className={cn(
               'font-sans font-normal not-italic',
-              'text-[var(--text-primary)]',
+              'text-[var(--text-muted)]',
               '[font-size:var(--text-intro-sm-mobile-size)] [line-height:var(--text-intro-sm-mobile-leading)]',
               'md:[font-size:var(--text-intro-sm-size)] md:[line-height:var(--text-intro-sm-leading)]',
             )}

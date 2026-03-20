@@ -1,8 +1,7 @@
 'use client';
-import { useEffect, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
-const useIsomorphicLayoutEffect =
-  typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+const useIsomorphicLayoutEffect = useLayoutEffect;
 
 interface ProjectBackgroundProps {
   bgColor: string;
@@ -17,14 +16,19 @@ export const ProjectBackground = function ProjectBackground({ bgColor: _ }: Proj
     requestAnimationFrame(() => html.classList.remove('no-theme-transition'));
   }, []);
 
-  // Restore user's theme preference on unmount (navigating away from /work)
-  useEffect(() => {
+  // Restore user's theme before paint when leaving /work pages.
+  // useIsomorphicLayoutEffect cleanup runs synchronously before the browser paints
+  // the new page, preventing the white flash that useEffect (post-paint) would cause.
+  useIsomorphicLayoutEffect(() => {
     return () => {
       try {
         const stored = localStorage.getItem('gs-theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (stored === 'dark' || (!stored && prefersDark)) {
-          document.documentElement.classList.add('dark');
+          const html = document.documentElement;
+          html.classList.add('no-theme-transition');
+          html.classList.add('dark');
+          requestAnimationFrame(() => html.classList.remove('no-theme-transition'));
         }
       } catch {}
     };

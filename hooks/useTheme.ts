@@ -36,6 +36,7 @@ export interface UseThemeReturn {
 export function useTheme(): UseThemeReturn {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const themeBeforeAboutRef = useRef<'light' | 'dark' | null>(null);
+  const isFirstRun = useRef(true);
 
   // Read initial theme once on mount
   useEffect(() => {
@@ -44,6 +45,13 @@ export function useTheme(): UseThemeReturn {
 
   // Apply to <html>, persist, and sync the theme-color meta tag on every change
   useEffect(() => {
+    // Skip the very first execution: theme is still 'light' (the React initial-state
+    // placeholder) while getInitialTheme() hasn't run yet. Running here would remove
+    // .dark and overwrite localStorage before the real theme is read from storage.
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
     document.documentElement.classList.toggle('dark', theme === 'dark');
     localStorage.setItem('gs-theme', theme);
     const newColor = theme === 'dark' ? '#000000' : '#f8f8f7';

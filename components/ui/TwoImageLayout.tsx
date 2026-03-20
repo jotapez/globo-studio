@@ -46,13 +46,17 @@ export interface TwoImageLayoutProps {
   aspectRatioB: string;
   /** Project brand color for both column backgrounds. */
   color: string;
+  /** Optional background color override for column B only. */
+  colorB?: string;
+  /** Optional max-height cap for column B (e.g. "800px"). */
+  maxHeightB?: string;
   className?: string;
 }
 
 // ─── component ────────────────────────────────────────────────────────────────
 
 export const TwoImageLayout = forwardRef<HTMLDivElement, TwoImageLayoutProps>(
-  function TwoImageLayout({ srcA, altA, aspectRatioA, srcB, altB, aspectRatioB, color, className }, ref) {
+  function TwoImageLayout({ srcA, altA, aspectRatioA, srcB, altB, aspectRatioB, color, colorB, maxHeightB, className }, ref) {
     const shouldReduceMotion = useReducedMotion();
 
     const innerRef = useRef<HTMLDivElement>(null);
@@ -74,18 +78,25 @@ export const TwoImageLayout = forwardRef<HTMLDivElement, TwoImageLayoutProps>(
           else if (ref) ref.current = node;
         }}
         {...anim}
-        className={cn('flex flex-col md:flex-row gap-[32px]', className)}
+        className={cn('flex flex-col md:flex-row gap-[12px] md:gap-[32px]', className)}
       >
         {/* Column A */}
         <div
           style={{ backgroundColor: color }}
           className="flex-1 rounded-[var(--radius-block-mobile)] md:rounded-[var(--radius-block)] overflow-hidden"
         >
-          <div className="relative w-full" style={{ aspectRatio: aspectRatioA }}>
+          {/* On desktop (flex-row): when B has a fixed height the row stretches to that
+              height, so md:h-full fills column A completely (aspect-ratio ignored).
+              On mobile (flex-col): no inherited height, so aspectRatio sets the height. */}
+          <div
+            className={maxHeightB ? 'relative w-full md:h-full' : 'relative w-full'}
+            style={{ aspectRatio: aspectRatioA }}
+          >
             <Image
               src={srcA}
               alt={altA}
               fill
+              unoptimized={srcA.endsWith('.gif')}
               className="object-cover"
               // Each column is ~50% of content width minus half the gap:
               // desktop: (1664px − 32px) / 2 = 816px
@@ -98,18 +109,32 @@ export const TwoImageLayout = forwardRef<HTMLDivElement, TwoImageLayoutProps>(
 
         {/* Column B */}
         <div
-          style={{ backgroundColor: color }}
+          style={{ backgroundColor: colorB ?? color, ...(maxHeightB ? { height: maxHeightB } : {}) }}
           className="flex-1 rounded-[var(--radius-block-mobile)] md:rounded-[var(--radius-block)] overflow-hidden"
         >
-          <div className="relative w-full" style={{ aspectRatio: aspectRatioB }}>
-            <Image
-              src={srcB}
-              alt={altB}
-              fill
-              className="object-cover"
-              sizes="(max-width: 767px) 353px, (max-width: 1023px) 464px, 816px"
-            />
-          </div>
+          {maxHeightB ? (
+            <div className="relative w-full h-full">
+              <Image
+                src={srcB}
+                alt={altB}
+                fill
+                unoptimized={srcB.endsWith('.gif')}
+                className="object-contain"
+                sizes="(max-width: 767px) 353px, (max-width: 1023px) 464px, 816px"
+              />
+            </div>
+          ) : (
+            <div className="relative w-full" style={{ aspectRatio: aspectRatioB }}>
+              <Image
+                src={srcB}
+                alt={altB}
+                fill
+                unoptimized={srcB.endsWith('.gif')}
+                className="object-cover"
+                sizes="(max-width: 767px) 353px, (max-width: 1023px) 464px, 816px"
+              />
+            </div>
+          )}
         </div>
       </motion.div>
     );

@@ -58,23 +58,23 @@ const MAIN_PROJECTS = [
     description:
       'Product design for car and home insurance products from strategy to delivery, while building and governing the design system at Open Insurance.',
     href: '/work/open-insurance',
-    imageSrc: '/projects/project-3.png',
+    imageSrc: '/Open Insurance/OI-hero.png',
     targetBg: '#1c1c3a',
   },
   {
     title: 'kicbox',
     description:
       "Product experience design for Taronga Zoo's new website, crafting an immersive and accessible digital presence for one of Australia's most iconic destinations.",
-    href: '/work/taronga-zoo',
-    imageSrc: '/projects/project-2.png',
+    href: '/work/kicbox',
+    imageSrc: '/kicbox/kicbox-hero.png',
     targetBg: '#1a3d2b',
   },
   {
     title: 'Multiple projects',
     description:
       'Leading product design across multiple client engagements at Levo, a leading technology consultancy delivering impactful digital experiences.',
-    href: '/work/levo',
-    imageSrc: '/projects/project-4.png',
+    href: '/work/multipleprojects',
+    imageSrc: '/Officeworks/OW-hero.png',
     targetBg: '#2d1a00',
   },
 ] as const;

@@ -17,7 +17,7 @@
  * | center         | justify-center     | Centred standalone descriptor    |
  * | space-between  | justify-between    | Two captions — left and right    |
  *
- * Text node: 16px / 24px, var(--text-muted), Helvetica Neue
+ * Text node: 14px/19px mobile → 16px/24px desktop, var(--text-muted), Helvetica Neue
  * Width: w-[627px] desktop → w-full mobile
  * space-between on mobile: flex-col gap-[8px]
  *
@@ -59,7 +59,8 @@ export interface CaptionTextProps {
 const CAPTION_SPAN_CLS = cn(
   'font-sans font-normal not-italic',
   'text-[var(--text-muted)]',
-  '[font-size:16px] [line-height:24px]',
+  '[font-size:var(--text-caption-mobile-size)] [line-height:var(--text-caption-mobile-leading)]',
+  'md:[font-size:var(--text-caption-size)] md:[line-height:var(--text-caption-leading)]',
   // Desktop: fixed 627px width; Mobile: full width
   'w-full md:w-[627px]',
 );
@@ -99,7 +100,7 @@ export const CaptionText = forwardRef<HTMLDivElement, CaptionTextProps>(
         }}
         {...anim}
         className={cn(
-          'w-full px-[16px] flex',
+          'w-full px-[16px] py-[16px] md:py-0 flex',
           alignmentCls[alignment],
           className,
         )}
