@@ -249,7 +249,7 @@ const PROJECTS: Project[] = [
         aspectRatio: '4278/6029',
       },
       {
-        type: 'single-white',
+        type: 'single-color',
         src: '/Open Insurance/OI-Characters.png',
         alt: 'Open Insurance — character illustrations',
         color: 'var(--bg-project-oi)',
@@ -279,7 +279,7 @@ const PROJECTS: Project[] = [
         aspectRatio: '4536/3228',
       },
       {
-        type: 'single-white',
+        type: 'single-color',
         src: '/Open Insurance/OI-brand-icons-detail.png',
         alt: 'Open Insurance — brand icon detail, 12 insurance category icons',
         color: 'var(--bg-project-oi)',
