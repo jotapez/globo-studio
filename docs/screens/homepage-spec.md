@@ -444,7 +444,7 @@ onAboutTopExitsViewportUpward():
 **Heading:** "Rewriting the process right now"
 
 **Bio text (full):**
-> I specialise in crafting human-centred experiences and scalable design systems that bring brands to life across products, services, and digital platforms. As a Lead Product Designer at Levo, a leading technology consultancy, I've delivered impactful digital experiences for major clients. I led the Officeworks B2B Digital Experience program, guiding product design from discovery to delivery while establishing their foundational design system and coaching designers on systematic workflows. I also led the product experience design for Taronga Zoo's new website.
+> I specialise in crafting human-centred experiences and scalable design systems that bring brands to life across products, services, and digital platforms. As a Lead Product Designer across multiple projects, I've delivered impactful digital experiences for major clients. I led the Officeworks B2B Digital Experience program, guiding product design from discovery to delivery while establishing their foundational design system and coaching designers on systematic workflows. I also led the product experience design for kicbox's new website.
 >
 > Previously at Open Insurance, I drove product design for car and home insurance products from strategy to delivery, while building and governing their design system.
 >

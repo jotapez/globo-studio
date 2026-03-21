@@ -232,7 +232,7 @@ export const ProjectVariant: Story = {
     items: [
       { id: 'home',   label: 'Globo',        href: '/'                 },
       { id: 'client', label: 'Officeworks',  href: ''                  },
-      { id: 'next',   label: 'Next project', href: '/work/taronga-zoo' },
+      { id: 'next',   label: 'Next project', href: '/work/kicbox' },
     ],
   },
   parameters: {
@@ -360,7 +360,7 @@ export const MobileViewportProject: Story = {
     items: [
       { id: 'home',   label: 'Globo',        href: '/'                 },
       { id: 'client', label: 'Officeworks',  href: ''                  },
-      { id: 'next',   label: 'Next project', href: '/work/taronga-zoo' },
+      { id: 'next',   label: 'Next project', href: '/work/kicbox' },
     ],
   },
 };

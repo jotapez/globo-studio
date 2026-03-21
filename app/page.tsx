@@ -70,10 +70,10 @@ const MAIN_PROJECTS = [
     targetBg: '#1a3d2b',
   },
   {
-    title: 'Multiple projects',
+    title: 'Retro',
     description:
       'Leading product design across multiple client engagements at Levo, a leading technology consultancy delivering impactful digital experiences.',
-    href: '/work/multipleprojects',
+    href: '/work/retro',
     imageSrc: '/Officeworks/OW-hero.png',
     targetBg: '#2d1a00',
   },

@@ -14,8 +14,8 @@ import { estimateContentBottomMobile } from '@/lib/estimateContentHeight';
 export const CONTENT_BOTTOM_BY_SLUG: Record<string, number> = {
   officeworks: 5049,
   'open-insurance': 3785,
-  'taronga-zoo': 1799,
-  levo: 1799,
+  kicbox: 1799,
+  retro: 1799,
 };
 
 export function getContentBottom(slug: string): number {

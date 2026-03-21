@@ -48,7 +48,7 @@ Identical pill-shaped bar, same spring animation, same fixed position, same visu
 #### Desktop (md+) — 5 items
 
 ```
-[ Globo ]  [ Officeworks ]  [ Taronga Zoo ]  [ Open Insurance ]  [ Levo ]
+[ Globo ]  [ Officeworks ]  [ kicbox ]  [ Open Insurance ]  [ Multiple projects ]
                    ↑ active item highlighted (filled pill)
 ```
 
@@ -66,9 +66,9 @@ All five items are equal-width (`flex-1`). Each project item links to its `/work
 |-------|--------|-------|
 | `Globo` | `/` | Navigates to homepage |
 | `Officeworks` | `/work/officeworks` | Active when on this case study |
-| `Taronga Zoo` | `/work/taronga-zoo` | Active when on this case study |
+| `kicbox` | `/work/kicbox` | Active when on this case study |
 | `Open Insurance` | `/work/open-insurance` | Active when on this case study |
-| `Levo` | `/work/levo` | Active when on this case study |
+| `Retro` | `/work/retro` | Active when on this case study |
 
 #### Mobile (<md) — 3 items (unchanged)
 
@@ -437,6 +437,63 @@ Side-by-side equal columns, each with the project color background.
 | Container | No outer background; each column has its own bg |
 
 **Mobile reflow:** Stack vertically — both images full width, `gap-[32px]` between them.
+
+---
+
+### 3h. Video Block
+
+**Figma reference:** TBD (not yet designed)
+**Component:** `<VideoBlock />`
+
+Embeds a YouTube video inside an aspect-ratio container. Accepts a YouTube watch URL, youtu.be short URL, embed URL, or bare video ID. Optionally wraps the iframe in a project brand-color card — if `color` is omitted, the iframe renders directly with no card wrapper.
+
+```
+┌────────────────────────────────────────────────────┐ ← rounded-[56px] desktop/tablet (if color provided)
+│                                                    │ ← rounded-[16px] mobile (if color provided)
+│         [YouTube iframe — 16:9 aspect ratio]       │
+│                                                    │
+└────────────────────────────────────────────────────┘
+```
+
+#### Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `src` | `string` | ✓ | YouTube watch URL, youtu.be short URL, embed URL, or bare video ID |
+| `title` | `string` | ✓ | Accessible title for the `<iframe>` (a11y requirement) |
+| `color?` | `string` | — | Project brand color card background. If omitted, no card wrapper is rendered |
+| `aspectRatio?` | `string` | — | Aspect ratio of the video container. Defaults to `'16/9'` |
+
+#### Layout
+
+| Property | Desktop / Tablet | Mobile |
+|----------|-----------------|--------|
+| Background | Project brand color — `color` prop (if provided) | same |
+| Padding | None | None |
+| Border radius | `56px` (`--radius-block`) | `16px` (`--radius-block-mobile`) |
+| Aspect ratio | `16/9` (default) | `16/9` (default) |
+
+**Note:** The `color` background is optional. When omitted, the component renders the iframe directly without any card wrapper, border radius, or background tint.
+
+#### Usage
+
+```tsx
+<VideoBlock
+  src="https://www.youtube.com/watch?v=t3NtV5vvXMQ"
+  title="Placeholder video"
+  color="var(--bg-project-ow)"
+  aspectRatio="16/9"
+/>
+```
+
+Without card background:
+
+```tsx
+<VideoBlock
+  src="https://www.youtube.com/watch?v=t3NtV5vvXMQ"
+  title="Placeholder video"
+/>
+```
 
 ---
 
