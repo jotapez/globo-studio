@@ -554,7 +554,7 @@ const PROJECTS: Project[] = [
     slug: 'retro',
     clientName: 'Retro',
     nextSlug: 'officeworks',
-    bgColor: 'var(--bg-page-project-levo)',
+    bgColor: 'var(--bg-page-project-retro)',
     intro: {
       heading: (
         <>
