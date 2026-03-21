@@ -22,9 +22,10 @@ export type ContentBlock =
   | { id?: string; type: 'hero';         src: string; alt: string; priority?: boolean }
   | { id?: string; type: 'single-white'; src: string; alt: string; aspectRatio: string }
   | { id?: string; type: 'single-color'; src: string; alt: string; color: string; aspectRatio: string }
-  | { id?: string; type: 'full-bleed';   src: string; alt: string; color: string; aspectRatio: string }
-  | { id?: string; type: 'two-image';    srcA: string; altA: string; aspectRatioA: string; srcB: string; altB: string; aspectRatioB: string; color: string }
+  | { id?: string; type: 'full-bleed';   src: string; alt: string; color: string; aspectRatio: string; objectFit?: 'cover' | 'contain' }
+  | { id?: string; type: 'two-image';    srcA: string; altA: string; aspectRatioA: string; srcB: string; altB: string; aspectRatioB: string; color: string; colorB?: string; maxHeightB?: string }
   | { id?: string; type: 'caption'; alignment: CaptionAlignment; text: string | [string, string] }
+  | { id?: string; type: 'video'; src: string; title: string; color?: string; aspectRatio?: string }
 
 export interface Project {
   slug: string;
@@ -55,7 +56,7 @@ const PROJECTS: Project[] = [
     slug: 'officeworks',
     clientName: 'Officeworks',
     nextSlug: 'open-insurance',
-    bgColor: '#001db0',
+    bgColor: 'var(--bg-page-project-ow)',
     wrapperColor: 'var(--bg-page)',
     intro: {
       heading: (
@@ -206,8 +207,8 @@ const PROJECTS: Project[] = [
   {
     slug: 'open-insurance',
     clientName: 'Open Insurance',
-    nextSlug: 'taronga-zoo',
-    bgColor: '#3638DE',
+    nextSlug: 'kicbox',
+    bgColor: 'var(--bg-page-project-oi)',
     intro: {
       heading: (
         <>
@@ -223,21 +224,21 @@ const PROJECTS: Project[] = [
     contentBlocks: [
       {
         type: 'hero',
-        src: '/Open Insurance/OW-hero.png',
+        src: '/Open Insurance/OI-hero.png',
         alt: 'Open Insurance — Huddle app on mobile, select and customise your cover',
         priority: true,
       },
       {
         type: 'full-bleed',
         src: '/Open Insurance/OI-Huddle-1.png',
-        alt: 'Open Insurance — Huddle car insurance screens, part 1',
+        alt: 'Open Insurance — Huddle car insurance — quote start and vehicle details screens',
         color: 'var(--bg-project-oi)',
         aspectRatio: '2112/1448',
       },
       {
         type: 'full-bleed',
         src: '/Open Insurance/OI-Huddle-2.png',
-        alt: 'Open Insurance — Huddle car insurance screens, part 2',
+        alt: 'Open Insurance — Huddle car insurance — cover selection and excess screens',
         color: 'var(--bg-project-oi)',
         aspectRatio: '2112/1448',
       },
@@ -251,7 +252,7 @@ const PROJECTS: Project[] = [
       {
         type: 'single-color',
         src: '/Open Insurance/OI-Characters.png',
-        alt: 'Open Insurance — character illustrations',
+        alt: 'Open Insurance — Huddle brand character illustrations',
         color: 'var(--bg-project-oi)',
         aspectRatio: '4224/2896',
       },
@@ -268,7 +269,7 @@ const PROJECTS: Project[] = [
       {
         type: 'full-bleed',
         src: '/Open Insurance/OI-Huddle-3.png',
-        alt: 'Open Insurance — Huddle car insurance screens, part 3',
+        alt: 'Open Insurance — Huddle car insurance — policy summary and confirmation screens',
         color: 'var(--bg-project-oi)',
         aspectRatio: '2112/1448',
       },
@@ -302,42 +303,42 @@ const PROJECTS: Project[] = [
       {
         type: 'full-bleed',
         src: '/Open Insurance/OI-Bupa-5.png',
-        alt: 'Open Insurance — Bupa car insurance quote flow, step 5',
+        alt: 'Open Insurance — Bupa car insurance quote flow, payment step',
         color: 'var(--bg-project-oi)',
         aspectRatio: '4224/2320',
       },
       {
         type: 'full-bleed',
         src: '/Open Insurance/OI-Bupa-1.png',
-        alt: 'Open Insurance — Bupa car insurance quote flow, step 1',
+        alt: 'Open Insurance — Bupa car insurance quote flow, personal details step',
         color: 'var(--bg-project-oi)',
         aspectRatio: '2112/1448',
       },
       {
         type: 'full-bleed',
         src: '/Open Insurance/OI-Bupa-2.png',
-        alt: 'Open Insurance — Bupa car insurance quote flow, step 2',
+        alt: 'Open Insurance — Bupa car insurance quote flow, vehicle details step',
         color: 'var(--bg-project-oi)',
         aspectRatio: '2112/1448',
       },
       {
         type: 'full-bleed',
         src: '/Open Insurance/OI-Bupa-3.png',
-        alt: 'Open Insurance — Bupa car insurance quote flow, step 3',
+        alt: 'Open Insurance — Bupa car insurance quote flow, cover selection step',
         color: 'var(--bg-project-oi)',
         aspectRatio: '2112/1448',
       },
       {
         type: 'full-bleed',
         src: '/Open Insurance/OI-Bupa-4.png',
-        alt: 'Open Insurance — Bupa car insurance quote flow, step 4',
+        alt: 'Open Insurance — Bupa car insurance quote flow, excess and extras step',
         color: 'var(--bg-project-oi)',
         aspectRatio: '2112/1448',
       },
       {
         type: 'full-bleed',
         src: '/Open Insurance/OI-Bupa-6.png',
-        alt: 'Open Insurance — Bupa car insurance quote flow, step 6',
+        alt: 'Open Insurance — Bupa car insurance quote flow, confirmation step',
         color: 'var(--bg-project-oi)',
         aspectRatio: '4224/2896',
       },
@@ -351,55 +352,213 @@ const PROJECTS: Project[] = [
       {
         type: 'full-bleed',
         src: '/Open Insurance/OI-polestar.png',
-        alt: 'Open Insurance — Polestar Insurance screens',
+        alt: 'Open Insurance — Polestar Insurance quote and policy screens',
         color: 'var(--bg-project-oi)',
         aspectRatio: '2112/1448',
       },
       {
         type: 'full-bleed',
         src: '/Open Insurance/OI-slingshot.png',
-        alt: 'Open Insurance — Slingshot home insurance screens',
+        alt: 'Open Insurance — Slingshot home insurance quote screens',
         color: 'var(--bg-project-oi)',
         aspectRatio: '2112/1448',
       },
     ],
   },
 
-  // ── kicbox (taronga-zoo) ─────────────────────────────────────────────────────
+  // ── kicbox ───────────────────────────────────────────────────────────────────
   {
-    slug: 'taronga-zoo',
+    slug: 'kicbox',
     clientName: 'kicbox',
-    nextSlug: 'levo',
-    bgColor: '#1a3d2b',
+    nextSlug: 'retro',
+    bgColor: 'var(--bg-page-project-kicbox)',
     intro: {
       heading: (
         <>
-          <span className="font-serif">Taronga Zoo</span>
-          <span className="font-sans"> — Connecting visitors with </span>
-          <span className="font-serif">wildlife</span>
+          <span className="font-serif">kicbox - </span>
+          <span className="font-serif text-[var(--text-muted)]">What </span>
+          <span className="font-sans text-[var(--text-muted)]">matters</span>
+          <span className="font-serif text-[var(--text-muted)]"> most to </span>
+          <span className="font-sans text-[var(--text-muted)]">kids</span>
+          <span className="font-serif text-[var(--text-muted)]"> in </span>
+          <span className="font-sans text-[var(--text-muted)]">care</span>
+          <span className="font-serif text-[var(--text-muted)]">?</span>
         </>
       ),
-      body: 'Content coming soon.',
-      description: 'UX and digital design for Taronga Zoo — connecting visitors with wildlife through a reimagined digital experience.',
+      body: "Young people in care don't always have the things kids in more stable homes take for granted. kicbox gives them a safe and secure place to keep important information and documents that can help them get ahead in education and employment. It also helps them keep photos, memorabilia and other childhood memories of growing up that help with their sense of identity through life.",
+      description: 'UX and product design for kicbox — a safe digital home for young people in care to store important documents, memories, and build their sense of identity.',
     },
     contentBlocks: [
-      { type: 'hero', src: '/Officeworks/OW-hero.png', alt: 'Officeworks B2B platform overview — hand holding iPad showing catalogue management screen', priority: true },
-      { type: 'single-white', src: '/Officeworks/OW-icons-1.svg', alt: 'Officeworks B2B design system icon library — 200+ custom icons', aspectRatio: '2017/1380' },
-      { type: 'single-color', src: '/Officeworks/OW-DesignSystem-1.png', alt: 'Officeworks B2B design system — full component library overview', color: 'var(--bg-block-grey)', aspectRatio: '9665/10954' },
-      { type: 'full-bleed', src: '/Officeworks/OW-CustomCatalogues-1.png', alt: 'Officeworks B2B custom catalogues — create and manage curated product lists', color: 'var(--bg-block-grey)', aspectRatio: '6336/4344' },
+      // 1. Hero
+      {
+        type: 'hero',
+        src: '/kicbox/kicbox-hero.png',
+        alt: 'kicbox app on iPhone — home screen showing saved documents and memories',
+        priority: true,
+      },
+
+      // 2. Full-Bleed — logo wherever
+      {
+        type: 'full-bleed',
+        src: '/kicbox/kicbox-logo-wherever.png',
+        alt: 'kicbox — logo in context across brand touchpoints',
+        color: 'var(--bg-project-kicbox)',
+        aspectRatio: '4224/2366',
+      },
+
+      // 2b. Caption
+      {
+        type: 'caption',
+        alignment: 'left',
+        text: 'Working closely with UX design on a variety of activities designed to uncover the needs, habits, thoughts and feelings of the app\'s users, which ranged from the youth, their carers and the Child Safety team. These included ethnographic research, interviews and workshops. Rapid prototype testing and pilots. Led the design of the app\'s interface, visual identity and the related promotional material.',
+      },
+
+      // 3+4. Two-Image — ethnographic research + ideation
+      {
+        type: 'two-image',
+        srcA: '/kicbox/kicbox-etnographic-research.png',
+        altA: 'kicbox — ethnographic research process',
+        aspectRatioA: '1223/1070',
+        srcB: '/kicbox/kicbox-ideation.png',
+        altB: 'kicbox — ideation workshop',
+        aspectRatioB: '1223/1070',
+        color: 'var(--bg-project-kicbox)',
+      },
+
+      // Caption
+      {
+        type: 'caption',
+        alignment: 'left',
+        text: 'Without a preconceived idea of what kicbox could be we wanted to make the most of the fixed time and funding available for an initial pilot by designing and building the features that would make the biggest difference to Young People.',
+      },
+
+      // 5+6. Two-Image — moodboard + rapid prototype
+      {
+        type: 'two-image',
+        srcA: '/kicbox/kicbox-moodboard.png',
+        altA: 'kicbox — moodboard exploration',
+        aspectRatioA: '1223/1070',
+        srcB: '/kicbox/kicbox-rapid-prototype.png',
+        altB: 'kicbox — rapid prototype testing',
+        aspectRatioB: '1223/1070',
+        color: 'var(--bg-project-kicbox)',
+      },
+
+      // Caption — rapid prototype
+      {
+        type: 'caption',
+        alignment: 'left',
+        text: "We put Young People in the driver's seat when it came to visual design. I ran moodboard and sticker exercises and took their direction through to the final design.",
+      },
+
+      // 7. Full-Bleed — backgrounds
+      {
+        type: 'full-bleed',
+        src: '/kicbox/kickbox-backgrounds.png',
+        alt: 'kicbox — background design explorations',
+        color: 'var(--bg-project-kicbox)',
+        aspectRatio: '2133/1252',
+        objectFit: 'contain',
+      },
+
+      // 8+9. Two-Image — logo animated + animation
+      {
+        type: 'two-image',
+        srcA: '/kicbox/kicbox-logo-animated.gif',
+        altA: 'kicbox — animated logo reveal',
+        aspectRatioA: '2880/2048',
+        srcB: '/kicbox/kicbox-animation.gif',
+        altB: 'kicbox — animated app UI transitions and micro-interactions',
+        aspectRatioB: '408/732',
+        color: 'var(--bg-project-kicbox)',
+        colorB: '#ffffff',
+        maxHeightB: '800px',
+      },
+
+      // 10. Full-Bleed — mobile screen 1
+      {
+        type: 'full-bleed',
+        src: '/kicbox/kicbox-mobile-1.png',
+        alt: 'kicbox app — documents and files management screen',
+        color: 'var(--bg-project-kicbox)',
+        aspectRatio: '4224/2896',
+      },
+
+      // 11. Full-Bleed — mobile screen 2
+      {
+        type: 'full-bleed',
+        src: '/kicbox/kicbox-mobile-2.png',
+        alt: 'kicbox app — memories and photo collection screen',
+        color: 'var(--bg-project-kicbox)',
+        aspectRatio: '4224/2896',
+      },
+
+      // 12. Full-Bleed — ecosystem
+      {
+        type: 'full-bleed',
+        src: '/kicbox/kicbox-ecosistem.png',
+        alt: 'kicbox — product ecosystem showing app, web platform and touchpoints',
+        color: 'var(--bg-project-kicbox)',
+        aspectRatio: '2131/1251',
+      },
+
+      // 13. Full-Bleed — CSO desktop
+      {
+        type: 'full-bleed',
+        src: '/kicbox/kicbox-cso-desktop.png',
+        alt: 'kicbox — Child Safety Officer desktop dashboard',
+        color: 'var(--bg-project-kicbox)',
+        aspectRatio: '2625/1478',
+      },
+
+      // 14. Full-Bleed — CSO mobile
+      {
+        type: 'full-bleed',
+        src: '/kicbox/kicbox-cso-mobile.png',
+        alt: 'kicbox — Child Safety Officer mobile view',
+        color: 'var(--bg-project-kicbox)',
+        aspectRatio: '4224/2896',
+      },
+
+      // 15. Full-Bleed — carers
+      {
+        type: 'full-bleed',
+        src: '/kicbox/kicbox-carers.png',
+        alt: 'kicbox — carers app screens',
+        color: 'var(--bg-project-kicbox)',
+        aspectRatio: '4224/2896',
+      },
+
+      // 16. Full-Bleed — posters
+      {
+        type: 'full-bleed',
+        src: '/kicbox/kicbox-posters.png',
+        alt: 'kicbox — promotional posters for care organisations',
+        color: 'var(--bg-project-kicbox)',
+        aspectRatio: '2133/1487',
+      },
+
+      // 16. Video
+      {
+        type: 'video',
+        src: 'https://www.youtube.com/watch?v=t3NtV5vvXMQ',
+        title: 'kicbox — product overview',
+        color: 'var(--bg-project-kicbox)',
+        aspectRatio: '16/9',
+      },
     ],
   },
 
-  // ── Multiple projects (levo) ──────────────────────────────────────────────────
+  // ── Retro ─────────────────────────────────────────────────────────────────────
   {
-    slug: 'levo',
-    clientName: 'Multiple projects',
+    slug: 'retro',
+    clientName: 'Retro',
     nextSlug: 'officeworks',
-    bgColor: '#2d1a00',
+    bgColor: 'var(--bg-page-project-levo)',
     intro: {
       heading: (
         <>
-          <span className="font-serif">Levo</span>
+          <span className="font-serif">Retro</span>
           <span className="font-sans"> — Financial tools for </span>
           <span className="font-serif">modern teams</span>
         </>
@@ -432,9 +591,4 @@ export function getProject(slug: string): Project | undefined {
 /** Returns all known project slugs (used for generateStaticParams). */
 export function getAllSlugs(): string[] {
   return PROJECTS.map((p) => p.slug);
-}
-
-/** Returns slug + clientName + bgColor for every project — used to build the desktop nav. */
-export function getNavProjects(): Array<{ slug: string; clientName: string; bgColor: string }> {
-  return PROJECTS.map((p) => ({ slug: p.slug, clientName: p.clientName, bgColor: p.bgColor }));
 }

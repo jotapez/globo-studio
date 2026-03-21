@@ -97,8 +97,8 @@ export const HeroImageLayout = forwardRef<HTMLDivElement, HeroImageLayoutProps>(
           'aspect-[329/470] rounded-[var(--radius-block-mobile)]',
           // Tablet  (768–1023) 896 × 853 → near-square
           'md:aspect-[896/853] md:rounded-[var(--radius-block)]',
-          // Desktop (≥1024px)  1600 × 853 → landscape
-          'lg:aspect-[1600/853]',
+          // Desktop (≥1024px)  1600 × 1100 → landscape
+          'lg:aspect-[1600/940]',
           className,
         )}
       >

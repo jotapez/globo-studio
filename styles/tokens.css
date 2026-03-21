@@ -137,6 +137,14 @@
   --text-label-sm-size:     0.875rem;    /* 14px */
   --text-label-sm-leading:  1.125rem;    /* 18px */
 
+  /* Caption — Helvetica Neue, 16 / 24 */
+  --text-caption-size:           1rem;         /* 16px */
+  --text-caption-leading:        1.5rem;       /* 24px */
+
+  /* Caption mobile — Helvetica Neue, 14 / 19 */
+  --text-caption-mobile-size:    0.875rem;     /* 14px */
+  --text-caption-mobile-leading: 1.1875rem;    /* 19px */
+
   /* Hero Label — Helvetica Neue, 42 / 52 (year + "Portfolio" below hero) */
   --text-hero-label-size:           2.625rem;   /* 42px */
   --text-hero-label-leading:        3.25rem;    /* 52px */
@@ -170,9 +178,9 @@
   --text-intro-mobile-size:       1.5rem;       /* 24px */
   --text-intro-mobile-leading:    1.8125rem;    /* 29px */
 
-  /* Intro Small mobile — Helvetica Neue, 16 / 21 */
+  /* Intro Small mobile — Helvetica Neue, 16 / 24 */
   --text-intro-sm-mobile-size:    1rem;         /* 16px */
-  --text-intro-sm-mobile-leading: 1.3125rem;    /* 21px */
+  --text-intro-sm-mobile-leading: 1.5rem;       /* 24px */
 
   /* Body mobile — Helvetica Neue, 14 / 21 */
   --text-body-mobile-size:        0.875rem;     /* 14px */
@@ -210,7 +218,7 @@
 
   --text-primary:            var(--color-black);      /* text/primary */
   --text-secondary:          var(--color-gray-900);   /* text/secondary */
-  --text-muted:              rgba(0, 0, 0, 0.42);     /* text/muted — captions, secondary labels */
+  --text-muted:              rgba(0, 0, 0, 0.70);     /* text/muted — captions, secondary labels */
   --text-nav-item:           var(--color-white);      /* text/nav-item */
   --text-nav-item-selected:  var(--color-black);      /* text/nav-item-selected */
 
@@ -262,7 +270,7 @@
 
   --wrapper-padding-mobile:    12px;   /* PageWrapper inner padding — mobile */
   --wrapper-gap-mobile:        12px;   /* PageWrapper child gap — mobile */
-  --wrapper-gap-desktop:       56px;   /* PageWrapper child gap — tablet/desktop */
+  --wrapper-gap-desktop:       32px;   /* PageWrapper child gap — tablet/desktop */
 
 
   /* -------------------------------------------------------
@@ -353,9 +361,18 @@
      semantic token — no dark-mode override).
      ------------------------------------------------------- */
 
-  --bg-project-ow: #e0e2e8;   /* Officeworks — blue-grey tint */
-  --bg-project-oi: #EBEBEE;   /* Open Insurance — off-white tint */
+  --bg-project-ow:     #e0e2e8;   /* Officeworks — blue-grey tint */
+  --bg-project-oi:     #EBEBEE;   /* Open Insurance — off-white tint */
+  --bg-project-kicbox: #EBEBEE;   /* Kicbox — content block background */
   --bg-block-grey: var(--color-gray-150);   /* neutral light-grey — image content block background */
+
+  /* -------------------------------------------------------
+     Page-shell background — outer ScrollPaddingShell behind each project
+     ------------------------------------------------------- */
+  --bg-page-project-ow:     #001db0;   /* Officeworks — brand blue */
+  --bg-page-project-oi:     #3638DE;   /* Open Insurance — brand indigo */
+  --bg-page-project-kicbox: #D42929;   /* Kicbox — brand red (alias of --bg-project-kicbox) */
+  --bg-page-project-levo:   #2d1a00;   /* Levo — dark brown */
 
 }
 
@@ -372,7 +389,7 @@
 :root.dark {
   --text-primary:           var(--color-white);
   --text-secondary:         var(--color-gray-200);
-  --text-muted:             rgba(255, 255, 255, 0.42);
+  --text-muted:             rgba(255, 255, 255, 0.70);
   --text-nav-item:          var(--color-black);
   --text-nav-item-selected: var(--color-white);
 

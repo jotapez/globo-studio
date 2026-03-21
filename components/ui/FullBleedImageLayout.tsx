@@ -71,6 +71,8 @@ export interface FullBleedImageLayoutProps {
    * Default: false
    */
   priority?: boolean;
+  /** How the image fills its container. Defaults to 'cover'. Use 'contain' for images with transparency that should not be cropped. */
+  objectFit?: 'cover' | 'contain';
   /** Extra classes on the root element. */
   className?: string;
 }
@@ -78,7 +80,7 @@ export interface FullBleedImageLayoutProps {
 // ─── component ────────────────────────────────────────────────────────────────
 
 export const FullBleedImageLayout = forwardRef<HTMLDivElement, FullBleedImageLayoutProps>(
-  function FullBleedImageLayout({ src, alt, color, aspectRatio, priority = false, className }, ref) {
+  function FullBleedImageLayout({ src, alt, color, aspectRatio, priority = false, objectFit = 'cover', className }, ref) {
     const shouldReduceMotion = useReducedMotion();
 
     const innerRef = useRef<HTMLDivElement>(null);
@@ -116,7 +118,7 @@ export const FullBleedImageLayout = forwardRef<HTMLDivElement, FullBleedImageLay
           alt={alt}
           fill
           priority={priority}
-          className="object-cover"
+          className={objectFit === 'contain' ? 'object-contain' : 'object-cover'}
           // Full content width — no padding to subtract:
           // mobile: 353px · tablet: 960px · desktop: 1664px
           sizes="(max-width: 767px) 353px, (max-width: 1023px) 960px, 1664px"

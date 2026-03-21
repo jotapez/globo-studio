@@ -6,10 +6,10 @@ import { ProjectTransitionProvider } from './ProjectTransitionContext';
 // ─── shared fixture data ──────────────────────────────────────────────────────
 
 const ALL_PROJECTS = [
-  { slug: 'officeworks',    clientName: 'Officeworks',    bgColor: '#001db0' },
-  { slug: 'taronga-zoo',    clientName: 'Taronga Zoo',    bgColor: '#1a3d2b' },
-  { slug: 'open-insurance', clientName: 'Open Insurance', bgColor: '#1c1c3a' },
-  { slug: 'levo',           clientName: 'Levo',           bgColor: '#2d1a00' },
+  { slug: 'officeworks',      clientName: 'Officeworks',      bgColor: '#001db0' },
+  { slug: 'kicbox',           clientName: 'kicbox',           bgColor: '#1a3d2b' },
+  { slug: 'open-insurance',   clientName: 'Open Insurance',   bgColor: '#1c1c3a' },
+  { slug: 'retro',            clientName: 'Retro',            bgColor: '#2d1a00' },
 ];
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
@@ -88,7 +88,7 @@ client name fills remaining space. Desktop: all three equal-width.
     nextHref: {
       control: 'text',
       description: 'href for the "Next project" link.',
-      table: { defaultValue: { summary: '/work/taronga-zoo' } },
+      table: { defaultValue: { summary: '/work/kicbox' } },
     },
     nextLabel: {
       control: 'text',
@@ -105,7 +105,7 @@ client name fills remaining space. Desktop: all three equal-width.
   args: {
     clientName:   'Officeworks',
     activeSlug:   'officeworks',
-    nextHref:     '/work/taronga-zoo',
+    nextHref:     '/work/kicbox',
     allProjects:  ALL_PROJECTS,
   },
 
@@ -142,7 +142,7 @@ export const Default: Story = {
  */
 export const ShortClientName: Story = {
   name: 'Client name · Short',
-  args: { clientName: 'Levo' },
+  args: { clientName: 'kicbox' },
 };
 
 /**
@@ -159,7 +159,7 @@ export const LongClientName: Story = {
  */
 export const CustomNextLabel: Story = {
   name: 'Next label · Custom',
-  args: { nextLabel: 'Taronga Zoo' },
+  args: { nextLabel: 'kicbox' },
 };
 
 // ─── states ───────────────────────────────────────────────────────────────────
@@ -285,8 +285,8 @@ export const AllVariants: Story = {
           {/* ── Light rows ── */}
           {[
             { label: 'Light · Default (Officeworks active)', clientName: 'Officeworks', activeSlug: 'officeworks',    disabled: false },
-            { label: 'Light · Short client name (Levo)',     clientName: 'Levo',        activeSlug: 'levo',           disabled: false },
-            { label: 'Light · Long client name',             clientName: 'Taronga Conservation Society', activeSlug: 'taronga-zoo', disabled: false },
+            { label: 'Light · Short client name (kicbox)',   clientName: 'kicbox',      activeSlug: 'kicbox',         disabled: false },
+            { label: 'Light · Long client name',             clientName: 'Taronga Conservation Society', activeSlug: 'kicbox', disabled: false },
             { label: 'Light · Disabled',                     clientName: 'Officeworks', activeSlug: 'officeworks',    disabled: true  },
           ].map(({ label, clientName, activeSlug, disabled }) => (
             <div
@@ -315,7 +315,7 @@ export const AllVariants: Story = {
               <ProjectNav
                 clientName={clientName}
                 activeSlug={activeSlug}
-                nextHref="/work/taronga-zoo"
+                nextHref="/work/kicbox"
                 allProjects={ALL_PROJECTS}
                 disabled={disabled}
               />
@@ -380,7 +380,7 @@ function DarkRow({
       <ProjectNav
         clientName={clientName}
         activeSlug={activeSlug}
-        nextHref="/work/taronga-zoo"
+        nextHref="/work/kicbox"
         allProjects={ALL_PROJECTS}
         disabled={disabled}
       />

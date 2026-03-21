@@ -14,6 +14,7 @@ import { CaptionText } from '@/components/ui/CaptionText';
 import { ContactFooter } from '@/components/ui/ContactFooter';
 import { TwoImageLayout } from '@/components/ui/TwoImageLayout';
 import { ScrollPaddingShell } from '@/components/ui/ScrollPaddingShell';
+import { VideoBlock } from '@/components/ui/VideoBlock';
 
 // ─── static params ────────────────────────────────────────────────────────────
 
@@ -49,6 +50,7 @@ function renderBlock(block: ContentBlock, i: number): React.ReactNode {
           src={block.src}
           alt={block.alt}
           priority={block.priority}
+          className="mt-[20px] md:mt-0"
         />
       );
 
@@ -81,6 +83,7 @@ function renderBlock(block: ContentBlock, i: number): React.ReactNode {
           alt={block.alt}
           color={block.color}
           aspectRatio={block.aspectRatio}
+          objectFit={block.objectFit}
         />
       );
 
@@ -95,6 +98,19 @@ function renderBlock(block: ContentBlock, i: number): React.ReactNode {
           altB={block.altB}
           aspectRatioB={block.aspectRatioB}
           color={block.color}
+          colorB={block.colorB}
+          maxHeightB={block.maxHeightB}
+        />
+      );
+
+    case 'video':
+      return (
+        <VideoBlock
+          key={key}
+          src={block.src}
+          title={block.title}
+          color={block.color}
+          aspectRatio={block.aspectRatio}
         />
       );
 

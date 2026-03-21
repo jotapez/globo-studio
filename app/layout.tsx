@@ -48,7 +48,7 @@ export default function RootLayout({
          */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('gs-theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.classList.add('dark');var c=d?'#000000':'#f8f8f7';var metas=document.querySelectorAll('meta[name="theme-color"]');metas.forEach(function(m){m.setAttribute('content',c)});}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('gs-theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);var p=window.location.pathname.indexOf('/work/')===0;if(d&&!p)document.documentElement.classList.add('dark');var c=(d&&!p)?'#000000':'#f8f8f7';var metas=document.querySelectorAll('meta[name="theme-color"]');metas.forEach(function(m){m.setAttribute('content',c)});}catch(e){}})();`,
           }}
         />
         {children}
