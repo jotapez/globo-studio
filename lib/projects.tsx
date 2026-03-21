@@ -511,7 +511,16 @@ const PROJECTS: Project[] = [
         aspectRatio: '4224/2896',
       },
 
-      // 14. Full-Bleed — posters
+      // 14. Full-Bleed — carers
+      {
+        type: 'full-bleed',
+        src: '/kicbox/kicbox-carers.png',
+        alt: 'kicbox — carers app screens',
+        color: 'var(--bg-project-kicbox)',
+        aspectRatio: '4224/2896',
+      },
+
+      // 15. Full-Bleed — posters
       {
         type: 'full-bleed',
         src: '/kicbox/kicbox-posters.png',
