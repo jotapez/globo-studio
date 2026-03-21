@@ -493,7 +493,16 @@ const PROJECTS: Project[] = [
         aspectRatio: '4224/2896',
       },
 
-      // 12. Full-Bleed — CSO desktop
+      // 12. Full-Bleed — ecosystem
+      {
+        type: 'full-bleed',
+        src: '/kicbox/kicbox-ecosistem.png',
+        alt: 'kicbox — product ecosystem showing app, web platform and touchpoints',
+        color: 'var(--bg-project-kicbox)',
+        aspectRatio: '2131/1251',
+      },
+
+      // 13. Full-Bleed — CSO desktop
       {
         type: 'full-bleed',
         src: '/kicbox/kicbox-cso-desktop.png',
@@ -502,7 +511,7 @@ const PROJECTS: Project[] = [
         aspectRatio: '2625/1478',
       },
 
-      // 13. Full-Bleed — CSO mobile
+      // 14. Full-Bleed — CSO mobile
       {
         type: 'full-bleed',
         src: '/kicbox/kicbox-cso-mobile.png',
@@ -511,7 +520,7 @@ const PROJECTS: Project[] = [
         aspectRatio: '4224/2896',
       },
 
-      // 14. Full-Bleed — carers
+      // 15. Full-Bleed — carers
       {
         type: 'full-bleed',
         src: '/kicbox/kicbox-carers.png',
@@ -520,22 +529,13 @@ const PROJECTS: Project[] = [
         aspectRatio: '4224/2896',
       },
 
-      // 15. Full-Bleed — posters
+      // 16. Full-Bleed — posters
       {
         type: 'full-bleed',
         src: '/kicbox/kicbox-posters.png',
         alt: 'kicbox — promotional posters for care organisations',
         color: 'var(--bg-project-kicbox)',
         aspectRatio: '2133/1487',
-      },
-
-      // 15. Full-Bleed — ecosystem
-      {
-        type: 'full-bleed',
-        src: '/kicbox/kicbox-ecosistem.png',
-        alt: 'kicbox — product ecosystem showing app, web platform and touchpoints',
-        color: 'var(--bg-project-kicbox)',
-        aspectRatio: '2131/1251',
       },
 
       // 16. Video
