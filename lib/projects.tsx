@@ -370,7 +370,7 @@ const PROJECTS: Project[] = [
   {
     slug: 'kicbox',
     clientName: 'kicbox',
-    nextSlug: 'multipleprojects',
+    nextSlug: 'retro',
     bgColor: 'var(--bg-page-project-kicbox)',
     intro: {
       heading: (
@@ -540,16 +540,16 @@ const PROJECTS: Project[] = [
     ],
   },
 
-  // ── Multiple projects ─────────────────────────────────────────────────────────
+  // ── Retro ─────────────────────────────────────────────────────────────────────
   {
-    slug: 'multipleprojects',
-    clientName: 'Multiple projects',
+    slug: 'retro',
+    clientName: 'Retro',
     nextSlug: 'officeworks',
     bgColor: 'var(--bg-page-project-levo)',
     intro: {
       heading: (
         <>
-          <span className="font-serif">Multiple projects</span>
+          <span className="font-serif">Retro</span>
           <span className="font-sans"> — Financial tools for </span>
           <span className="font-serif">modern teams</span>
         </>
