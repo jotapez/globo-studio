@@ -558,9 +558,12 @@ const PROJECTS: Project[] = [
     intro: {
       heading: (
         <>
-          <span className="font-serif">Retro</span>
-          <span className="font-sans"> — Financial tools for </span>
-          <span className="font-serif">modern teams</span>
+          <span className="font-serif">Retrospective -</span>
+          {' '}
+          <span className="font-sans text-[var(--text-muted)]">Design</span>
+          <span className="font-serif text-[var(--text-muted)]"> work over the last </span>
+          <span className="font-sans text-[var(--text-muted)]">10 years</span>
+          <span className="font-serif text-[var(--text-muted)]">.</span>
         </>
       ),
       body: 'Content coming soon.',
