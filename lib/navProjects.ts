@@ -15,8 +15,8 @@ export interface NavProject {
 const NAV_PROJECTS: NavProject[] = [
   { slug: 'officeworks',    clientName: 'Officeworks',    bgColor: 'var(--bg-page-project-ow)',     nextSlug: 'open-insurance' },
   { slug: 'open-insurance',   clientName: 'Open Insurance',   bgColor: 'var(--bg-page-project-oi)',     nextSlug: 'kicbox'          },
-  { slug: 'kicbox',           clientName: 'kicbox',           bgColor: 'var(--bg-page-project-kicbox)', nextSlug: 'multipleprojects' },
-  { slug: 'multipleprojects', clientName: 'Multiple projects', bgColor: 'var(--bg-page-project-levo)', nextSlug: 'officeworks'     },
+  { slug: 'kicbox',           clientName: 'kicbox',           bgColor: 'var(--bg-page-project-kicbox)', nextSlug: 'retro'           },
+  { slug: 'retro',            clientName: 'Retro',            bgColor: 'var(--bg-page-project-levo)',   nextSlug: 'officeworks'     },
 ];
 
 /** Returns all projects — used to build the desktop nav item list. */
