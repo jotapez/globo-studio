@@ -400,8 +400,8 @@ const PROJECTS: Project[] = [
       // 2. Full-Bleed — logo wherever
       {
         type: 'full-bleed',
-        src: '/kicbox/kicbox-logo-wherever.png',
-        alt: 'kicbox — logo in context across brand touchpoints',
+        src: '/kicbox/kicbox-app-icon.png',
+        alt: 'kicbox — app icon',
         color: 'var(--bg-project-kicbox)',
         aspectRatio: '4224/2366',
       },
@@ -570,10 +570,14 @@ const PROJECTS: Project[] = [
       description: 'UX and product design for Levo — building financial tools that help modern teams spend, track, and grow with confidence.',
     },
     contentBlocks: [
-      { type: 'hero', src: '/Officeworks/OW-hero.png', alt: 'Officeworks B2B platform overview — hand holding iPad showing catalogue management screen', priority: true },
-      { type: 'single-white', src: '/Officeworks/OW-icons-1.svg', alt: 'Officeworks B2B design system icon library — 200+ custom icons', aspectRatio: '2017/1380' },
-      { type: 'single-color', src: '/Officeworks/OW-DesignSystem-1.png', alt: 'Officeworks B2B design system — full component library overview', color: 'var(--bg-block-grey)', aspectRatio: '9665/10954' },
-      { type: 'full-bleed', src: '/Officeworks/OW-CustomCatalogues-1.png', alt: 'Officeworks B2B custom catalogues — create and manage curated product lists', color: 'var(--bg-block-grey)', aspectRatio: '6336/4344' },
+      { type: 'hero', src: '/Retro/retro-hero.png', alt: 'Taronga Zoo website — laptop mockup showing homepage with giraffes', priority: true },
+      { type: 'full-bleed', src: '/Retro/Taronga-hero-3.png',    alt: 'Taronga Zoo — hero screen 3',    color: 'var(--bg-page-project-retro)', aspectRatio: '4224/2896' },
+      { type: 'full-bleed', src: '/Retro/Taronga-hero-5.png',    alt: 'Taronga Zoo — hero screen 5',    color: 'var(--bg-page-project-retro)', aspectRatio: '4224/2896' },
+      { type: 'full-bleed', src: '/Retro/Taronga-hero-6@2x.png', alt: 'Taronga Zoo — hero screen 6',    color: 'var(--bg-page-project-retro)', aspectRatio: '4250/2904' },
+      { type: 'full-bleed', src: '/Retro/mycca-homepage.png',    alt: 'Mycca — homepage design',        color: 'var(--bg-page-project-retro)', aspectRatio: '2112/1285' },
+      { type: 'full-bleed', src: '/Retro/mycca-invoices.png',    alt: 'Mycca — invoices screen',        color: 'var(--bg-block-grey)',         aspectRatio: '2112/1448' },
+      { type: 'full-bleed', src: '/Retro/MYCCA-style-tile.png',  alt: 'Mycca — style tile',             color: 'var(--bg-page-project-retro)', aspectRatio: '1344/731'  },
+      { type: 'full-bleed', src: '/Retro/mycca-catalogue.png',   alt: 'Mycca — catalogue screen',       color: 'var(--bg-block-grey)',         aspectRatio: '2112/1448' },
     ],
   },
 ];
