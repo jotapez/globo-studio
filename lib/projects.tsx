@@ -578,6 +578,7 @@ const PROJECTS: Project[] = [
       { type: 'full-bleed', src: '/Retro/mycca-catalogue.png',            alt: 'Mycca — catalogue',               color: 'var(--bg-block-project-retro)', aspectRatio: '2112/1448' },
       { type: 'full-bleed', src: '/Retro/NSWEC-homepage.png',             alt: 'NSWEC — homepage',                color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
       { type: 'two-image',  srcA: '/Retro/NSWEC-mobile-hero.png', altA: 'NSWEC — mobile hero', aspectRatioA: '1688/1832', srcB: '/Retro/NSWEC-icons.png', altB: 'NSWEC — icons', aspectRatioB: '2522/2735', color: 'var(--bg-block-project-retro)' },
+      { type: 'full-bleed', src: '/Retro/NSWEC-mobile.png',               alt: 'NSWEC — mobile',                  color: 'var(--bg-block-project-retro)', aspectRatio: '2303/1579' },
       { type: 'full-bleed', src: '/Retro/Achiever-homepage.png',          alt: 'Achiever — homepage',             color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
       { type: 'full-bleed', src: '/Retro/Achiever-logo.png',              alt: 'Achiever — logo',                 color: 'var(--bg-block-project-retro)', aspectRatio: '3455/1883' },
       { type: 'full-bleed', src: '/Retro/Achiever-1.png',                 alt: 'Achiever — screen 1',             color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
