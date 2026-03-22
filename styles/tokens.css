@@ -228,10 +228,10 @@
      Figma path: background/*
      ------------------------------------------------------- */
 
-  --bg-page:          var(--color-gray-50);           /* background/page */
+  --bg-page:          var(--color-white);             /* background/page */
   --bg-page-white:    var(--color-white);             /* white variant for project wrappers */
   --bg-nav:           var(--color-black);             /* background/nav-bkg */
-  --bg-nav-selected:  var(--color-gray-50);           /* background/nav-selected — #f8f8f7 per Figma */
+  --bg-nav-selected:  var(--color-white);             /* background/nav-selected */
   --bg-nav-hover:     var(--color-gray-600);           /* background/nav-bkg-hover */
   --bg-clock-face:    var(--color-gray-300);          /* background/clock-face */
   --bg-project-card:  #ffffff;                        /* background/project-card — Single Image White Card */
@@ -373,7 +373,17 @@
   --bg-page-project-oi:     #3638DE;   /* Open Insurance — brand indigo */
   --bg-page-project-kicbox: #D42929;   /* Kicbox — brand red (alias of --bg-project-kicbox) */
   --bg-page-project-levo:   #2d1a00;   /* Levo — dark brown */
-  --bg-page-project-retro:  #ffffff;   /* Retro — white */
+  --bg-page-project-retro:  var(--color-gray-50);   /* Retro — near-white */
+
+  /* -------------------------------------------------------
+     Per-project content block backgrounds
+     Full-Bleed, Two-Image, Single-Color block backgrounds
+     ------------------------------------------------------- */
+  --bg-block-project-ow:     #001db0;              /* Officeworks — brand blue */
+  --bg-block-project-oi:     #3638DE;              /* Open Insurance — brand indigo */
+  --bg-block-project-kicbox: #D42929;              /* Kicbox — brand red */
+  --bg-block-project-levo:   #2d1a00;              /* Levo — dark brown */
+  --bg-block-project-retro:  var(--color-gray-50); /* Retro — #F8F8F7 */
 
 }
 

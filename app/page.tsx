@@ -88,15 +88,15 @@ const PERSONAL_PROJECTS = [
     title: 'Compaire',
     description:
       'A personal exploration in design and creativity.',
-    href: 'https://compaire.app',
-    imageSrc: '/side-projects/compaire-1.png',
+    href: 'https://www.compaire.cl',
+    imageSrc: '/Homepage/Compaire-hero.png',
     external: true,
   },
   {
     title: 'Only Me',
     description: 'A personal exploration in design and creativity.',
-    href: 'https://onlyme.app',
-    imageSrc: '/side-projects/OnlyMe-1.png',
+    href: 'https://onlyme.life/',
+    imageSrc: '/Homepage/OnlyMe-hero.png',
     external: true,
   },
 ] as const;
