@@ -566,6 +566,7 @@ const PROJECTS: Project[] = [
           <span className="font-serif text-[var(--text-muted)]">.</span>
         </>
       ),
+      body: '',
       description: 'UX and product design for Levo — building financial tools that help modern teams spend, track, and grow with confidence.',
     },
     contentBlocks: [
