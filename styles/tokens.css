@@ -373,7 +373,7 @@
   --bg-page-project-oi:     #3638DE;   /* Open Insurance — brand indigo */
   --bg-page-project-kicbox: #D42929;   /* Kicbox — brand red (alias of --bg-project-kicbox) */
   --bg-page-project-levo:   #2d1a00;   /* Levo — dark brown */
-  --bg-page-project-retro:  var(--color-gray-50);   /* Retro — near-white */
+  --bg-page-project-retro:  #F8F8F7;   /* Retro — page only */
 
   /* -------------------------------------------------------
      Per-project content block backgrounds
@@ -383,7 +383,7 @@
   --bg-block-project-oi:     #3638DE;              /* Open Insurance — brand indigo */
   --bg-block-project-kicbox: #D42929;              /* Kicbox — brand red */
   --bg-block-project-levo:   #2d1a00;              /* Levo — dark brown */
-  --bg-block-project-retro:  var(--color-gray-50); /* Retro — #F8F8F7 */
+  --bg-block-project-retro:  #F1F1F3; /* Retro */
 
 }
 
