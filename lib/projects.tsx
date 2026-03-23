@@ -400,8 +400,8 @@ const PROJECTS: Project[] = [
       // 2. Full-Bleed — logo wherever
       {
         type: 'full-bleed',
-        src: '/kicbox/kicbox-logo-wherever.png',
-        alt: 'kicbox — logo in context across brand touchpoints',
+        src: '/kicbox/kicbox-app-icon.png',
+        alt: 'kicbox — app icon',
         color: 'var(--bg-project-kicbox)',
         aspectRatio: '4224/2366',
       },
@@ -554,23 +554,47 @@ const PROJECTS: Project[] = [
     slug: 'retro',
     clientName: 'Retro',
     nextSlug: 'officeworks',
-    bgColor: 'var(--bg-page-project-levo)',
+    bgColor: 'var(--bg-page-project-retro)',
     intro: {
       heading: (
         <>
-          <span className="font-serif">Retro</span>
-          <span className="font-sans"> — Financial tools for </span>
-          <span className="font-serif">modern teams</span>
+          <span className="font-serif">Retrospective -</span>
+          {' '}
+          <span className="font-sans text-[var(--text-muted)]">Design</span>
+          <span className="font-serif text-[var(--text-muted)]"> work over the last </span>
+          <span className="font-sans text-[var(--text-muted)]">10 years</span>
+          <span className="font-serif text-[var(--text-muted)]">.</span>
         </>
       ),
-      body: 'Content coming soon.',
+      body: '',
       description: 'UX and product design for Levo — building financial tools that help modern teams spend, track, and grow with confidence.',
     },
     contentBlocks: [
-      { type: 'hero', src: '/Officeworks/OW-hero.png', alt: 'Officeworks B2B platform overview — hand holding iPad showing catalogue management screen', priority: true },
-      { type: 'single-white', src: '/Officeworks/OW-icons-1.svg', alt: 'Officeworks B2B design system icon library — 200+ custom icons', aspectRatio: '2017/1380' },
-      { type: 'single-color', src: '/Officeworks/OW-DesignSystem-1.png', alt: 'Officeworks B2B design system — full component library overview', color: 'var(--bg-block-grey)', aspectRatio: '9665/10954' },
-      { type: 'full-bleed', src: '/Officeworks/OW-CustomCatalogues-1.png', alt: 'Officeworks B2B custom catalogues — create and manage curated product lists', color: 'var(--bg-block-grey)', aspectRatio: '6336/4344' },
+      { type: 'full-bleed', src: '/Retro/Taronga-hero.png',               alt: 'Taronga Zoo — hero',              color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { type: 'full-bleed', src: '/Retro/Taronga-elephants-1.png',        alt: 'Taronga Zoo — elephants 1',       color: 'var(--bg-block-project-retro)', aspectRatio: '4224/2896' },
+      { type: 'full-bleed', src: '/Retro/Taronga-elephants-2.png',        alt: 'Taronga Zoo — elephants 2',       color: 'var(--bg-block-project-retro)', aspectRatio: '4250/2904' },
+      { type: 'full-bleed', src: '/Retro/mycca-homepage.png',             alt: 'Mycca — homepage',                color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { type: 'two-image',  srcA: '/Retro/mycca-invoices.png', altA: 'Mycca — invoices', aspectRatioA: '1561/1361', srcB: '/Retro/mycca-mobile.png', altB: 'Mycca — mobile', aspectRatioB: '1561/1361', color: 'var(--bg-block-project-retro)' },
+      { type: 'full-bleed', src: '/Retro/mycca-catalogue.png',            alt: 'Mycca — catalogue',               color: 'var(--bg-block-project-retro)', aspectRatio: '2112/1448' },
+      { type: 'full-bleed', src: '/Retro/NSWEC-homepage.png',             alt: 'NSWEC — homepage',                color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { type: 'two-image',  srcA: '/Retro/NSWEC-mobile-hero.png', altA: 'NSWEC — mobile hero', aspectRatioA: '1688/1832', srcB: '/Retro/NSWEC-icons.png', altB: 'NSWEC — icons', aspectRatioB: '2522/2735', color: 'var(--bg-block-project-retro)' },
+      { type: 'full-bleed', src: '/Retro/NSWEC-mobile.png',               alt: 'NSWEC — mobile',                  color: 'var(--bg-block-project-retro)', aspectRatio: '2303/1579' },
+      { type: 'full-bleed', src: '/Retro/Achiever-homepage.png',          alt: 'Achiever — homepage',             color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { type: 'full-bleed', src: '/Retro/Achiever-logo.png',              alt: 'Achiever — logo',                 color: 'var(--bg-block-project-retro)', aspectRatio: '3455/1883' },
+      { type: 'full-bleed', src: '/Retro/Achiever-1.png',                 alt: 'Achiever — screen 1',             color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { type: 'full-bleed', src: '/Retro/Achiever-2.png',                 alt: 'Achiever — screen 2',             color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { type: 'full-bleed', src: '/Retro/FidelityLife-homepage.png',      alt: 'FidelityLife — homepage',         color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { type: 'full-bleed', src: '/Retro/FidelityLife-application.png',   alt: 'FidelityLife — application',     color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { type: 'full-bleed', src: '/Retro/FidelityLife-illustration.png',  alt: 'FidelityLife — illustration',    color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { type: 'full-bleed', src: '/Retro/Toyota-homepage.png',            alt: 'Toyota — homepage',               color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { type: 'two-image',  srcA: '/Retro/Toyota-make-mobile.png', altA: 'Toyota — make mobile', aspectRatioA: '797/1020', srcB: '/Retro/Toyota-nav-laptop.png', altB: 'Toyota — nav laptop', aspectRatioB: '797/1020', color: 'var(--bg-block-project-retro)' },
+      { type: 'two-image',  srcA: '/Retro/Toyota-nav-mobile.png',  altA: 'Toyota — nav mobile',  aspectRatioA: '797/1020', srcB: '/Retro/Toyota-service.png',    altB: 'Toyota — service',    aspectRatioB: '797/1020', color: 'var(--bg-block-project-retro)' },
+      { type: 'full-bleed', src: '/Retro/CC-hero.png',              alt: 'CC — hero',               color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { type: 'full-bleed', src: '/Retro/CC-mobile.png',            alt: 'CC — mobile',             color: 'var(--bg-block-project-retro)', aspectRatio: '3318/2172' },
+      { type: 'two-image',  srcA: '/Retro/Play-select.png',   altA: 'Play — select',   aspectRatioA: '3168/3015', srcB: '/Retro/Play-calendar.png', altB: 'Play — calendar', aspectRatioB: '3168/3015', color: 'var(--bg-block-project-retro)' },
+      { type: 'full-bleed', src: '/Retro/Domestic-hero.png',        alt: 'Domestic — hero',         color: 'var(--bg-block-project-retro)', aspectRatio: '2733/1874' },
+      { type: 'full-bleed', src: '/Retro/Domestic-home.png',        alt: 'Domestic — home',         color: 'var(--bg-block-project-retro)', aspectRatio: '3168/3747' },
+      { type: 'full-bleed', src: '/Retro/Trove-hero.png',           alt: 'Trove — hero',            color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
     ],
   },
 ];
