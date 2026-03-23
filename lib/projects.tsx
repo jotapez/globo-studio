@@ -38,6 +38,10 @@ export interface Project {
   /** Optional override for the PageWrapper background. Defaults to var(--bg-page).
    *  Use 'var(--bg-page-white)' for a pure white wrapper. */
   wrapperColor?: string;
+  /** Background color token for the ContactFooter on this project page. */
+  footerBgColor?: string;
+  /** Clock and text theme for the ContactFooter. Default: 'auto'. */
+  footerTheme?: 'auto' | 'light' | 'dark';
   intro: {
     /** Mixed serif/sans JSX heading — defined inline per project */
     heading: React.ReactNode;
@@ -58,6 +62,8 @@ const PROJECTS: Project[] = [
     nextSlug: 'open-insurance',
     bgColor: 'var(--bg-page-project-ow)',
     wrapperColor: 'var(--bg-page)',
+    footerBgColor: 'var(--bg-footer-project-ow)',
+    footerTheme: 'dark',
     intro: {
       heading: (
         <>
@@ -209,6 +215,8 @@ const PROJECTS: Project[] = [
     clientName: 'Open Insurance',
     nextSlug: 'kicbox',
     bgColor: 'var(--bg-page-project-oi)',
+    footerBgColor: 'var(--bg-footer-project-oi)',
+    footerTheme: 'dark',
     intro: {
       heading: (
         <>
@@ -372,6 +380,8 @@ const PROJECTS: Project[] = [
     clientName: 'kicbox',
     nextSlug: 'retro',
     bgColor: 'var(--bg-page-project-kicbox)',
+    footerBgColor: 'var(--bg-footer-project-kicbox)',
+    footerTheme: 'dark',
     intro: {
       heading: (
         <>
@@ -555,6 +565,8 @@ const PROJECTS: Project[] = [
     clientName: 'Retro',
     nextSlug: 'officeworks',
     bgColor: 'var(--bg-page-project-retro)',
+    footerBgColor: 'var(--bg-footer-project-retro)',
+    footerTheme: 'light',
     intro: {
       heading: (
         <>

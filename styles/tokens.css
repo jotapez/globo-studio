@@ -376,6 +376,16 @@
   --bg-page-project-retro:  #F8F8F7;   /* Retro — page only */
 
   /* -------------------------------------------------------
+     Per-project footer background (ContactFooter on project pages)
+     References page-shell tokens so they stay in sync automatically
+     ------------------------------------------------------- */
+  --bg-footer-project-ow:     var(--bg-page-project-ow);     /* Officeworks — dark blue   */
+  --bg-footer-project-oi:     var(--bg-page-project-oi);     /* Open Insurance — indigo   */
+  --bg-footer-project-kicbox: var(--bg-page-project-kicbox); /* Kicbox — brand red        */
+  --bg-footer-project-levo:   var(--bg-page-project-levo);   /* Levo — dark brown         */
+  --bg-footer-project-retro:  var(--bg-page-project-retro);  /* Retro — near-white        */
+
+  /* -------------------------------------------------------
      Per-project content block backgrounds
      Full-Bleed, Two-Image, Single-Color block backgrounds
      ------------------------------------------------------- */

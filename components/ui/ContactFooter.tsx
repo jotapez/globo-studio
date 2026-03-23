@@ -51,6 +51,11 @@ export interface ContactFooterProps {
    * Used for the layout variation shown in Storybook.
    */
   clocksOnTop?: boolean;
+  /**
+   * Background color override for the root section.
+   * Accepts any CSS value (e.g. a token reference). Defaults to var(--bg-page).
+   */
+  bgColor?: string;
 }
 
 // ─── constants ────────────────────────────────────────────────────────────────
@@ -64,20 +69,25 @@ const CLOCKS = [
 
 // ─── shared link classes ──────────────────────────────────────────────────────
 
-const linkCls = 'hover:opacity-60 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--text-primary)] rounded-sm';
+const linkCls = 'hover:opacity-60 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current rounded-sm';
 
 // ─── component ────────────────────────────────────────────────────────────────
 
 export const ContactFooter = forwardRef<HTMLElement, ContactFooterProps>(
-  function ContactFooter({ showClocks = true, footerBarGap = false, theme = 'auto', className, clocksOnTop = false }, ref) {
+  function ContactFooter({ showClocks = true, footerBarGap = false, theme = 'auto', className, clocksOnTop = false, bgColor }, ref) {
+    const textColor =
+      theme === 'dark'  ? 'var(--color-white)'
+      : theme === 'light' ? 'var(--color-black)'
+      : 'var(--text-primary)';
+
     return (
       <section
         id="contact"
         ref={ref}
         aria-label="Contact"
+        style={{ backgroundColor: bgColor ?? 'var(--bg-page)', color: textColor }}
         className={cn(
           'min-h-lvh flex flex-col',
-          'bg-[var(--bg-page)] text-[var(--text-primary)]',
           'pt-[104px] md:pt-[118px]',
           'pb-[var(--page-padding-mobile)] md:pb-[var(--page-padding-desktop)]',
           className,

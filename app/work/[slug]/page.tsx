@@ -162,7 +162,12 @@ export default async function ProjectPage({
         </PageWrapper>
       </ScrollPaddingShell>
 
-      <ContactFooter showClocks={false} footerBarGap />
+      <ContactFooter
+        showClocks
+        footerBarGap
+        bgColor={project.footerBgColor}
+        theme={project.footerTheme}
+      />
     </main>
   );
 }
