@@ -20,8 +20,8 @@
  *   • Theme persistence    — useTheme (localStorage 'gs-theme'; fallback: prefers-color-scheme)
  *
  * Layout notes from Figma (node 994:44022 desktop, 1728×7479):
- *   Main cards grid:   2-col desktop (816px cards, 32px gap)  / 1-col mobile (48px gap)
- *   Row A → Row B gap: 80px on desktop (same row gap on mobile: cards just stack)
+ *   Main cards grid:   2-col desktop (~812px cards, 40px gap)  / 1-col mobile (48px gap)
+ *   Row A → Row B gap: 40px on desktop (--card-gap); mobile: 48px vertical (--card-gap-mobile)
  *   Interlude spacing: 200px before + after on desktop / 100px mobile
  *   Interlude width:   1271px centred (≈ --content-width-heading: 1266px)
  */
@@ -48,9 +48,13 @@ const MAIN_PROJECTS = [
   {
     title: 'Officeworks B2B Digital Experience',
     description:
-      'End-to-end product design for Officeworks B2B — discovery to delivery — including their foundational design system and coaching designers on systematic workflows.',
+      'Product design for car and home insurance products from strategy to delivery, while building and governing the design system at Open Insurance.',
     href: '/work/officeworks',
-    imageSrc: '/Officeworks/OW-hero.png',
+    imageSrc: '/Homepage/OW-project-card-first-desktop.svg',
+    hoverImageSrc: '/Homepage/OW-project-card-second-desktop.png',
+    hoverMobileSrc: '/Homepage/OW-project-card-second-mobile.png',
+    showDescriptionOnHover: true,
+    cursorLabel: 'See work',
     targetBg: '#001db0',
   },
   {
@@ -58,23 +62,35 @@ const MAIN_PROJECTS = [
     description:
       'Product design for car and home insurance products from strategy to delivery, while building and governing the design system at Open Insurance.',
     href: '/work/open-insurance',
-    imageSrc: '/Open Insurance/OI-hero.png',
+    imageSrc: '/Homepage/OI-project-card-first-desktop.svg',
+    hoverImageSrc: '/Homepage/OI-project-card-second-desktop.png',
+    hoverMobileSrc: '/Homepage/OI-project-card-second-mobile.png',
+    showDescriptionOnHover: true,
+    cursorLabel: 'See work',
     targetBg: '#1c1c3a',
   },
   {
     title: 'kicbox',
     description:
-      "Product experience design for Taronga Zoo's new website, crafting an immersive and accessible digital presence for one of Australia's most iconic destinations.",
+      'Product design for car and home insurance products from strategy to delivery, while building and governing the design system at Open Insurance.',
     href: '/work/kicbox',
-    imageSrc: '/kicbox/kicbox-hero.png',
+    imageSrc: '/Homepage/kicbox-project-card-first-desktop.svg',
+    hoverImageSrc: '/Homepage/kicbox-project-card-second-desktop.png',
+    hoverMobileSrc: '/Homepage/kicbox-project-card-second-mobile.png',
+    showDescriptionOnHover: true,
+    cursorLabel: 'See work',
     targetBg: '#1a3d2b',
   },
   {
     title: 'Retro',
     description:
-      'Leading product design across multiple client engagements at Levo, a leading technology consultancy delivering impactful digital experiences.',
+      'Product design for car and home insurance products from strategy to delivery, while building and governing the design system at Open Insurance.',
     href: '/work/retro',
-    imageSrc: '/Retro/retro-hero.png',
+    imageSrc: '/Homepage/Retro-project-card-first-desktop.svg',
+    hoverImageSrc: '/Homepage/Retro-project-card-second-desktop.png',
+    hoverMobileSrc: '/Homepage/Retro-project-card-second-mobile.png',
+    showDescriptionOnHover: true,
+    cursorLabel: 'See work',
     targetBg: '#2d1a00',
   },
 ] as const;
@@ -89,14 +105,24 @@ const PERSONAL_PROJECTS = [
     description:
       'A personal exploration in design and creativity.',
     href: 'https://www.compaire.cl',
-    imageSrc: '/Homepage/Compaire-hero.png',
+    imageSrc: '/Homepage/Compaire-project-card-first-desktop.png',
+    hoverImageSrc: '/Homepage/Compaire-project-card-second-desktop.png',
+    hoverMobileSrc: '/Homepage/Compaire-project-card-second-mobile.png',
+    showDescriptionOnHover: true,
+    cursorLabel: 'Check it out',
+    cursorIcon: true,
     external: true,
   },
   {
     title: 'Only Me',
     description: 'A personal exploration in design and creativity.',
     href: 'https://onlyme.life/',
-    imageSrc: '/Homepage/OnlyMe-hero.png',
+    imageSrc: '/Homepage/OnlyMe-project-card-first-desktop.png',
+    hoverImageSrc: '/Homepage/OnlyMe-project-card-second-desktop.png',
+    hoverMobileSrc: '/Homepage/OnlyMe-project-card-second-mobile.png',
+    showDescriptionOnHover: true,
+    cursorLabel: 'Check it out',
+    cursorIcon: true,
     external: true,
   },
 ] as const;
@@ -197,9 +223,9 @@ export default function HomePage() {
         {/* ── §3 Work ──────────────────────────────────────────────────────── */}
         {/*
          * Internal layout (Figma desktop, node 994:44157 + 994:44165):
-         *   Cards same row:  32px gap (--card-gap)
+         *   Cards same row:  40px gap (--card-gap)
          *   Mobile card gap: 48px   (--card-gap-mobile)
-         *   Row A → Row B:   80px   (--intro-section-gap)
+         *   Row A → Row B:   40px   (--card-gap, same as column gap)
          *   Interlude:       200px before + after desktop / 100px mobile
          *   Row C:           same card gap as rows A + B
          *
@@ -223,11 +249,10 @@ export default function HomePage() {
             {/*
              * grid-cols-2 creates the 2×2 layout on desktop.
              * On mobile: single column, 48px gap between every card.
-             * The row gap on desktop (between row A and row B) is 80px,
-             * which matches --intro-section-gap. The column gap is 32px.
+             * Desktop: row and column gaps both use --card-gap (40px).
              */}
             <div id="work-trigger" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-[48px] md:gap-y-[var(--intro-section-gap)] md:gap-x-[var(--card-gap)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-y-[var(--card-gap-mobile)] md:gap-y-[var(--card-gap)] md:gap-x-[var(--card-gap)]">
               {MAIN_PROJECTS.map((project, i) => (
                 <CardMotion key={project.title} index={i} reduceMotion={!!shouldReduceMotion}>
                   <ProjectCard {...project} priority={i < 2} />
@@ -264,7 +289,7 @@ export default function HomePage() {
              * Same grid structure as Rows A + B.
              * `external: true` on each project opens in a new tab.
              */}
-            <div className="grid grid-cols-1 md:grid-cols-2 pb-[var(--about-padding-y-mobile)] md:pb-[var(--about-padding-y-desktop)] gap-y-[48px] md:gap-y-[var(--intro-section-gap)] md:gap-x-[var(--card-gap)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 pb-[var(--about-padding-y-mobile)] md:pb-[var(--about-padding-y-desktop)] gap-y-[var(--card-gap-mobile)] md:gap-y-[var(--card-gap)] md:gap-x-[var(--card-gap)]">
               {PERSONAL_PROJECTS.map((project, i) => (
                 <CardMotion key={project.title} index={i} reduceMotion={!!shouldReduceMotion}>
                   <ProjectCard {...project} />

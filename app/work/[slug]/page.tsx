@@ -48,6 +48,7 @@ function renderBlock(block: ContentBlock, i: number): React.ReactNode {
         <HeroImageLayout
           key={key}
           src={block.src}
+          mobileSrc={block.mobileSrc}
           alt={block.alt}
           priority={block.priority}
           className="mt-[20px] md:mt-0"

@@ -116,11 +116,8 @@ export const SingleImageColorBackground = forwardRef<HTMLDivElement, SingleImage
             fill
             priority={priority}
             className="object-contain"
-            // Content widths minus 2× padding:
-            // mobile: 353px − 32px = 321px
-            // tablet: 960px − 80px = 880px
-            // desktop: 1664px − 80px = 1584px
-            sizes="(max-width: 767px) 321px, (max-width: 1023px) 880px, 1584px"
+            // Mobile: same as SingleImageWhiteCard (p-16) + shell + wrapper.
+            sizes="(max-width: 767px) calc(100vw - 56px), (max-width: 1023px) 880px, 1584px"
           />
         </div>
       </motion.div>

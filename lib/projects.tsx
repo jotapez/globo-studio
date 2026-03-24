@@ -19,7 +19,7 @@ export type { CaptionAlignment };
 // ─── types ────────────────────────────────────────────────────────────────────
 
 export type ContentBlock =
-  | { id?: string; type: 'hero';         src: string; alt: string; priority?: boolean }
+  | { id?: string; type: 'hero';         src: string; mobileSrc?: string; alt: string; priority?: boolean }
   | { id?: string; type: 'single-white'; src: string; alt: string; aspectRatio: string }
   | { id?: string; type: 'single-color'; src: string; alt: string; color: string; aspectRatio: string }
   | { id?: string; type: 'full-bleed';   src: string; alt: string; color: string; aspectRatio: string; objectFit?: 'cover' | 'contain' }
@@ -80,7 +80,8 @@ const PROJECTS: Project[] = [
       // Hero
       {
         type: 'hero',
-        src: '/Officeworks/OW-hero.png',
+        src: '/Officeworks/Desktop/OW-hero.png',
+        mobileSrc: '/Officeworks/Mobile/OW-hero-mobile.png',
         alt: 'Officeworks B2B platform overview — hand holding iPad showing catalogue management screen',
         priority: true,
       },
@@ -93,7 +94,7 @@ const PROJECTS: Project[] = [
       // White card — icon library
       {
         type: 'single-white',
-        src: '/Officeworks/OW-icons-1.svg',
+        src: '/Officeworks/Desktop/OW-icons-1.svg',
         alt: 'Officeworks B2B design system icon library — 200+ custom icons',
         aspectRatio: '2017/1380',
       },
@@ -101,7 +102,7 @@ const PROJECTS: Project[] = [
       // Color background — design system
       {
         type: 'single-color',
-        src: '/Officeworks/OW-DesignSystem-1.png',
+        src: '/Officeworks/Desktop/OW-DesignSystem-1.png',
         alt: 'Officeworks B2B design system — full component library overview',
         color: 'var(--bg-project-ow)',
         aspectRatio: '9665/10954',
@@ -110,7 +111,7 @@ const PROJECTS: Project[] = [
       // Full-bleed — UI screenshot
       {
         type: 'full-bleed',
-        src: '/Officeworks/OW-CustomCatalogues-1.png',
+        src: '/Officeworks/Desktop/OW-CustomCatalogues-1.png',
         alt: 'Officeworks B2B custom catalogues — create and manage curated product lists',
         color: 'var(--bg-project-ow)',
         aspectRatio: '6336/4344',
@@ -119,7 +120,7 @@ const PROJECTS: Project[] = [
       // White card — colour palette
       {
         type: 'single-white',
-        src: '/Officeworks/OW-colours.png',
+        src: '/Officeworks/Desktop/OW-colours.png',
         alt: 'Officeworks B2B design system colour palette',
         aspectRatio: '4296/3816',
       },
@@ -127,10 +128,10 @@ const PROJECTS: Project[] = [
       // Two-image — custom catalogues detail + icons
       {
         type: 'two-image',
-        srcA: '/Officeworks/OW-CustomCatalogues-card.png',
+        srcA: '/Officeworks/Desktop/OW-CustomCatalogues-card.png',
         altA: 'Officeworks B2B custom catalogues — product list detail view',
         aspectRatioA: '1929/2730',
-        srcB: '/Officeworks/OW-icons-2.png',
+        srcB: '/Officeworks/Desktop/OW-icons-2.png',
         altB: 'Officeworks B2B design system icon set — second collection',
         aspectRatioB: '1929/2730',
         color: 'var(--bg-project-ow)',
@@ -139,7 +140,7 @@ const PROJECTS: Project[] = [
       // White card — icon library vol. 3
       {
         type: 'single-white',
-        src: '/Officeworks/OW-Icons-3.svg',
+        src: '/Officeworks/Desktop/OW-Icons-3.svg',
         alt: 'Officeworks B2B design system icon library — third collection',
         aspectRatio: '1318/904',
       },
@@ -147,7 +148,7 @@ const PROJECTS: Project[] = [
       // Full-bleed — account contacts
       {
         type: 'full-bleed',
-        src: '/Officeworks/OW-AccountContacts-1.png',
+        src: '/Officeworks/Desktop/OW-AccountContacts-1.png',
         alt: 'Officeworks B2B — account contacts management screen',
         color: 'var(--bg-project-ow)',
         aspectRatio: '6336/4344',
@@ -156,7 +157,7 @@ const PROJECTS: Project[] = [
       // Full-bleed — address management
       {
         type: 'full-bleed',
-        src: '/Officeworks/OW-Address.png',
+        src: '/Officeworks/Desktop/OW-Address.png',
         alt: 'Officeworks B2B — organisation address management screen',
         color: 'var(--bg-project-ow)',
         aspectRatio: '6336/4344',
@@ -165,7 +166,7 @@ const PROJECTS: Project[] = [
       // Full-bleed — cost centres
       {
         type: 'full-bleed',
-        src: '/Officeworks/OW-CostCentres.png',
+        src: '/Officeworks/Desktop/OW-CostCentres.png',
         alt: 'Officeworks B2B — cost centre permissions and delivery address management',
         color: 'var(--bg-project-ow)',
         aspectRatio: '6336/4344',
@@ -174,7 +175,7 @@ const PROJECTS: Project[] = [
       // Full-bleed — custom catalogues step 2
       {
         type: 'full-bleed',
-        src: '/Officeworks/OW-CustomCatalogues-2.png',
+        src: '/Officeworks/Desktop/OW-CustomCatalogues-2.png',
         alt: 'Officeworks B2B — custom catalogues product selection and CSV import',
         color: 'var(--bg-project-ow)',
         aspectRatio: '6336/4344',
@@ -183,7 +184,7 @@ const PROJECTS: Project[] = [
       // Full-bleed — custom catalogues step 3
       {
         type: 'full-bleed',
-        src: '/Officeworks/OW-CustomCatlogues-3.png',
+        src: '/Officeworks/Desktop/OW-CustomCatlogues-3.png',
         alt: 'Officeworks B2B — custom catalogues exclusive products and search',
         color: 'var(--bg-project-ow)',
         aspectRatio: '6336/4344',
@@ -192,7 +193,7 @@ const PROJECTS: Project[] = [
       // Full-bleed — custom catalogues step 4
       {
         type: 'full-bleed',
-        src: '/Officeworks/OW-CustomCatalogues-4.png',
+        src: '/Officeworks/Desktop/OW-CustomCatalogues-4.png',
         alt: 'Officeworks B2B — manage custom catalogue assignment and delete',
         color: 'var(--bg-project-ow)',
         aspectRatio: '6336/4344',
@@ -201,7 +202,7 @@ const PROJECTS: Project[] = [
       // Full-bleed — mobile account management
       {
         type: 'full-bleed',
-        src: '/Officeworks/OW-ManageMobile.png',
+        src: '/Officeworks/Desktop/OW-ManageMobile.png',
         alt: 'Officeworks B2B — mobile account settings, addresses and contact management',
         color: 'var(--bg-project-ow)',
         aspectRatio: '6336/4344',
@@ -603,7 +604,6 @@ const PROJECTS: Project[] = [
       { type: 'two-image',  srcA: '/Retro/Toyota-nav-mobile.png',  altA: 'Toyota — nav mobile',  aspectRatioA: '797/1020', srcB: '/Retro/Toyota-service.png',    altB: 'Toyota — service',    aspectRatioB: '797/1020', color: 'var(--bg-block-project-retro)' },
       { type: 'full-bleed', src: '/Retro/CC-hero.png',              alt: 'CC — hero',               color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
       { type: 'full-bleed', src: '/Retro/CC-mobile.png',            alt: 'CC — mobile',             color: 'var(--bg-block-project-retro)', aspectRatio: '3318/2172' },
-      { type: 'two-image',  srcA: '/Retro/Play-select.png',   altA: 'Play — select',   aspectRatioA: '3168/3015', srcB: '/Retro/Play-calendar.png', altB: 'Play — calendar', aspectRatioB: '3168/3015', color: 'var(--bg-block-project-retro)' },
       { type: 'full-bleed', src: '/Retro/Domestic-hero.png',        alt: 'Domestic — hero',         color: 'var(--bg-block-project-retro)', aspectRatio: '2733/1874' },
       { type: 'full-bleed', src: '/Retro/Domestic-home.png',        alt: 'Domestic — home',         color: 'var(--bg-block-project-retro)', aspectRatio: '3168/3747' },
       { type: 'full-bleed', src: '/Retro/Trove-hero.png',           alt: 'Trove — hero',            color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },

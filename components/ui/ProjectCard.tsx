@@ -35,9 +35,11 @@
 
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import Link from 'next/link';
+import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 // ─── types ────────────────────────────────────────────────────────────────────
@@ -70,6 +72,28 @@ export interface ProjectCardProps {
   /** Project background colour — set as entry-bg in sessionStorage so
    *  ProjectBackground starts at the right colour instead of white. */
   targetBg?: string;
+  /**
+   * Second image revealed via cross-fade on hover (desktop).
+   * When provided, the base image fades out and this image fades in on hover.
+   */
+  hoverImageSrc?: string;
+  /**
+   * Portrait-optimised second image shown by default on mobile.
+   * When provided, replaces hoverImageSrc on viewports < md.
+   */
+  hoverMobileSrc?: string;
+  /**
+   * When true, the description starts invisible and fades in on hover.
+   * Pairs with hoverImageSrc. Uses opacity-only — layout height stays constant.
+   */
+  showDescriptionOnHover?: boolean;
+  /**
+   * Label shown in the cursor-following pill on hover (desktop only).
+   * E.g. "See work" for case studies, "Check it out" for external projects.
+   */
+  cursorLabel?: string;
+  /** When true, shows the arrow icon inside the cursor pill. Default: false. */
+  cursorIcon?: boolean;
 }
 
 // ─── component ────────────────────────────────────────────────────────────────
@@ -85,10 +109,20 @@ export function ProjectCard({
   disabled = false,
   className = '',
   targetBg,
+  hoverImageSrc,
+  hoverMobileSrc,
+  showDescriptionOnHover = false,
+  cursorLabel,
+  cursorIcon = false,
 }: ProjectCardProps) {
   const [hovered, setHovered] = useState(false);
+  const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
   const enter = useCallback(() => setHovered(true), []);
-  const leave = useCallback(() => setHovered(false), []);
+  const leave = useCallback(() => { setHovered(false); setCursorPos(null); }, []);
 
   const handleClick = useCallback(() => {
     if (targetBg) {
@@ -108,15 +142,16 @@ export function ProjectCard({
       <div
         onMouseEnter={enter}
         onMouseLeave={leave}
+        onMouseMove={(e) => setCursorPos({ x: e.clientX, y: e.clientY })}
         className={cn(
-          'relative flex-1 min-h-[var(--card-image-min-h)] md:max-h-[852px] overflow-hidden pointer-events-auto cursor-pointer',
-          // border-radius: morphs to circle when hovered
-          hovered
+          'relative min-h-0 h-[390px] md:flex-1 md:h-auto md:max-h-[var(--card-image-max-h)] overflow-hidden pointer-events-auto cursor-pointer',
+          // border-radius: morphs to circle on hover (standard variant only)
+          !hoverImageSrc && hovered
             ? 'rounded-[var(--radius-card-circle)]'
             : 'rounded-[var(--radius-card-mobile)] md:rounded-[var(--radius-card)]',
-          'transition-[border-radius] duration-500 [transition-timing-function:cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none',
-          // focus ring on the link shows via the image container
-          'group-focus-visible:ring-2 group-focus-visible:ring-[var(--text-primary)] group-focus-visible:ring-offset-4',
+          !hoverImageSrc && 'transition-[border-radius] duration-500 [transition-timing-function:cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none',
+          // focus outline on the link shows via the image container (outline is not clipped by overflow-hidden, unlike ring/box-shadow)
+          'group-focus-visible:outline-2 group-focus-visible:outline-[var(--text-primary)] group-focus-visible:outline-offset-4',
         )}
       >
         <Image
@@ -124,41 +159,46 @@ export function ProjectCard({
           alt={imageAlt ?? title}
           fill
           priority={priority}
+          unoptimized={imageSrc.endsWith('.svg')}
           className={cn(
-            'object-cover transition-transform duration-[400ms] [transition-timing-function:cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none',
-            hovered ? 'scale-105' : 'scale-100',
+            'object-cover transition-[transform,opacity] motion-reduce:transition-none',
+            hoverImageSrc ? 'duration-[200ms] ease-out' : 'duration-[400ms] [transition-timing-function:cubic-bezier(0.4,0,0.2,1)]',
+            !hoverImageSrc && (hovered ? 'scale-105' : 'scale-100'),
+            hoverImageSrc && (hovered ? 'opacity-0' : 'opacity-100'),
           )}
-          // Desktop: 2-col grid (1664px content − 32px gap) / 2 ≈ 816px per card
-          sizes="(max-width: 768px) 353px, 816px"
+          // Mobile: full card width = 100vw − 2× --page-padding-mobile (20px). Avoids
+          // under-sized srcset on wide phones + retina DPR. Desktop: column width.
+          sizes="(max-width: 767px) calc(100vw - 40px), 812px"
         />
 
-        {/* External link indicator */}
-        {external && (
-          <span
-            aria-hidden="true"
-            className="absolute top-3 right-3 z-10 text-white opacity-70"
-          >
-            {/* Arrow up-right — inline SVG, no dependency needed */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="7" y1="17" x2="17" y2="7" />
-              <polyline points="7 7 17 7 17 17" />
-            </svg>
-          </span>
+        {/* Hover image — mobile: always visible; desktop: cross-fades in on hover */}
+        {hoverMobileSrc && (
+          <Image
+            src={hoverMobileSrc}
+            alt=""
+            fill
+            className="object-cover md:hidden"
+            sizes="calc(100vw - 40px)"
+          />
         )}
+        {hoverImageSrc && (
+          <Image
+            src={hoverImageSrc}
+            alt=""
+            fill
+            className={cn(
+              'object-cover transition-opacity duration-[200ms] ease-out motion-reduce:transition-none',
+              hoverMobileSrc ? 'hidden md:block' : '',
+              hovered ? 'opacity-100' : 'opacity-0',
+            )}
+            sizes="812px"
+          />
+        )}
+
       </div>
 
       {/* ── text ──────────────────────────────────────────────────────── */}
-      <div className="flex-shrink-0 flex flex-col gap-2 pt-4">
+      <div className="flex-shrink-0 flex flex-col gap-[8px] pt-[16px]">
         {/* Title — animated underline bar sweeps left-to-right on hover/focus */}
         <h3
           onMouseEnter={enter}
@@ -171,15 +211,42 @@ export function ProjectCard({
             '[color:var(--text-primary)]',
           )}
         >
-          {title}
-          <span
-            aria-hidden
-            className={cn(
-              'absolute bottom-0 left-0 h-px bg-[var(--text-primary)]',
-              'transition-[width] duration-300 ease-in-out',
-              hovered ? 'w-full' : 'w-0 group-focus-visible:w-full',
+          <span className="inline-flex items-baseline gap-[0.25em]">
+            {title}
+            {external && (
+              <span
+                aria-hidden="true"
+                className={cn(
+                  'inline-flex items-center self-center transition-opacity duration-300 ease-in-out',
+                  hovered ? 'opacity-100' : 'opacity-0',
+                )}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+              </span>
             )}
-          />
+          </span>
+          {!hoverImageSrc && (
+            <span
+              aria-hidden="true"
+              className={cn(
+                'absolute bottom-0 left-0 h-px bg-[var(--text-primary)]',
+                'transition-[width] duration-300 ease-in-out',
+                hovered ? 'w-full' : 'w-0 group-focus-visible:w-full',
+              )}
+            />
+          )}
         </h3>
 
         {/* Description — mobile 14 / 21, desktop 16 / 24 */}
@@ -191,6 +258,8 @@ export function ProjectCard({
             '[color:var(--text-primary)]',
             // Figma: description max-width ~570 px on desktop for readability
             'md:max-w-[570px]',
+            showDescriptionOnHover && 'md:transition-opacity md:duration-300 md:ease-in-out',
+            showDescriptionOnHover && (hovered ? 'opacity-100' : 'md:opacity-0'),
           )}
         >
           {description}
@@ -200,7 +269,16 @@ export function ProjectCard({
   );
 
   return (
-    <article className={cn('flex flex-col max-md:h-[calc(100svh-var(--card-top-offset-mobile,0px))] md:h-[calc(100vh-var(--card-top-offset,0px)-var(--card-bottom-offset,0px))] md:max-h-[calc(852px+var(--card-text-area-h,138px))]', className)}>
+    <article
+      className={cn(
+        'flex flex-col overflow-hidden',
+        'md:h-[calc(100vh-var(--card-top-offset,0px)-var(--card-bottom-offset,0px))]',
+        'md:max-h-[calc(var(--card-image-max-h)+var(--card-text-area-h,138px))]',
+        disabled && 'opacity-40 pointer-events-none',
+        className,
+      )}
+      aria-disabled={disabled || undefined}
+    >
       {external ? (
         <a
           href={href}
@@ -214,6 +292,49 @@ export function ProjectCard({
         <Link href={href} className={linkClasses} onClick={handleClick}>
           {inner}
         </Link>
+      )}
+
+      {/* ── Cursor-following pill (portal — escapes Framer Motion transform) ── */}
+      {mounted && createPortal(
+        <AnimatePresence>
+          {cursorLabel && hovered && cursorPos && (
+            <motion.div
+              key="cursor-pill"
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              transition={{ duration: 0.15, ease: 'easeOut' }}
+              style={{ left: cursorPos.x + 16, top: cursorPos.y + 16 }}
+              className={cn(
+                'fixed z-50 hidden md:flex items-center gap-2 pointer-events-none',
+                'px-8 py-4 rounded-[var(--radius-pill)]',
+                'bg-[var(--bg-page)] text-[var(--text-primary)]',
+                'shadow-[var(--shadow-pill)]',
+                '[font-family:var(--font-sans)]',
+                '[font-size:var(--text-body-size)] [line-height:var(--text-body-leading)]',
+              )}
+            >
+              <span>{cursorLabel}</span>
+              {cursorIcon && (
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
       )}
     </article>
   );

@@ -101,8 +101,8 @@ export const TwoImageLayout = forwardRef<HTMLDivElement, TwoImageLayoutProps>(
               // Each column is ~50% of content width minus half the gap:
               // desktop: (1664px − 32px) / 2 = 816px
               // tablet:  (960px  − 32px) / 2 = 464px
-              // mobile:  353px (full width when stacked)
-              sizes="(max-width: 767px) 353px, (max-width: 1023px) 464px, 816px"
+              // mobile:  full column width (stacked) — match HeroImageLayout
+              sizes="(max-width: 767px) calc(100vw - 24px), (max-width: 1023px) 464px, 816px"
             />
           </div>
         </div>
@@ -120,7 +120,7 @@ export const TwoImageLayout = forwardRef<HTMLDivElement, TwoImageLayoutProps>(
                 fill
                 unoptimized={srcB.endsWith('.gif')}
                 className="object-contain"
-                sizes="(max-width: 767px) 353px, (max-width: 1023px) 464px, 816px"
+                sizes="(max-width: 767px) calc(100vw - 24px), (max-width: 1023px) 464px, 816px"
               />
             </div>
           ) : (
@@ -131,7 +131,7 @@ export const TwoImageLayout = forwardRef<HTMLDivElement, TwoImageLayoutProps>(
                 fill
                 unoptimized={srcB.endsWith('.gif')}
                 className="object-cover"
-                sizes="(max-width: 767px) 353px, (max-width: 1023px) 464px, 816px"
+                sizes="(max-width: 767px) calc(100vw - 24px), (max-width: 1023px) 464px, 816px"
               />
             </div>
           )}

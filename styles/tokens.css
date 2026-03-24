@@ -254,6 +254,14 @@
     0px 0px  4px 0px rgba(0, 0, 0, 0.04),
     0px 8px 16px 0px rgba(0, 0, 0, 0.08);
 
+  --shadow-pill:
+    0px   2px  12px 0px rgba(0, 0, 0, 0.01),
+    0px   9px  26px 0px rgba(0, 0, 0, 0.02),
+    0px  23px  51px 0px rgba(0, 0, 0, 0.02),
+    0px  44px 100px 0px rgba(0, 0, 0, 0.02),
+    0px  74px 184px 0px rgba(0, 0, 0, 0.03),
+    0px 114px 250px 0px rgba(0, 0, 0, 0.04);
+
 
   /* -------------------------------------------------------
      BORDER RADIUS
@@ -318,8 +326,9 @@
   --section-padding-top-mobile: calc(var(--nav-top-mobile) + var(--nav-height-mobile) + 36px); /* work section top padding — mobile */
   --section-padding-bottom-desktop: 82px; /* work section bottom padding — desktop */
 
-  --card-gap:            32px;
-  --card-gap-mobile:     48px;
+  /* Work grid (desktop): same gap between columns and between rows */
+  --card-gap:            40px;
+  --card-gap-mobile:     40px;
 
   --clock-gap:           16px;   /* face → city label: desktop / tablet */
   --clock-gap-mobile:     4px;   /* face → city label: mobile */
@@ -340,6 +349,9 @@
 
   /* Card image area — minimum height guard */
   --card-image-min-h: 324px;   /* desktop — ~40% of 810px Figma card height */
+
+  /* Card image area — maximum height cap (Figma desktop spec) */
+  --card-image-max-h: 852px;
 
   /* About section layout */
   --about-padding-y-desktop:          200px;   /* section top/bottom padding — desktop + tablet */
