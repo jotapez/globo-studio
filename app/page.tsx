@@ -353,7 +353,7 @@ export default function HomePage() {
              * Same grid structure as Rows A + B.
              * `external: true` on each project opens in a new tab.
              */}
-            <div className="grid grid-cols-1 md:grid-cols-2 pb-[var(--about-padding-y-mobile)] md:pb-[var(--about-padding-y-desktop)] gap-y-[var(--card-gap-mobile)] md:gap-y-[var(--card-gap)] md:gap-x-[var(--card-gap)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-[var(--card-gap-mobile)] md:gap-y-[var(--card-gap)] md:gap-x-[var(--card-gap)]">
               {PERSONAL_PROJECTS.map((project, i) => (
                 <CardMotion key={project.title} index={i} reduceMotion={!!shouldReduceMotion}>
                   <ProjectCard {...project} />

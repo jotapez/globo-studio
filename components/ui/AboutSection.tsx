@@ -99,7 +99,7 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
             'max-w-[1264px] mx-auto',
             'flex flex-col',
             'gap-8 md:gap-16',
-            'py-[104px] md:py-[164px]',
+            'pt-[132px] md:pt-[240px]',
           )}
         >
 
@@ -113,15 +113,16 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
           <motion.h2
             {...fadeUp(0)}
             className={cn(
-              'font-normal not-italic w-full',
+              'font-normal not-italic w-full text-center',
               '[font-size:var(--text-h1-mobile-size)] [line-height:var(--text-h1-mobile-leading)]',
               'md:[font-size:var(--text-h1-size)] md:[line-height:var(--text-h1-leading)]',
+              'mb-[72px] md:mb-[100px]',
             )}
           >
             <span className="font-sans">Rewriting</span>
             <span className="font-serif"> the </span>
             <span className="font-sans">process</span>
-            <span className="font-serif"> right now at the </span>
+            <span className="font-serif"> at the </span>
             <span className="font-sans">speed</span>
             <span className="font-serif"> of AI.</span>
           </motion.h2>
