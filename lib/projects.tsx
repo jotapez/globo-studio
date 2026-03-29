@@ -42,6 +42,8 @@ export interface Project {
   footerBgColor?: string;
   /** Clock and text theme for the ContactFooter. Default: 'auto'. */
   footerTheme?: 'auto' | 'light' | 'dark';
+  /** Actual hex color for the iOS Safari theme-color meta tag. Matches footerBgColor. */
+  footerThemeColor?: string;
   intro: {
     /** Mixed serif/sans JSX heading — defined inline per project */
     heading: React.ReactNode;
@@ -64,6 +66,7 @@ const PROJECTS: Project[] = [
     wrapperColor: 'var(--bg-page)',
     footerBgColor: 'var(--bg-footer-project-ow)',
     footerTheme: 'dark',
+    footerThemeColor: '#001db0',
     intro: {
       heading: (
         <>
@@ -218,6 +221,7 @@ const PROJECTS: Project[] = [
     bgColor: 'var(--bg-page-project-oi)',
     footerBgColor: 'var(--bg-footer-project-oi)',
     footerTheme: 'dark',
+    footerThemeColor: '#3638DE',
     intro: {
       heading: (
         <>
@@ -383,6 +387,7 @@ const PROJECTS: Project[] = [
     bgColor: 'var(--bg-page-project-kicbox)',
     footerBgColor: 'var(--bg-footer-project-kicbox)',
     footerTheme: 'dark',
+    footerThemeColor: '#D42929',
     intro: {
       heading: (
         <>
@@ -568,6 +573,7 @@ const PROJECTS: Project[] = [
     bgColor: 'var(--bg-page-project-retro)',
     footerBgColor: 'var(--bg-footer-project-retro)',
     footerTheme: 'light',
+    footerThemeColor: '#F8F8F7',
     intro: {
       heading: (
         <>

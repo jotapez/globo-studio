@@ -13,7 +13,7 @@
  * Sizes (controlled by the parent — this component is width-agnostic):
  *   Desktop  392 × 444 px  (face 392 + gap 16 + leading 36)
  *   Tablet   216 × 268 px  (face 216 + gap 16 + leading 36)
- *   Mobile   148 × 184 px  (face 148 + gap  4 + leading 32)
+ *   Mobile   ~133 × ~169 px (90% of available width, face + gap 4 + leading 32)
  *
  * Theme
  * ─────
@@ -119,9 +119,10 @@ export const Clock = forwardRef<HTMLDivElement, ClockProps>(
         {/* ── clock face (SVG) ──────────────────────────────────────────────── */}
         <div className="w-full aspect-square" aria-hidden="true">
           <svg
-            viewBox="1.375 1.375 97.25 97.25"
+            viewBox="1.5 1.5 97.0 97.0"
             xmlns="http://www.w3.org/2000/svg"
             className="w-full h-full"
+            style={{ overflow: 'visible' }}
           >
             {/* Circular face — thin ring */}
             <circle

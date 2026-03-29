@@ -154,13 +154,13 @@
      TYPOGRAPHY — Mobile Type Scale
      ------------------------------------------------------- */
 
-  /* H1 mobile — Helvetica Neue, 40 / 54 */
-  --text-h1-mobile-size:          2.5rem;       /* 40px */
-  --text-h1-mobile-leading:       3.375rem;     /* 54px */
+  /* H1 mobile — Helvetica Neue, 36 / 50 */
+  --text-h1-mobile-size:          2.25rem;      /* 36px */
+  --text-h1-mobile-leading:       3.125rem;     /* 50px */
 
-  /* H1 Serif mobile — Instrument Serif, 40 / 54 */
-  --text-h1-serif-mobile-size:    2.5rem;       /* 40px */
-  --text-h1-serif-mobile-leading: 3.375rem;     /* 54px */
+  /* H1 Serif mobile — Instrument Serif, 36 / 50 */
+  --text-h1-serif-mobile-size:    2.25rem;      /* 36px */
+  --text-h1-serif-mobile-leading: 3.125rem;     /* 50px */
 
   /* H2 mobile — Helvetica Neue, 32 / 40 */
   --text-h2-mobile-size:          2rem;         /* 32px */
@@ -324,6 +324,9 @@
 
   --section-padding-top-desktop: 168px; /* work + about section top padding on desktop */
   --section-padding-top-mobile: calc(var(--nav-top-mobile) + var(--nav-height-mobile) + 36px); /* work section top padding — mobile */
+
+  --intro-padding-top-desktop: 168px;
+  --intro-padding-top-mobile:  104px;
   --section-padding-bottom-desktop: 82px; /* work section bottom padding — desktop */
 
   /* Work grid (desktop): same gap between columns and between rows */
