@@ -27,15 +27,18 @@ export interface UseThemeReturn {
   theme: 'light' | 'dark';
   /** Low-level setter — accepts a value or functional updater. */
   setTheme: Dispatch<SetStateAction<'light' | 'dark'>>;
-  /** Toggles theme AND resets themeBeforeAboutRef to avoid stale restoration. */
+  /** Toggles theme AND resets scroll-inversion refs to avoid stale restoration. */
   toggleTheme: () => void;
-  /** Ref shared with page.tsx for the scroll-triggered theme inversion. */
+  /** Ref shared with page.tsx for the #about scroll-triggered theme inversion. */
   themeBeforeAboutRef: React.MutableRefObject<'light' | 'dark' | null>;
+  /** Ref shared with page.tsx for the #intro scroll-triggered theme inversion. */
+  themeBeforeIntroRef: React.MutableRefObject<'light' | 'dark' | null>;
 }
 
 export function useTheme(): UseThemeReturn {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const themeBeforeAboutRef = useRef<'light' | 'dark' | null>(null);
+  const themeBeforeIntroRef = useRef<'light' | 'dark' | null>(null);
   const isFirstRun = useRef(true);
 
   // Read initial theme once on mount
@@ -62,11 +65,12 @@ export function useTheme(): UseThemeReturn {
   }, [theme]);
 
   const toggleTheme = useCallback(() => {
-    // Discard any captured "before-about" value so the sentinel observer does
+    // Discard any captured scroll-inversion values so sentinel observers do
     // not restore a theme the user has already manually overridden.
     themeBeforeAboutRef.current = null;
+    themeBeforeIntroRef.current = null;
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   }, []);
 
-  return { theme, setTheme, toggleTheme, themeBeforeAboutRef };
+  return { theme, setTheme, toggleTheme, themeBeforeAboutRef, themeBeforeIntroRef };
 }
