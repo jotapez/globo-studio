@@ -34,7 +34,9 @@
  * className — extra classes on the root <section>
  */
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { LiquidMetal } from '@paper-design/shaders-react';
 
 // ─── shader constants ─────────────────────────────────────────────────────────
@@ -58,14 +60,27 @@ export interface HeroProps {
   className?: string;
   /** Called when the user clicks the shader or Studio wordmark. */
   onToggle?: () => void;
+  /** Called when the user clicks the "Portfolio" label — use to scroll to the intro section. */
+  onPortfolioClick?: () => void;
 }
 
 // ─── component ────────────────────────────────────────────────────────────────
 
-export function Hero({ id = 'hero', animate = true, className = '', onToggle }: HeroProps) {
+export function Hero({ id = 'hero', animate = true, className = '', onToggle, onPortfolioClick }: HeroProps) {
   const reduceMotion = useReducedMotion();
-
   const shouldAnimate = animate && !reduceMotion;
+
+  const [hovered, setHovered]     = useState(false);
+  const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
+  const [mounted, setMounted]     = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  const handleMouseEnter = useCallback(() => setHovered(true), []);
+  const handleMouseLeave = useCallback(() => { setHovered(false); setCursorPos(null); }, []);
+  const handleMouseMove  = useCallback((e: React.MouseEvent) => {
+    setCursorPos({ x: e.clientX, y: e.clientY });
+  }, []);
 
   return (
     <section
@@ -92,15 +107,30 @@ export function Hero({ id = 'hero', animate = true, className = '', onToggle }: 
         <motion.div
           className={['relative overflow-hidden', onToggle ? 'cursor-pointer' : ''].join(' ')}
           onClick={onToggle}
-          title={onToggle ? 'Toggle dark mode' : undefined}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onMouseMove={handleMouseMove}
           style={{
             width: 'min(100%, calc(min(100cqh, 1080px) * 1431 / 940))',
             aspectRatio: '1431 / 940',
             maxHeight: 'min(100%, 1080px)',
           }}
           initial={shouldAnimate ? { opacity: 0, scale: 0.90 } : false}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
+          animate={shouldAnimate
+            ? { opacity: 1, scale: 1, y: [0, -14, 0] }
+            : { opacity: 1, scale: 1 }
+          }
+          transition={{
+            opacity: { duration: 0.6, delay: 0.1, ease: 'easeOut' },
+            scale:   { duration: 0.6, delay: 0.1, ease: 'easeOut' },
+            y: {
+              duration:   4.5,
+              delay:      0.7,
+              ease:       'easeInOut',
+              repeat:     Infinity,
+              repeatType: 'mirror',
+            },
+          }}
         >
           {/* ── LiquidMetal shader ─────────────────────────────────────── */}
           <LiquidMetal
@@ -150,6 +180,42 @@ export function Hero({ id = 'hero', animate = true, className = '', onToggle }: 
         </motion.div>
       </div>
 
+      {/* ── cursor-following pill (portal — escapes Framer Motion transform) ── */}
+      {mounted && createPortal(
+        <AnimatePresence>
+          {hovered && cursorPos && (
+            <motion.div
+              key="hero-pill"
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              transition={{ duration: 0.15, ease: 'easeOut' }}
+              style={{ left: cursorPos.x + 16, top: cursorPos.y + 16 }}
+              className={[
+                'fixed z-50 hidden md:flex items-center gap-2 pointer-events-none',
+                'px-8 py-4 rounded-[var(--radius-pill)]',
+                'bg-[var(--bg-page)] text-[var(--text-primary)]',
+                'shadow-[var(--shadow-pill)]',
+                '[font-family:var(--font-sans)]',
+                '[font-size:var(--text-body-size)] [line-height:var(--text-body-leading)]',
+              ].join(' ')}
+            >
+              <span>Let it rip</span>
+              <svg
+                width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor"
+                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <polyline points="19 12 12 19 5 12" />
+              </svg>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
+
       {/* ── year + portfolio labels ──────────────────────────────────── */}
       <motion.div
         className={[
@@ -170,7 +236,13 @@ export function Hero({ id = 'hero', animate = true, className = '', onToggle }: 
         }
       >
         <span>2026</span>
-        <span>Portfolio</span>
+        <button
+          type="button"
+          onClick={onPortfolioClick}
+          className={onPortfolioClick ? 'cursor-pointer' : undefined}
+        >
+          Portfolio
+        </button>
       </motion.div>
     </section>
   );
