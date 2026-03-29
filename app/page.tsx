@@ -20,14 +20,14 @@
  *   • Theme persistence    — useTheme (localStorage 'gs-theme'; fallback: prefers-color-scheme)
  *
  * Layout notes from Figma (node 994:44022 desktop, 1728×7479):
- *   Main cards grid:   2-col desktop (816px cards, 32px gap)  / 1-col mobile (48px gap)
- *   Row A → Row B gap: 80px on desktop (same row gap on mobile: cards just stack)
+ *   Main cards grid:   2-col desktop (~812px cards, 40px gap)  / 1-col mobile (48px gap)
+ *   Row A → Row B gap: 40px on desktop (--card-gap); mobile: 48px vertical (--card-gap-mobile)
  *   Interlude spacing: 200px before + after on desktop / 100px mobile
  *   Interlude width:   1271px centred (≈ --content-width-heading: 1266px)
  */
 
 import { useCallback, useEffect, useRef } from 'react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { motion, useInView, useReducedMotion, type Variants } from 'framer-motion';
 import { Nav } from '@/components/ui/Nav';
 import { Hero } from '@/components/ui/Hero';
 import { IntroSection } from '@/components/ui/IntroSection';
@@ -46,11 +46,15 @@ import { useActiveSection } from '@/hooks/useActiveSection';
  */
 const MAIN_PROJECTS = [
   {
-    title: 'Officeworks B2B Digital Experience',
+    title: 'Officeworks B2B',
     description:
-      'End-to-end product design for Officeworks B2B — discovery to delivery — including their foundational design system and coaching designers on systematic workflows.',
+      'Product design for car and home insurance products from strategy to delivery, while building and governing the design system at Open Insurance.',
     href: '/work/officeworks',
-    imageSrc: '/Officeworks/OW-hero.png',
+    imageSrc: '/Homepage/OW-project-card-first-desktop.svg',
+    hoverImageSrc: '/Homepage/OW-project-card-second-desktop.png',
+    hoverMobileSrc: '/Homepage/OW-project-card-second-mobile.png',
+    showDescriptionOnHover: true,
+    cursorLabel: 'See work',
     targetBg: '#001db0',
   },
   {
@@ -58,24 +62,36 @@ const MAIN_PROJECTS = [
     description:
       'Product design for car and home insurance products from strategy to delivery, while building and governing the design system at Open Insurance.',
     href: '/work/open-insurance',
-    imageSrc: '/Open Insurance/OI-hero.png',
-    targetBg: '#1c1c3a',
+    imageSrc: '/Homepage/OI-project-card-first-desktop.svg',
+    hoverImageSrc: '/Homepage/OI-project-card-second-desktop.png',
+    hoverMobileSrc: '/Homepage/OI-project-card-second-mobile.png',
+    showDescriptionOnHover: true,
+    cursorLabel: 'See work',
+    targetBg: '#3638DE',
   },
   {
     title: 'kicbox',
     description:
-      "Product experience design for Taronga Zoo's new website, crafting an immersive and accessible digital presence for one of Australia's most iconic destinations.",
+      'Product design for car and home insurance products from strategy to delivery, while building and governing the design system at Open Insurance.',
     href: '/work/kicbox',
-    imageSrc: '/kicbox/kicbox-hero.png',
-    targetBg: '#1a3d2b',
+    imageSrc: '/Homepage/kicbox-project-card-first-desktop.svg',
+    hoverImageSrc: '/Homepage/kicbox-project-card-second-desktop.png',
+    hoverMobileSrc: '/Homepage/kicbox-project-card-second-mobile.png',
+    showDescriptionOnHover: true,
+    cursorLabel: 'See work',
+    targetBg: '#D42929',
   },
   {
     title: 'Retro',
     description:
-      'Leading product design across multiple client engagements at Levo, a leading technology consultancy delivering impactful digital experiences.',
+      'Product design for car and home insurance products from strategy to delivery, while building and governing the design system at Open Insurance.',
     href: '/work/retro',
-    imageSrc: '/Retro/retro-hero.png',
-    targetBg: '#2d1a00',
+    imageSrc: '/Homepage/Retro-project-card-first-desktop.svg',
+    hoverImageSrc: '/Homepage/Retro-project-card-second-desktop.png',
+    hoverMobileSrc: '/Homepage/Retro-project-card-second-mobile.png',
+    showDescriptionOnHover: true,
+    cursorLabel: 'See work',
+    targetBg: '#F8F8F7',
   },
 ] as const;
 
@@ -89,14 +105,22 @@ const PERSONAL_PROJECTS = [
     description:
       'A personal exploration in design and creativity.',
     href: 'https://www.compaire.cl',
-    imageSrc: '/Homepage/Compaire-hero.png',
+    imageSrc: '/Homepage/Compaire-project-card-second-desktop.png',
+    staticImage: true,
+    showDescriptionOnHover: true,
+    cursorLabel: 'Check it out',
+    cursorIcon: true,
     external: true,
   },
   {
     title: 'Only Me',
     description: 'A personal exploration in design and creativity.',
     href: 'https://onlyme.life/',
-    imageSrc: '/Homepage/OnlyMe-hero.png',
+    imageSrc: '/Homepage/OnlyMe-project-card-second-desktop.png',
+    staticImage: true,
+    showDescriptionOnHover: true,
+    cursorLabel: 'Check it out',
+    cursorIcon: true,
     external: true,
   },
 ] as const;
@@ -133,9 +157,60 @@ function CardMotion({
 // ─── component ────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
-  const { theme, setTheme, toggleTheme, themeBeforeAboutRef } = useTheme();
+  const { theme, setTheme, toggleTheme, themeBeforeAboutRef, themeBeforeIntroRef } = useTheme();
   const { activeSection, scrollToSection } = useActiveSection();
   const shouldReduceMotion = useReducedMotion();
+
+  // ── Interlude text animation ──────────────────────────────────────────────
+  const interludeRef = useRef<HTMLDivElement>(null);
+  const interludeInView = useInView(interludeRef, { once: false, amount: 0.2 });
+
+  const interludeContainerVariants: Variants = shouldReduceMotion
+    ? { hidden: {}, visible: {} }
+    : {
+        hidden: {},
+        visible: { transition: { staggerChildren: 0.1, delayChildren: 0 } },
+      };
+
+  const interludeWordVariants: Variants = shouldReduceMotion
+    ? { hidden: {}, visible: {} }
+    : {
+        hidden: { opacity: 0, y: 28 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
+        },
+      };
+
+  // ── Scroll-triggered dark mode — #intro entering viewport ────────────────
+  // Mirrors the #about pattern: inverts once on entry; restores when user
+  // scrolls fully back above #intro (sentinel exits below viewport, top > 0).
+  useEffect(() => {
+    const intro = document.getElementById('intro-sentinel');
+    if (!intro) return;
+
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        if (themeBeforeIntroRef.current === null) {
+          setTheme((current) => {
+            themeBeforeIntroRef.current = current;
+            return current === 'light' ? 'dark' : 'light';
+          });
+        }
+      } else if (entry.boundingClientRect.top > 0) {
+        // Sentinel below viewport — user scrolled back above #intro — restore
+        if (themeBeforeIntroRef.current !== null) {
+          setTheme(themeBeforeIntroRef.current);
+          themeBeforeIntroRef.current = null;
+        }
+      }
+      // top < 0 → sentinel above viewport (scrolled down past intro) → do nothing
+    });
+
+    obs.observe(intro);
+    return () => obs.disconnect();
+  }, [setTheme, themeBeforeIntroRef]);
 
   // ── Scroll-triggered dark mode — sentinel at top of #about ───────────────
   // Spec §5: inverts current theme once on entry; restores only when user scrolls
@@ -171,9 +246,11 @@ export default function HomePage() {
   // `toggleTheme` resets themeBeforeAboutRef so the sentinel doesn't restore
   // a stale value if the user manually toggles while inside #about.
   const handleHeroClick = useCallback(() => {
-    toggleTheme();
+    const currentTheme = theme;               // capture before toggle
+    toggleTheme();                            // resets themeBeforeIntroRef → null
+    themeBeforeIntroRef.current = currentTheme; // pre-seed so sentinel skips on scroll-in
     document.getElementById('intro')?.scrollIntoView({ behavior: 'smooth' });
-  }, [toggleTheme]);
+  }, [toggleTheme, theme, themeBeforeIntroRef]);
 
   return (
     <>
@@ -189,7 +266,7 @@ export default function HomePage() {
       <main>
 
         {/* ── §1 Hero ──────────────────────────────────────────────────────── */}
-        <Hero onToggle={handleHeroClick} />
+        <Hero onToggle={handleHeroClick} onPortfolioClick={() => scrollToSection('intro')} />
 
         {/* ── §2 Intro ─────────────────────────────────────────────────────── */}
         <IntroSection theme={theme} />
@@ -197,9 +274,9 @@ export default function HomePage() {
         {/* ── §3 Work ──────────────────────────────────────────────────────── */}
         {/*
          * Internal layout (Figma desktop, node 994:44157 + 994:44165):
-         *   Cards same row:  32px gap (--card-gap)
+         *   Cards same row:  40px gap (--card-gap)
          *   Mobile card gap: 48px   (--card-gap-mobile)
-         *   Row A → Row B:   80px   (--intro-section-gap)
+         *   Row A → Row B:   40px   (--card-gap, same as column gap)
          *   Interlude:       200px before + after desktop / 100px mobile
          *   Row C:           same card gap as rows A + B
          *
@@ -223,11 +300,10 @@ export default function HomePage() {
             {/*
              * grid-cols-2 creates the 2×2 layout on desktop.
              * On mobile: single column, 48px gap between every card.
-             * The row gap on desktop (between row A and row B) is 80px,
-             * which matches --intro-section-gap. The column gap is 32px.
+             * Desktop: row and column gaps both use --card-gap (40px).
              */}
             <div id="work-trigger" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-[48px] md:gap-y-[var(--intro-section-gap)] md:gap-x-[var(--card-gap)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-y-[var(--card-gap-mobile)] md:gap-y-[var(--card-gap)] md:gap-x-[var(--card-gap)]">
               {MAIN_PROJECTS.map((project, i) => (
                 <CardMotion key={project.title} index={i} reduceMotion={!!shouldReduceMotion}>
                   <ProjectCard {...project} priority={i < 2} />
@@ -242,21 +318,34 @@ export default function HomePage() {
              * Mixed typeface: same sans/serif alternation as IntroSection heading.
              * Spec: "Large display", same font scale as #intro heading.
              */}
-            <div className="py-[var(--about-padding-y-mobile)] md:py-[var(--about-padding-y-desktop)]">
-              <p
-                className={cn(
-                  'font-normal not-italic',
-                  'max-w-[var(--content-width-heading)] mx-auto',
-                  '[font-size:var(--text-h1-mobile-size)] [line-height:var(--text-h1-mobile-leading)]',
-                  'md:[font-size:var(--text-h1-size)] md:[line-height:var(--text-h1-leading)]',
-                )}
+            <div ref={interludeRef} className="py-[var(--about-padding-y-mobile)] md:py-[var(--about-padding-y-desktop)]">
+              <motion.div
+                variants={interludeContainerVariants}
+                initial="hidden"
+                animate={interludeInView ? 'visible' : 'hidden'}
               >
-                <span className="font-sans">Designed</span>
-                <span className="font-serif"> and built with the help of the globo crew – </span>
-                <span className="font-sans">Claude code, Cursor, Figma Make, Lovable</span>
-                <span className="font-serif"> and </span>
-                <span className="font-sans">Paper</span>
-              </p>
+                <p
+                  className={cn(
+                    'font-normal not-italic text-center',
+                    'max-w-[var(--content-width-heading)] mx-auto',
+                    '[font-size:var(--text-h1-mobile-size)] [line-height:var(--text-h1-mobile-leading)]',
+                    'md:[font-size:var(--text-h1-size)] md:[line-height:var(--text-h1-leading)]',
+                  )}
+                >
+                  <motion.span variants={interludeWordVariants} className="font-sans">Designed</motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-serif"> and </motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-sans">built</motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-serif"> with the help of the </motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-sans">globo</motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-serif"> crew – </motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-sans">Claude code, </motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-sans">Cursor, </motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-sans">Figma Make, </motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-sans">Lovable</motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-serif"> and </motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-sans">Paper</motion.span>
+                </p>
+              </motion.div>
             </div>
 
             {/* ── Row C — personal / side projects ────────────────────────── */}
@@ -264,7 +353,7 @@ export default function HomePage() {
              * Same grid structure as Rows A + B.
              * `external: true` on each project opens in a new tab.
              */}
-            <div className="grid grid-cols-1 md:grid-cols-2 pb-[var(--about-padding-y-mobile)] md:pb-[var(--about-padding-y-desktop)] gap-y-[48px] md:gap-y-[var(--intro-section-gap)] md:gap-x-[var(--card-gap)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 pb-[var(--about-padding-y-mobile)] md:pb-[var(--about-padding-y-desktop)] gap-y-[var(--card-gap-mobile)] md:gap-y-[var(--card-gap)] md:gap-x-[var(--card-gap)]">
               {PERSONAL_PROJECTS.map((project, i) => (
                 <CardMotion key={project.title} index={i} reduceMotion={!!shouldReduceMotion}>
                   <ProjectCard {...project} />

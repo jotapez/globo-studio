@@ -106,12 +106,11 @@ export const SingleImageWhiteCard = forwardRef<HTMLDivElement, SingleImageWhiteC
             alt={alt}
             fill
             priority={priority}
+            unoptimized={src.endsWith('.svg')}
             className="object-contain"
-            // Content widths minus 2× padding:
-            // mobile: 353px − 32px = 321px
-            // tablet: 960px − 96px = 864px
-            // desktop: 1664px − 96px = 1568px
-            sizes="(max-width: 767px) 321px, (max-width: 1023px) 864px, 1568px"
+            // Mobile: shell + PageWrapper + card p-16 — use calc so wide phones + DPR get enough px.
+            // tablet/desktop: content max-width minus 2× card padding (48px each).
+            sizes="(max-width: 767px) calc(100vw - 56px), (max-width: 1023px) 864px, 1568px"
           />
         </div>
       </motion.div>

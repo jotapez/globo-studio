@@ -51,6 +51,11 @@ export interface ContactFooterProps {
    * Used for the layout variation shown in Storybook.
    */
   clocksOnTop?: boolean;
+  /**
+   * Background color override for the root section.
+   * Accepts any CSS value (e.g. a token reference). Defaults to var(--bg-page).
+   */
+  bgColor?: string;
 }
 
 // ─── constants ────────────────────────────────────────────────────────────────
@@ -64,20 +69,26 @@ const CLOCKS = [
 
 // ─── shared link classes ──────────────────────────────────────────────────────
 
-const linkCls = 'hover:opacity-60 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--text-primary)] rounded-sm';
+const linkCls = 'hover:opacity-60 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current rounded-sm';
 
 // ─── component ────────────────────────────────────────────────────────────────
 
 export const ContactFooter = forwardRef<HTMLElement, ContactFooterProps>(
-  function ContactFooter({ showClocks = true, footerBarGap = false, theme = 'auto', className, clocksOnTop = false }, ref) {
+  function ContactFooter({ showClocks = true, footerBarGap = false, theme = 'auto', className, clocksOnTop = false, bgColor }, ref) {
+    const textColor =
+      theme === 'dark'  ? 'var(--color-white)'
+      : theme === 'light' ? 'var(--color-black)'
+      : 'var(--text-primary)';
+
+
     return (
       <section
         id="contact"
         ref={ref}
         aria-label="Contact"
+        style={{ backgroundColor: bgColor ?? 'var(--bg-page)', color: textColor }}
         className={cn(
-          'min-h-lvh flex flex-col',
-          'bg-[var(--bg-page)] text-[var(--text-primary)]',
+          'relative min-h-lvh flex flex-col',
           'pt-[104px] md:pt-[118px]',
           'pb-[var(--page-padding-mobile)] md:pb-[var(--page-padding-desktop)]',
           className,
@@ -197,20 +208,20 @@ interface ClocksRowProps {
 function ClocksRow({ theme }: ClocksRowProps) {
   return (
     // paddingRight: 1px compensates for the last clock's -1px margin so the row stays full-width
-    <div className="flex items-center" style={{ paddingRight: '1px' }}>
+    <div className="flex items-center w-[90%] md:w-full mx-auto">
       {/* Always visible: Sydney + Rancagua */}
-      <div className="flex-1 min-w-0" style={{ marginRight: '-1px' }}>
+      <div className="flex-1 min-w-0">
         <Clock timezone={CLOCKS[0].timezone} city={CLOCKS[0].city} theme={theme} />
       </div>
-      <div className="flex-1 min-w-0" style={{ marginRight: '-1px' }}>
+      <div className="flex-1 min-w-0">
         <Clock timezone={CLOCKS[1].timezone} city={CLOCKS[1].city} theme={theme} />
       </div>
 
       {/* Tablet / desktop only: Barcelona + San Juan */}
-      <div className="hidden md:block flex-1 min-w-0" style={{ marginRight: '-1px' }}>
+      <div className="hidden md:block flex-1 min-w-0">
         <Clock timezone={CLOCKS[2].timezone} city={CLOCKS[2].city} theme={theme} />
       </div>
-      <div className="hidden md:block flex-1 min-w-0" style={{ marginRight: '-1px' }}>
+      <div className="hidden md:block flex-1 min-w-0">
         <Clock timezone={CLOCKS[3].timezone} city={CLOCKS[3].city} theme={theme} />
       </div>
     </div>
@@ -256,7 +267,7 @@ function FooterBar({ gap }: { gap: boolean }) {
           <path d="M23.0422 39.5293C23.0422 48.6258 15.6732 55.9999 6.58301 55.9999V53.9411C14.5369 53.9411 20.9848 47.4887 20.9848 39.5293H23.0422Z" fill="currentColor"/>
         </svg>
         <div className={cn(textCls, 'flex flex-col items-center md:items-start')}>
-          <span>© Globo Studio 2026</span>
+          <span>© Globo 2026</span>
           <span>Designer person born in Chile. Based in Sydney, NSW</span>
         </div>
       </div>

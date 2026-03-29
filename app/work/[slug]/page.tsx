@@ -35,6 +35,7 @@ export async function generateMetadata({
   return {
     title: `${project.clientName} — Globo Studio`,
     description: project.intro.description,
+    ...(project.footerThemeColor && { themeColor: project.footerThemeColor }),
   };
 }
 
@@ -48,6 +49,7 @@ function renderBlock(block: ContentBlock, i: number): React.ReactNode {
         <HeroImageLayout
           key={key}
           src={block.src}
+          mobileSrc={block.mobileSrc}
           alt={block.alt}
           priority={block.priority}
           className="mt-[20px] md:mt-0"
@@ -143,7 +145,11 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   return (
-    <main aria-labelledby="project-heading">
+    <>
+      {project.footerThemeColor && (
+        <style>{`html, body { background-color: ${project.footerThemeColor} !important; }`}</style>
+      )}
+      <main aria-labelledby="project-heading">
       <ScrollPaddingShell
         bgColor={project.bgColor}
         estimatedContentBottom={estimateContentBottomMobile(project.contentBlocks)}
@@ -162,7 +168,12 @@ export default async function ProjectPage({
         </PageWrapper>
       </ScrollPaddingShell>
 
-      <ContactFooter showClocks={false} footerBarGap />
+      <ContactFooter
+        showClocks
+        bgColor={project.footerBgColor}
+        theme={project.footerTheme}
+      />
     </main>
+    </>
   );
 }

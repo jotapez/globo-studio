@@ -154,13 +154,13 @@
      TYPOGRAPHY — Mobile Type Scale
      ------------------------------------------------------- */
 
-  /* H1 mobile — Helvetica Neue, 40 / 54 */
-  --text-h1-mobile-size:          2.5rem;       /* 40px */
-  --text-h1-mobile-leading:       3.375rem;     /* 54px */
+  /* H1 mobile — Helvetica Neue, 36 / 50 */
+  --text-h1-mobile-size:          2.25rem;      /* 36px */
+  --text-h1-mobile-leading:       3.125rem;     /* 50px */
 
-  /* H1 Serif mobile — Instrument Serif, 40 / 54 */
-  --text-h1-serif-mobile-size:    2.5rem;       /* 40px */
-  --text-h1-serif-mobile-leading: 3.375rem;     /* 54px */
+  /* H1 Serif mobile — Instrument Serif, 36 / 50 */
+  --text-h1-serif-mobile-size:    2.25rem;      /* 36px */
+  --text-h1-serif-mobile-leading: 3.125rem;     /* 50px */
 
   /* H2 mobile — Helvetica Neue, 32 / 40 */
   --text-h2-mobile-size:          2rem;         /* 32px */
@@ -254,6 +254,14 @@
     0px 0px  4px 0px rgba(0, 0, 0, 0.04),
     0px 8px 16px 0px rgba(0, 0, 0, 0.08);
 
+  --shadow-pill:
+    0px   2px  12px 0px rgba(0, 0, 0, 0.01),
+    0px   9px  26px 0px rgba(0, 0, 0, 0.02),
+    0px  23px  51px 0px rgba(0, 0, 0, 0.02),
+    0px  44px 100px 0px rgba(0, 0, 0, 0.02),
+    0px  74px 184px 0px rgba(0, 0, 0, 0.03),
+    0px 114px 250px 0px rgba(0, 0, 0, 0.04);
+
 
   /* -------------------------------------------------------
      BORDER RADIUS
@@ -316,10 +324,14 @@
 
   --section-padding-top-desktop: 168px; /* work + about section top padding on desktop */
   --section-padding-top-mobile: calc(var(--nav-top-mobile) + var(--nav-height-mobile) + 36px); /* work section top padding — mobile */
+
+  --intro-padding-top-desktop: 168px;
+  --intro-padding-top-mobile:  104px;
   --section-padding-bottom-desktop: 82px; /* work section bottom padding — desktop */
 
-  --card-gap:            32px;
-  --card-gap-mobile:     48px;
+  /* Work grid (desktop): same gap between columns and between rows */
+  --card-gap:            40px;
+  --card-gap-mobile:     40px;
 
   --clock-gap:           16px;   /* face → city label: desktop / tablet */
   --clock-gap-mobile:     4px;   /* face → city label: mobile */
@@ -340,6 +352,9 @@
 
   /* Card image area — minimum height guard */
   --card-image-min-h: 324px;   /* desktop — ~40% of 810px Figma card height */
+
+  /* Card image area — maximum height cap (Figma desktop spec) */
+  --card-image-max-h: 852px;
 
   /* About section layout */
   --about-padding-y-desktop:          200px;   /* section top/bottom padding — desktop + tablet */
@@ -374,6 +389,16 @@
   --bg-page-project-kicbox: #D42929;   /* Kicbox — brand red (alias of --bg-project-kicbox) */
   --bg-page-project-levo:   #2d1a00;   /* Levo — dark brown */
   --bg-page-project-retro:  #F8F8F7;   /* Retro — page only */
+
+  /* -------------------------------------------------------
+     Per-project footer background (ContactFooter on project pages)
+     References page-shell tokens so they stay in sync automatically
+     ------------------------------------------------------- */
+  --bg-footer-project-ow:     var(--bg-page-project-ow);     /* Officeworks — dark blue   */
+  --bg-footer-project-oi:     var(--bg-page-project-oi);     /* Open Insurance — indigo   */
+  --bg-footer-project-kicbox: var(--bg-page-project-kicbox); /* Kicbox — brand red        */
+  --bg-footer-project-levo:   var(--bg-page-project-levo);   /* Levo — dark brown         */
+  --bg-footer-project-retro:  var(--bg-page-project-retro);  /* Retro — near-white        */
 
   /* -------------------------------------------------------
      Per-project content block backgrounds

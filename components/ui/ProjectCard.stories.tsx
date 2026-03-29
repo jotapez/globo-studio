@@ -163,6 +163,56 @@ export const MobileDisabled: Story = {
   },
 };
 
+// ─── external ─────────────────────────────────────────────────────────────────
+
+/**
+ * External — wraps in <a target="_blank"> and shows an arrow-up-right icon
+ * in the top-right corner of the image.
+ */
+export const External: Story = {
+  name: 'External link',
+  args: {
+    title:       'Compaire',
+    description: 'A personal exploration in design and creativity.',
+    href:        'https://www.compaire.cl',
+    imageSrc:    '/Homepage/Compaire-hero.png',
+    external:    true,
+  },
+};
+
+// ─── dark mode ────────────────────────────────────────────────────────────────
+
+/**
+ * Dark mode — verifies that all text and colour tokens resolve correctly
+ * against the dark background. The decorator applies the `.dark` class to
+ * match the JS-driven dark-mode toggle on the homepage.
+ */
+export const DarkMode: Story = {
+  name: 'Dark mode',
+  parameters: {
+    backgrounds: { default: 'black' },
+    docs: {
+      description: {
+        story: 'Card inside a `.dark` root — verifies token overrides for text, image ring, and underline.',
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div
+        className="dark"
+        style={{ padding: '32px', maxWidth: '1584px', margin: '0 auto', background: '#000' }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+  args: {
+    ...BASE_ARGS,
+    imageSrc: PLACEHOLDER_DESKTOP,
+  },
+};
+
 // ─── all states ───────────────────────────────────────────────────────────────
 
 /**

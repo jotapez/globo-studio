@@ -50,6 +50,11 @@ export interface HeroImageLayoutProps {
    */
   src: string;
   /**
+   * Optional portrait-oriented image for mobile viewports (< 768px).
+   * When provided, shown instead of `src` on small screens to avoid upscaling.
+   */
+  mobileSrc?: string;
+  /**
    * Alt text for the hero image.
    * Describe the scene — e.g. "iPad on a wooden desk showing the Otherhomes
    * property listings interface alongside a MacBook".
@@ -68,7 +73,7 @@ export interface HeroImageLayoutProps {
 // ─── component ────────────────────────────────────────────────────────────────
 
 export const HeroImageLayout = forwardRef<HTMLDivElement, HeroImageLayoutProps>(
-  function HeroImageLayout({ src, alt, priority = false, className }, ref) {
+  function HeroImageLayout({ src, mobileSrc, alt, priority = false, className }, ref) {
     const shouldReduceMotion = useReducedMotion();
 
     const innerRef = useRef<HTMLDivElement>(null);
@@ -102,16 +107,25 @@ export const HeroImageLayout = forwardRef<HTMLDivElement, HeroImageLayoutProps>(
           className,
         )}
       >
+        {mobileSrc && (
+          <Image
+            src={mobileSrc}
+            alt={alt}
+            fill
+            priority={priority}
+            className="object-cover md:hidden"
+            sizes="calc(100vw - 24px)"
+          />
+        )}
         <Image
           src={src}
           alt={alt}
           fill
           priority={priority}
-          className="object-cover"
-          // Matches the three project-page content widths from tokens:
-          // --content-width-mobile 353px · --content-width-tablet 960px
-          // --content-width-desktop 1664px
-          sizes="(max-width: 767px) 353px, (max-width: 1023px) 960px, 1664px"
+          className={cn('object-cover', mobileSrc && 'hidden md:block')}
+          // Mobile: ScrollPaddingShell (page padding) + PageWrapper — widest when shell
+          // padding animates to 0 → calc(100vw − 2× --wrapper-padding-mobile).
+          sizes="(max-width: 767px) calc(100vw - 24px), (max-width: 1023px) 960px, 1664px"
         />
       </motion.div>
     );

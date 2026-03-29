@@ -119,9 +119,8 @@ export const FullBleedImageLayout = forwardRef<HTMLDivElement, FullBleedImageLay
           fill
           priority={priority}
           className={objectFit === 'contain' ? 'object-contain' : 'object-cover'}
-          // Full content width — no padding to subtract:
-          // mobile: 353px · tablet: 960px · desktop: 1664px
-          sizes="(max-width: 767px) 353px, (max-width: 1023px) 960px, 1664px"
+          // Mobile: same effective width as HeroImageLayout (full-bleed inside PageWrapper).
+          sizes="(max-width: 767px) calc(100vw - 24px), (max-width: 1023px) 960px, 1664px"
         />
       </motion.div>
     );

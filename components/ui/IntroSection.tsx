@@ -47,7 +47,7 @@
 
 import { forwardRef, useRef, useState } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence, useInView, useReducedMotion, useMotionValue, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useInView, useReducedMotion, useMotionValue, useSpring, type Variants } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { ClientsCarousel } from '@/components/ui/ClientsCarousel';
 
@@ -86,14 +86,39 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
 
     // Ref for inView trigger — separate from the forwarded ref
     const innerRef = useRef<HTMLDivElement>(null);
-    const isInView = useInView(innerRef, { once: true, amount: 0.2 });
+    const isInView = useInView(innerRef, { once: false, amount: 0.2 });
 
-    const textAnim = shouldReduceMotion
-      ? {}
+    const containerVariants: Variants = shouldReduceMotion
+      ? { hidden: {}, visible: {} }
       : {
-          initial: { opacity: 0, y: 30 },
-          animate: isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 },
-          transition: { duration: 0.5, ease: 'easeOut' as const },
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.1,
+              delayChildren: 0,
+            },
+          },
+        };
+
+    const wordVariants: Variants = shouldReduceMotion
+      ? { hidden: {}, visible: {} }
+      : {
+          hidden: { opacity: 0, y: 28 },
+          visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
+          },
+        };
+
+    const nameVariants: Variants = shouldReduceMotion
+      ? { hidden: {}, visible: {} }
+      : {
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
+          },
         };
 
     const carouselAnim = shouldReduceMotion
@@ -112,10 +137,13 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
         className={cn(
           'min-h-svh flex flex-col justify-center',
           'bg-[var(--bg-page)] text-[var(--text-primary)]',
-          'py-[var(--page-padding-mobile)] md:py-[var(--page-padding-desktop)]',
+          'pt-[var(--intro-padding-top-mobile)] pb-[var(--page-padding-mobile)]',
+          'md:pt-[var(--intro-padding-top-desktop)] md:pb-[var(--page-padding-desktop)]',
           className,
         )}
       >
+        {/* Zero-height sentinel — observed by page.tsx for scroll-triggered theme inversion */}
+        <div id="intro-sentinel" aria-hidden="true" style={{ height: 0 }} />
         {/* Inner wrapper — owns horizontal padding + max content width */}
         <div
           ref={innerRef}
@@ -154,7 +182,12 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
           </AnimatePresence>
 
           {/* ── 1. Heading ── */}
-          <motion.div {...textAnim} className="relative z-10 w-full">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            className="relative z-10 w-full"
+          >
             {/*
              * Page-level h1 — visually hidden so it does not appear in the design
              * but satisfies WCAG 2.4.6 and gives screen readers a document title.
@@ -171,24 +204,22 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
               )}
             >
               {/* "G'day." — serif */}
-              <span className={serif}>G&apos;day.</span>
-
-              {/* Empty line break matching Figma layout */}
-              <br aria-hidden="true" />
+              <motion.span variants={wordVariants} className={serif}>G&apos;day.</motion.span>
               <br aria-hidden="true" />
 
               {/* Body sentence with alternating typefaces */}
-              <span className={sans}>Globo</span>
-              <span className={serif}> is an AI native design studio </span>
-              <span className={sans}>orchestrated</span>
-              <span className={serif}> by </span>
+              <motion.span variants={wordVariants} className={sans}>Globo</motion.span>
+              <motion.span variants={wordVariants} className={serif}> is an AI native design studio </motion.span>
+              <motion.span variants={wordVariants} className={sans}>orchestrated</motion.span>
+              <motion.span variants={wordVariants} className={serif}> by </motion.span>
 
               {/*
-               * <button> makes this interactive for keyboard + screen reader users.
+               * <motion.button> makes this interactive for keyboard + screen reader users.
                * onFocus/onBlur mirror the hover portrait so the effect is reachable
                * via Tab navigation.
                */}
-              <button
+              <motion.button
+                variants={nameVariants}
                 type="button"
                 aria-label="Go to About section — Juan Pablo Castro"
                 className={cn(
@@ -204,15 +235,15 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
                 onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 Juan Pablo Castro
-              </button>
+              </motion.button>
 
-              <span className={serif}>, a </span>
-              <span className={sans}>Product Designer </span>
-              <span className={serif}>crafting </span>
-              <span className={sans}>experiences </span>
-              <span className={serif}>and </span>
-              <span className={sans}>systems </span>
-              <span className={serif}>globally.</span>
+              <motion.span variants={wordVariants} className={serif}>, a </motion.span>
+              <motion.span variants={wordVariants} className={sans}>Product Designer </motion.span>
+              <motion.span variants={wordVariants} className={serif}>crafting </motion.span>
+              <motion.span variants={wordVariants} className={sans}>experiences </motion.span>
+              <motion.span variants={wordVariants} className={serif}>and </motion.span>
+              <motion.span variants={wordVariants} className={sans}>systems </motion.span>
+              <motion.span variants={wordVariants} className={serif}>globally.</motion.span>
             </h2>
           </motion.div>
 
