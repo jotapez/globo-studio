@@ -27,7 +27,7 @@
  */
 
 import { useCallback, useEffect, useRef } from 'react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { motion, useInView, useReducedMotion, type Variants } from 'framer-motion';
 import { Nav } from '@/components/ui/Nav';
 import { Hero } from '@/components/ui/Hero';
 import { IntroSection } from '@/components/ui/IntroSection';
@@ -165,21 +165,21 @@ export default function HomePage() {
   const interludeRef = useRef<HTMLDivElement>(null);
   const interludeInView = useInView(interludeRef, { once: false, amount: 0.2 });
 
-  const interludeContainerVariants = shouldReduceMotion
-    ? {}
+  const interludeContainerVariants: Variants = shouldReduceMotion
+    ? { hidden: {}, visible: {} }
     : {
         hidden: {},
         visible: { transition: { staggerChildren: 0.1, delayChildren: 0 } },
       };
 
-  const interludeWordVariants = shouldReduceMotion
-    ? {}
+  const interludeWordVariants: Variants = shouldReduceMotion
+    ? { hidden: {}, visible: {} }
     : {
         hidden: { opacity: 0, y: 28 },
         visible: {
           opacity: 1,
           y: 0,
-          transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] as const },
+          transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
         },
       };
 

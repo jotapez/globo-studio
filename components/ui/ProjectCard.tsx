@@ -39,7 +39,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion, type Variants } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 // ─── types ────────────────────────────────────────────────────────────────────
@@ -83,6 +83,12 @@ export interface ProjectCardProps {
    */
   hoverMobileSrc?: string;
   /**
+   * When true, disables the morph/scale/underline hover effects that normally
+   * activate when no hoverImageSrc is provided. Use for cards with a single
+   * static image that still need the pill and caption-text hover effects.
+   */
+  staticImage?: boolean;
+  /**
    * When true, the description starts invisible and fades in on hover.
    * Pairs with hoverImageSrc. Uses opacity-only — layout height stays constant.
    */
@@ -111,13 +117,32 @@ export function ProjectCard({
   targetBg,
   hoverImageSrc,
   hoverMobileSrc,
+  staticImage = false,
   showDescriptionOnHover = false,
   cursorLabel,
   cursorIcon = false,
 }: ProjectCardProps) {
+  const shouldReduceMotion = useReducedMotion();
   const [hovered, setHovered] = useState(false);
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
   const [mounted, setMounted] = useState(false);
+
+  const wordVariants: Variants = shouldReduceMotion
+    ? { hidden: {}, visible: {} }
+    : {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+        },
+      };
+
+  const containerVariants: Variants = shouldReduceMotion
+    ? { hidden: {}, visible: {} }
+    : {
+        hidden: {},
+        visible: { transition: { staggerChildren: 0.03 } },
+      };
 
   useEffect(() => setMounted(true), []);
 
@@ -146,10 +171,10 @@ export function ProjectCard({
         className={cn(
           'relative min-h-0 h-[390px] md:flex-1 md:h-auto md:max-h-[var(--card-image-max-h)] overflow-hidden pointer-events-auto cursor-pointer',
           // border-radius: morphs to circle on hover (standard variant only)
-          !hoverImageSrc && hovered
+          !hoverImageSrc && !staticImage && hovered
             ? 'rounded-[var(--radius-card-circle)]'
             : 'rounded-[var(--radius-card-mobile)] md:rounded-[var(--radius-card)]',
-          !hoverImageSrc && 'transition-[border-radius] duration-500 [transition-timing-function:cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none',
+          !hoverImageSrc && !staticImage && 'transition-[border-radius] duration-500 [transition-timing-function:cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none',
           // focus outline on the link shows via the image container (outline is not clipped by overflow-hidden, unlike ring/box-shadow)
           'group-focus-visible:outline-2 group-focus-visible:outline-[var(--text-primary)] group-focus-visible:outline-offset-4',
         )}
@@ -163,7 +188,7 @@ export function ProjectCard({
           className={cn(
             'object-cover transition-[transform,opacity] motion-reduce:transition-none',
             hoverImageSrc ? 'duration-[200ms] ease-out' : 'duration-[400ms] [transition-timing-function:cubic-bezier(0.4,0,0.2,1)]',
-            !hoverImageSrc && (hovered ? 'scale-105' : 'scale-100'),
+            !hoverImageSrc && !staticImage && (hovered ? 'scale-105' : 'scale-100'),
             hoverImageSrc && (hovered ? 'opacity-0' : 'opacity-100'),
           )}
           // Mobile: full card width = 100vw − 2× --page-padding-mobile (20px). Avoids
@@ -237,7 +262,7 @@ export function ProjectCard({
               </span>
             )}
           </span>
-          {!hoverImageSrc && (
+          {!hoverImageSrc && !staticImage && (
             <span
               aria-hidden="true"
               className={cn(
@@ -250,20 +275,52 @@ export function ProjectCard({
         </h3>
 
         {/* Description — mobile 14 / 21, desktop 16 / 24 */}
-        <p
-          className={cn(
-            '[font-family:var(--font-sans)] font-normal',
-            '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
-            'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
-            '[color:var(--text-primary)]',
-            // Figma: description max-width ~570 px on desktop for readability
-            'md:max-w-[570px]',
-            showDescriptionOnHover && 'md:transition-opacity md:duration-300 md:ease-in-out',
-            showDescriptionOnHover && (hovered ? 'opacity-100' : 'md:opacity-0'),
-          )}
-        >
-          {description}
-        </p>
+        {showDescriptionOnHover ? (
+          <>
+            {/* Mobile — always visible, no animation */}
+            <p
+              className={cn(
+                'md:hidden',
+                '[font-family:var(--font-sans)] font-normal',
+                '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
+                '[color:var(--text-primary)]',
+              )}
+            >
+              {description}
+            </p>
+            {/* Desktop — word-by-word opacity fade on hover */}
+            <motion.p
+              variants={containerVariants}
+              initial="hidden"
+              animate={hovered ? 'visible' : 'hidden'}
+              className={cn(
+                'hidden md:block',
+                '[font-family:var(--font-sans)] font-normal',
+                'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
+                '[color:var(--text-primary)]',
+                'md:max-w-[570px]',
+              )}
+            >
+              {description.split(' ').map((word, i, arr) => (
+                <motion.span key={i} variants={wordVariants}>
+                  {word}{i < arr.length - 1 ? ' ' : ''}
+                </motion.span>
+              ))}
+            </motion.p>
+          </>
+        ) : (
+          <p
+            className={cn(
+              '[font-family:var(--font-sans)] font-normal',
+              '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
+              'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
+              '[color:var(--text-primary)]',
+              'md:max-w-[570px]',
+            )}
+          >
+            {description}
+          </p>
+        )}
       </div>
     </>
   );
