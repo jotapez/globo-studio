@@ -213,7 +213,7 @@ export function ProjectCard({
             fill
             className={cn(
               'object-cover transition-opacity duration-[200ms] ease-out motion-reduce:transition-none',
-              hoverMobileSrc ? 'hidden md:block' : '',
+              'hidden md:block',
               hovered ? 'opacity-100' : 'opacity-0',
             )}
             sizes="812px"

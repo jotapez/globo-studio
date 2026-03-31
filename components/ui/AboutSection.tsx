@@ -7,20 +7,24 @@
  *
  * ─── All breakpoints ────────────────────────────────────────────────────────
  * Single centered column (max-w-[1264px] mx-auto).
- * Vertical stack order: heading → bio → photo + caption
+ * Vertical stack order: heading (w/ shader bg) → bio → photo + caption
  *
  * ─── Desktop/Tablet (≥768px) ────────────────────────────────────────────────
- * py-164px, gap-64px between blocks
- * Heading: 64px/84px full container width
- * Bio + Photo: max-w-[816px] mx-auto
+ * pt-200px pb-200px, gap-64px between blocks
+ * Heading: h-569px container, LiquidMetal shader behind text (758×569px centered)
+ * Heading text: 64px/84px, centered, mixed serif/sans
+ * Bio + Photo: max-w-[832px] mx-auto
  * Bio text:   32px/40px (--text-intro-*)
- * Photo:      h-540px, rounded-[27px], jpc-home-desktop.png
+ * Photo:      h-540px, rounded-[26.796px], jpc-home-desktop.png
+ * Caption gap: 16px
  *
  * ─── Mobile (<768px) ────────────────────────────────────────────────────────
- * py-104px, gap-32px between blocks
- * Heading: 36px/50px
+ * pt-104px pb-104px, gap-32px between blocks
+ * Heading: h-296px container, LiquidMetal shader fills container
+ * Heading text: 36px/50px
  * Bio: first § 24px/29px, rest 20px/28px
- * Photo: h-540px, rounded-[27px], jpc-home-mobile.png
+ * Photo: aspect-[326/216], rounded-[10.719px], jpc-home-mobile.png
+ * Caption gap: 20px
  *
  * ─── Scroll entrance ────────────────────────────────────────────────────────
  * Staggered fade-up: heading (0ms) → bio (100ms) → photo (200ms)
@@ -34,7 +38,8 @@
 
 import { forwardRef, useRef } from 'react';
 import Image from 'next/image';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { motion, useInView, useReducedMotion, type Variants } from 'framer-motion';
+import { LiquidMetal } from '@paper-design/shaders-react';
 import { cn } from '@/lib/utils';
 
 // ─── types ────────────────────────────────────────────────────────────────────
@@ -62,16 +67,34 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
     const shouldReduceMotion = useReducedMotion();
 
     const innerRef = useRef<HTMLDivElement>(null);
-    const isInView = useInView(innerRef, { once: true, amount: 0.1 });
+    const isInView = useInView(innerRef, { once: false, amount: 0.1 });
+
+    const photoRef = useRef<HTMLDivElement>(null);
+    const isPhotoInView = useInView(photoRef, { once: true, amount: 0.1 });
 
     function fadeUp(delay: number) {
       if (shouldReduceMotion) return {};
       return {
         initial: { opacity: 0, y: 40 },
-        animate: isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 },
+        animate: isPhotoInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 },
         transition: { duration: 0.5, ease: 'easeOut' as const, delay },
       };
     }
+
+    const containerVariants: Variants = shouldReduceMotion
+      ? { hidden: {}, visible: {} }
+      : { hidden: {}, visible: { transition: { staggerChildren: 0.1 } } };
+
+    const wordVariants: Variants = shouldReduceMotion
+      ? { hidden: {}, visible: {} }
+      : {
+          hidden: { opacity: 0, y: 28 },
+          visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 2.0, ease: [0.22, 1, 0.36, 1] },
+          },
+        };
 
     return (
       <section
@@ -80,7 +103,7 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
         aria-label="About"
         className={cn(
           'relative bg-[var(--bg-page)] text-[var(--text-primary)]',
-          'px-[var(--page-padding-mobile)] md:px-[var(--page-padding-desktop)]',
+          'px-8 md:px-[var(--page-padding-desktop)]',
           className,
         )}
       >
@@ -90,56 +113,93 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
 
         {/*
          * Inner column — max-w-[1264px] centred (matches Figma desktop content width).
-         * Mobile:  py-104px, gap-32px
-         * Desktop: py-164px, gap-64px
+         * Mobile:  pt-104px pb-104px, gap-32px
+         * Desktop: pt-200px pb-200px, gap-64px
          */}
         <div
           ref={innerRef}
           className={cn(
             'max-w-[1264px] mx-auto',
             'flex flex-col',
-            'gap-8 md:gap-16',
-            'pt-[132px] md:pt-[240px]',
+            'gap-0',
+            'pt-[64px] md:pt-[80px]',
           )}
         >
 
-          {/* ── [1] Heading ──────────────────────────────────────────────────── */}
+          {/* ── [1] Heading + Shader ─────────────────────────────────────────── */}
           {/*
-           * Full container width (1264px desktop / fluid mobile).
-           * Mixed serif/sans — same pattern on all breakpoints:
-           *   sans: "Rewriting", "process", "speed"
-           *   serif: " the ", " right now at the ", " of AI."
+           * Relative container with the LiquidMetal shader as background.
+           * Mobile:  h-296px — shader fills the container
+           * Desktop: h-569px — shader is 758×569px centred within 1264px column
+           * Heading text sits on top (z-10), centred, same mixed serif/sans.
            */}
-          <motion.h2
-            {...fadeUp(0)}
+          <div
             className={cn(
-              'font-normal not-italic w-full text-center',
-              '[font-size:var(--text-h1-mobile-size)] [line-height:var(--text-h1-mobile-leading)]',
-              'md:[font-size:var(--text-h1-size)] md:[line-height:var(--text-h1-leading)]',
-              'mb-[72px] md:mb-[100px]',
+              'relative overflow-hidden',
+              'h-[296px] md:h-[569px]',
+              'flex items-center justify-center',
             )}
           >
-            <span className="font-sans">Rewriting</span>
-            <span className="font-serif"> the </span>
-            <span className="font-sans">process</span>
-            <span className="font-serif"> at the </span>
-            <span className="font-sans">speed</span>
-            <span className="font-serif"> of AI.</span>
-          </motion.h2>
+            {/* Shader — mask fades edges to transparent so drifting metaballs never hard-clip */}
+            <div
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+              style={{ maskImage: 'radial-gradient(ellipse 80% 75% at 50% 55%, black 45%, transparent 100%)' }}
+            >
+              <LiquidMetal
+                speed={1}
+                softness={0.1}
+                repetition={2}
+                shiftRed={0.3}
+                shiftBlue={0.3}
+                distortion={0.07}
+                contour={0.4}
+                scale={0.57}
+                rotation={0}
+                shape="metaballs"
+                angle={70}
+                frame={15565694.000000058}
+                colorBack="#00000000"
+                colorTint="#D2D2D2"
+                className="w-full h-full md:w-[758px] md:h-[569px]"
+              />
+            </div>
+
+            {/* Heading text — word-by-word blur+fade stagger */}
+            <motion.h2
+              variants={containerVariants}
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
+              className={cn(
+                'relative z-10 font-normal not-italic w-full text-left md:text-center',
+                '[font-size:var(--text-h1-mobile-size)] [line-height:var(--text-h1-mobile-leading)]',
+                'md:[font-size:var(--text-h1-size)] md:[line-height:var(--text-h1-leading)]',
+              )}
+            >
+              <motion.span variants={wordVariants} className="font-sans">Rewriting</motion.span>
+              <motion.span variants={wordVariants} className="font-serif"> the </motion.span>
+              <motion.span variants={wordVariants} className="font-sans">process</motion.span>
+              <motion.span variants={wordVariants} className="font-serif"> at the </motion.span>
+              <motion.span variants={wordVariants} className="font-sans">speed</motion.span>
+              <motion.span variants={wordVariants} className="font-serif"> of AI.</motion.span>
+            </motion.h2>
+          </div>
 
           {/* ── [2] Bio ──────────────────────────────────────────────────────── */}
           {/*
-           * Centred at 816px on desktop/tablet; full-width on mobile.
+           * Centred at 832px on desktop/tablet; full-width on mobile.
            * Desktop/Tablet: all paragraphs 32px/40px (--text-intro-*)
            * Mobile: first § 24px/29px (--text-intro-mobile-*), rest 20px/28px (--text-intro-sm-*)
            * Inter-paragraph spacing = one line-height of whitespace (mirrors Figma's empty-§ pattern).
            */}
           <motion.div
-            {...fadeUp(0.1)}
-            className="w-full md:max-w-[816px] md:mx-auto font-sans font-normal not-italic"
+            variants={containerVariants}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            className="w-full md:max-w-[832px] md:mx-auto font-sans font-normal not-italic"
           >
             {/* First paragraph — larger on mobile */}
-            <p
+            <motion.p
+              variants={wordVariants}
               className={cn(
                 '[font-size:var(--text-intro-mobile-size)] [line-height:var(--text-intro-mobile-leading)]',
                 'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',
@@ -147,12 +207,13 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
               )}
             >
               {BIO_INTRO}
-            </p>
+            </motion.p>
 
             {/* Remaining paragraphs */}
             {BIO_REST.map((paragraph, i) => (
-              <p
+              <motion.p
                 key={i}
+                variants={wordVariants}
                 className={cn(
                   '[font-size:var(--text-intro-sm-size)] [line-height:var(--text-intro-sm-leading)]',
                   'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',
@@ -161,29 +222,29 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
                 )}
               >
                 {paragraph}
-              </p>
+              </motion.p>
             ))}
           </motion.div>
 
           {/* ── [3] Photo + Caption ──────────────────────────────────────────── */}
           {/*
-           * Centred at 816px on desktop/tablet; full-width on mobile.
-           * Photo container: fixed 540px height, overflow-hidden, rounded-[27px].
-           * Two images — each hidden at the opposite breakpoint:
-           *   Mobile (<md):   jpc-home-mobile.png  object-center
-           *   Desktop/tablet: jpc-home-desktop.png  object-[60%_60%]
-           * Caption gap: 20px desktop / 8px mobile (--about-caption-gap-mobile).
+           * Centred at 832px on desktop/tablet; full-width on mobile.
+           * Mobile:  aspect-[326/216] (~218px at 330px width), rounded-[10.719px]
+           * Desktop: h-540px, rounded-[26.796px]
+           * Caption gap: 20px mobile / 16px desktop
            */}
           <motion.div
+            ref={photoRef}
             {...fadeUp(0.2)}
             className={cn(
-              'w-full md:max-w-[816px] md:mx-auto',
+              'w-full md:max-w-[832px] md:mx-auto',
               'flex flex-col',
-              'gap-[var(--about-caption-gap-mobile)] md:gap-[20px]',
+              'gap-[20px] md:gap-[16px]',
+              'mt-[32px] md:mt-[64px]',
             )}
           >
             {/* Photo */}
-            <div className="relative w-full h-[540px] overflow-hidden rounded-[27px]">
+            <div className="relative w-full aspect-[326/216] md:aspect-auto md:h-[540px] overflow-hidden rounded-[10.719px] md:rounded-[26.796px]">
               {/* Mobile image */}
               <Image
                 src="/Homepage/jpc-home-mobile.png"
@@ -198,7 +259,7 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
                 alt="Juan Pablo Castro by the Kamo River in Kyoto"
                 fill
                 className="object-cover object-[60%_60%] hidden md:block"
-                sizes="816px"
+                sizes="832px"
                 priority
               />
             </div>
@@ -207,10 +268,11 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
             <div
               className={cn(
                 'flex flex-col font-sans font-normal not-italic',
-                '[font-size:var(--text-body-size)] [line-height:var(--text-body-leading)]',
+                '[font-size:var(--text-caption-mobile-size)] [line-height:var(--text-caption-mobile-leading)]',
+                'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
               )}
             >
-              <p className="text-[var(--text-primary)]">Juan Pablo Castro</p>
+              <p className="text-[var(--text-primary)]">Juan Pablo Castro (in Kyoto)</p>
               <p className="text-[var(--text-muted)]">Product Designer</p>
             </div>
           </motion.div>

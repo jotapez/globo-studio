@@ -32,7 +32,7 @@ import { Nav } from '@/components/ui/Nav';
 import { Hero } from '@/components/ui/Hero';
 import { IntroSection } from '@/components/ui/IntroSection';
 import { AboutSection } from '@/components/ui/AboutSection';
-import { ContactFooter } from '@/components/ui/ContactFooter';
+import { ContactFooterV3 } from '@/components/ui/ContactFooterV3';
 import { ProjectCard } from '@/components/ui/ProjectCard';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/hooks/useTheme';
@@ -52,7 +52,6 @@ const MAIN_PROJECTS = [
     href: '/work/officeworks',
     imageSrc: '/Homepage/OW-project-card-first-desktop.svg',
     hoverImageSrc: '/Homepage/OW-project-card-second-desktop.png',
-    hoverMobileSrc: '/Homepage/OW-project-card-second-mobile.png',
     showDescriptionOnHover: true,
     cursorLabel: 'See work',
     targetBg: '#001db0',
@@ -64,7 +63,6 @@ const MAIN_PROJECTS = [
     href: '/work/open-insurance',
     imageSrc: '/Homepage/OI-project-card-first-desktop.svg',
     hoverImageSrc: '/Homepage/OI-project-card-second-desktop.png',
-    hoverMobileSrc: '/Homepage/OI-project-card-second-mobile.png',
     showDescriptionOnHover: true,
     cursorLabel: 'See work',
     targetBg: '#3638DE',
@@ -76,7 +74,6 @@ const MAIN_PROJECTS = [
     href: '/work/kicbox',
     imageSrc: '/Homepage/kicbox-project-card-first-desktop.svg',
     hoverImageSrc: '/Homepage/kicbox-project-card-second-desktop.png',
-    hoverMobileSrc: '/Homepage/kicbox-project-card-second-mobile.png',
     showDescriptionOnHover: true,
     cursorLabel: 'See work',
     targetBg: '#D42929',
@@ -88,7 +85,6 @@ const MAIN_PROJECTS = [
     href: '/work/retro',
     imageSrc: '/Homepage/Retro-project-card-first-desktop.svg',
     hoverImageSrc: '/Homepage/Retro-project-card-second-desktop.png',
-    hoverMobileSrc: '/Homepage/Retro-project-card-second-mobile.png',
     showDescriptionOnHover: true,
     cursorLabel: 'See work',
     targetBg: '#F8F8F7',
@@ -131,23 +127,19 @@ const PERSONAL_PROJECTS = [
 // and replay the fade-in animation whenever activeSection changes.
 
 function CardMotion({
-  index,
+  inView,
   reduceMotion,
   children,
 }: {
-  index: number;
+  inView: boolean;
   reduceMotion: boolean;
   children: React.ReactNode;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.1 });
-  const delay = (index % 2) * 0.15;
   return (
     <motion.div
-      ref={ref}
       initial={reduceMotion ? false : { opacity: 0, y: 40 }}
       animate={inView || reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-      transition={{ duration: 0.5, ease: 'easeOut', delay }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       {children}
     </motion.div>
@@ -160,6 +152,12 @@ export default function HomePage() {
   const { theme, setTheme, toggleTheme, themeBeforeAboutRef, themeBeforeIntroRef } = useTheme();
   const { activeSection, scrollToSection } = useActiveSection();
   const shouldReduceMotion = useReducedMotion();
+
+  // ── Project card grids — shared inView per grid so cards animate simultaneously ───
+  const mainGridRef = useRef<HTMLDivElement>(null);
+  const mainGridInView = useInView(mainGridRef, { once: false, amount: 0.1 });
+  const personalGridRef = useRef<HTMLDivElement>(null);
+  const personalGridInView = useInView(personalGridRef, { once: false, amount: 0.1 });
 
   // ── Interlude text animation ──────────────────────────────────────────────
   const interludeRef = useRef<HTMLDivElement>(null);
@@ -215,13 +213,15 @@ export default function HomePage() {
   // ── Scroll-triggered dark mode — sentinel at top of #about ───────────────
   // Spec §5: inverts current theme once on entry; restores only when user scrolls
   // fully back above #about (sentinel exits below viewport, top > 0).
+  // rootMargin shrinks the root by 50% from the bottom so the theme switches
+  // in sync with the nav pill (both fire when #about is ~50% revealed).
   useEffect(() => {
     const sentinel = document.getElementById('about-sentinel');
     if (!sentinel) return;
 
     const obs = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
-        // Top of #about entered viewport — only invert once per downward pass
+        // Top of #about crossed viewport midpoint — only invert once per downward pass
         if (themeBeforeAboutRef.current === null) {
           setTheme((current) => {
             themeBeforeAboutRef.current = current;
@@ -236,11 +236,12 @@ export default function HomePage() {
         }
       }
       // top < 0 → sentinel above viewport (user scrolled down into about) → do nothing
-    });
+    }, { rootMargin: '0px 0px -50% 0px' });
 
     obs.observe(sentinel);
     return () => obs.disconnect();
   }, [setTheme, themeBeforeAboutRef]);
+
 
   // ── Hero click → manual dark mode toggle ─────────────────────────────────
   // `toggleTheme` resets themeBeforeAboutRef so the sentinel doesn't restore
@@ -286,14 +287,13 @@ export default function HomePage() {
         <section
           id="work"
           aria-label="Work"
-          className="bg-[var(--bg-page)] text-[var(--text-primary)] px-[var(--page-padding-mobile)] md:px-[var(--page-padding-desktop)] pt-[var(--section-padding-top-mobile)] md:pt-[var(--section-padding-top-desktop)]"
+          className="bg-[var(--bg-page)] text-[var(--text-primary)] px-8 lg:px-16 pt-[var(--section-padding-top-mobile)] md:pt-[var(--section-padding-top-desktop)]"
           style={{
             '--card-top-offset': 'var(--section-padding-top-desktop)',
             '--card-top-offset-mobile': 'var(--section-padding-top-mobile)',
             '--card-bottom-offset': 'var(--section-padding-bottom-desktop)',
           } as React.CSSProperties}
         >
-          <h2 className="sr-only">Work</h2>
           <div className="w-full">
 
             {/* ── Rows A + B — all 4 main case studies ───────────────────── */}
@@ -303,9 +303,9 @@ export default function HomePage() {
              * Desktop: row and column gaps both use --card-gap (40px).
              */}
             <div id="work-trigger" />
-            <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-y-[var(--card-gap-mobile)] md:gap-y-[var(--card-gap)] md:gap-x-[var(--card-gap)]">
+            <div ref={mainGridRef} className="grid grid-cols-1 md:grid-cols-2 items-start gap-y-[var(--card-gap-mobile)] md:gap-y-[var(--card-gap)] md:gap-x-[var(--card-gap)]">
               {MAIN_PROJECTS.map((project, i) => (
-                <CardMotion key={project.title} index={i} reduceMotion={!!shouldReduceMotion}>
+                <CardMotion key={project.title} inView={mainGridInView} reduceMotion={!!shouldReduceMotion}>
                   <ProjectCard {...project} priority={i < 2} />
                 </CardMotion>
               ))}
@@ -324,9 +324,9 @@ export default function HomePage() {
                 initial="hidden"
                 animate={interludeInView ? 'visible' : 'hidden'}
               >
-                <p
+                <h2
                   className={cn(
-                    'font-normal not-italic text-center',
+                    'font-normal not-italic text-left md:text-center',
                     'max-w-[var(--content-width-heading)] mx-auto',
                     '[font-size:var(--text-h1-mobile-size)] [line-height:var(--text-h1-mobile-leading)]',
                     'md:[font-size:var(--text-h1-size)] md:[line-height:var(--text-h1-leading)]',
@@ -338,13 +338,13 @@ export default function HomePage() {
                   <motion.span variants={interludeWordVariants} className="font-serif"> with the help of the </motion.span>
                   <motion.span variants={interludeWordVariants} className="font-sans">globo</motion.span>
                   <motion.span variants={interludeWordVariants} className="font-serif"> crew – </motion.span>
-                  <motion.span variants={interludeWordVariants} className="font-sans">Claude code, </motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-sans">Claude Code, </motion.span>
                   <motion.span variants={interludeWordVariants} className="font-sans">Cursor, </motion.span>
                   <motion.span variants={interludeWordVariants} className="font-sans">Figma Make, </motion.span>
                   <motion.span variants={interludeWordVariants} className="font-sans">Lovable</motion.span>
                   <motion.span variants={interludeWordVariants} className="font-serif"> and </motion.span>
                   <motion.span variants={interludeWordVariants} className="font-sans">Paper</motion.span>
-                </p>
+                </h2>
               </motion.div>
             </div>
 
@@ -353,9 +353,9 @@ export default function HomePage() {
              * Same grid structure as Rows A + B.
              * `external: true` on each project opens in a new tab.
              */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-[var(--card-gap-mobile)] md:gap-y-[var(--card-gap)] md:gap-x-[var(--card-gap)]">
-              {PERSONAL_PROJECTS.map((project, i) => (
-                <CardMotion key={project.title} index={i} reduceMotion={!!shouldReduceMotion}>
+            <div ref={personalGridRef} className="grid grid-cols-1 md:grid-cols-2 gap-y-[var(--card-gap-mobile)] md:gap-y-[var(--card-gap)] md:gap-x-[var(--card-gap)]">
+              {PERSONAL_PROJECTS.map((project) => (
+                <CardMotion key={project.title} inView={personalGridInView} reduceMotion={!!shouldReduceMotion}>
                   <ProjectCard {...project} />
                 </CardMotion>
               ))}
@@ -368,7 +368,7 @@ export default function HomePage() {
         <AboutSection />
 
         {/* ── §5 Contact + Footer ──────────────────────────────────────────── */}
-        <ContactFooter theme={theme} />
+        <ContactFooterV3 theme={theme} />
 
       </main>
     </>

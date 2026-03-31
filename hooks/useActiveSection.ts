@@ -82,8 +82,8 @@ export function useActiveSection(): UseActiveSectionReturn {
     const workTrigger = document.getElementById('work-trigger');
     if (workTrigger) workObs.observe(workTrigger);
 
-    // 'about' — activates in sync with the theme switch (about-sentinel enters viewport)
-    const aboutObs = makeSentinelObs('about', { threshold: 0 });
+    // 'about' — activates when the section's top edge crosses the viewport midpoint (~50% revealed)
+    const aboutObs = makeSentinelObs('about', { threshold: 0, rootMargin: '0px 0px -50% 0px' });
     const aboutSentinel = document.getElementById('about-sentinel');
     if (aboutSentinel) aboutObs.observe(aboutSentinel);
 

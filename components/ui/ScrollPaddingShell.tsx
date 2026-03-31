@@ -47,7 +47,7 @@ export function ScrollPaddingShell({
       }}
       className={cn(
         // CSS fallback — always present (covers SSR / reduced-motion / desktop)
-        'px-[var(--page-padding-mobile)] md:px-[var(--page-padding-desktop)]',
+        'px-5 md:px-8 lg:px-16',
         className,
       )}
     >

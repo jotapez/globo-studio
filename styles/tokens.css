@@ -60,6 +60,18 @@
   inherits: true;
   initial-value: #d4d4d4;
 }
+/* V2 interactive clock — face fill is the inverse of the page background */
+@property --bg-clock-v2 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #000000;
+}
+/* V2 interactive clock — ring border + hand strokes (Figma: border/default-light) */
+@property --border-clock-v2 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ffffff;
+}
 @property --border-default-light {
   syntax: '<color>';
   inherits: true;
@@ -234,6 +246,8 @@
   --bg-nav-selected:  var(--color-white);             /* background/nav-selected */
   --bg-nav-hover:     var(--color-gray-600);           /* background/nav-bkg-hover */
   --bg-clock-face:    var(--color-gray-300);          /* background/clock-face */
+  --bg-clock-v2:      #000000;                        /* V2 clock: black face on light page (Figma: background/clock) */
+  --border-clock-v2:  #ffffff;                        /* V2 clock: white ring + hands on dark face (Figma: border/default-light) */
   --bg-project-card:  #ffffff;                        /* background/project-card — Single Image White Card */
 
 
@@ -366,7 +380,7 @@
   --about-photo-height-mobile:        380px;   /* portrait photo clip height — mobile */
   --about-photo-width-tablet:         464px;   /* portrait photo width — tablet */
   --about-photo-width-desktop:        533px;   /* portrait photo width — desktop */
-  --about-text-col-width:             816px;   /* text column width — tablet cap + desktop fixed width */
+  --about-text-col-width:             832px;   /* text column width — tablet cap + desktop fixed width */
 
 
   /* -------------------------------------------------------
@@ -434,6 +448,8 @@
   --bg-nav-selected: var(--color-black);
   --bg-nav-hover:    var(--color-gray-400);
   --bg-clock-face:   var(--color-gray-900);
+  --bg-clock-v2:     #ffffff;   /* V2 clock: white face on dark page */
+  --border-clock-v2: #000000;   /* V2 clock: black ring + hands on light face */
   --bg-project-card: #1a1a1a;
 
   --border-default-light: transparent;

@@ -99,7 +99,7 @@ export function Hero({ id = 'hero', animate = true, className = '', onToggle, on
       <div
         className={[
           'flex flex-1 items-center justify-center overflow-hidden',
-          'px-[var(--page-padding-mobile)] md:px-[var(--page-padding-desktop)]',
+          'px-[calc(var(--page-padding-mobile)+12px)] md:px-[var(--page-padding-desktop)]',
           'pt-[var(--hero-padding-top-mobile)] md:pt-[var(--hero-padding-top-desktop)]',
         ].join(' ')}
         style={{ containerType: 'size' }}
