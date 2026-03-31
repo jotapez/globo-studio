@@ -11,7 +11,7 @@ import { SingleImageWhiteCard } from '@/components/ui/SingleImageWhiteCard';
 import { SingleImageColorBackground } from '@/components/ui/SingleImageColorBackground';
 import { FullBleedImageLayout } from '@/components/ui/FullBleedImageLayout';
 import { CaptionText } from '@/components/ui/CaptionText';
-import { ContactFooter } from '@/components/ui/ContactFooter';
+import { ContactFooterV3 } from '@/components/ui/ContactFooterV3';
 import { TwoImageLayout } from '@/components/ui/TwoImageLayout';
 import { ScrollPaddingShell } from '@/components/ui/ScrollPaddingShell';
 import { VideoBlock } from '@/components/ui/VideoBlock';
@@ -52,7 +52,7 @@ function renderBlock(block: ContentBlock, i: number): React.ReactNode {
           mobileSrc={block.mobileSrc}
           alt={block.alt}
           priority={block.priority}
-          className="mt-[20px] md:mt-0"
+          className="mt-8 md:mt-0"
         />
       );
 
@@ -155,7 +155,6 @@ export default async function ProjectPage({
         estimatedContentBottom={estimateContentBottomMobile(project.contentBlocks)}
         className="
           pt-[var(--hero-padding-top-mobile)] md:pt-[var(--hero-padding-top-desktop)]
-          pb-[var(--page-padding-bottom-mobile)] md:pb-[var(--page-padding-bottom-desktop)]
         "
       >
         <PageWrapper bgColor={project.wrapperColor}>
@@ -168,8 +167,7 @@ export default async function ProjectPage({
         </PageWrapper>
       </ScrollPaddingShell>
 
-      <ContactFooter
-        showClocks
+      <ContactFooterV3
         bgColor={project.footerBgColor}
         theme={project.footerTheme}
       />

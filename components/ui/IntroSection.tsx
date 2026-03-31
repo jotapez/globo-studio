@@ -186,7 +186,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            className="relative z-10 w-full"
+            className="relative z-10 w-full px-[14px] md:px-0"
           >
             {/*
              * Page-level h1 — visually hidden so it does not appear in the design
@@ -196,7 +196,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
             <h2
               className={cn(
                 // Base text — serif fallback; individual spans override family
-                'font-serif font-normal not-italic text-center',
+                'font-serif font-normal not-italic text-left md:text-center',
                 '[font-size:var(--text-h1-mobile-size)] [line-height:var(--text-h1-mobile-leading)]',
                 'md:[font-size:var(--text-h1-size)] md:[line-height:var(--text-h1-leading)]',
                 // Cap heading width at var(--content-width-heading) — centred
