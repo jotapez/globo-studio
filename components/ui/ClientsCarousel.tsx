@@ -185,7 +185,7 @@ function LogoSlot({ logo, blendMode, placeholderColor, theme }: LogoSlotProps) {
             theme === 'auto' && 'dark:invert',
             theme === 'dark'  && 'invert',
           )}
-          style={{ mixBlendMode: blendMode }}
+          style={{ mixBlendMode: blendMode, opacity: 'var(--text-muted-alpha)' }}
         />
       ) : (
         /* Placeholder block — swap for <img src={logo.src}> when real assets arrive */

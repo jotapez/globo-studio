@@ -129,7 +129,7 @@ function ClockFace({ timezone, city, index, total }: ClockFaceProps) {
     <div
       role="img"
       aria-label={`${city}: ${timeString}`}
-      className="relative flex-1 min-w-0 flex flex-col items-center gap-[var(--clock-gap)]"
+      className="relative flex-1 min-w-0 flex flex-col items-center gap-[var(--clock-gap-mobile)] md:gap-[var(--clock-gap)]"
       style={{ marginRight: -OVERLAP, zIndex: total - index }}
     >
       {/* Circle: shader + hands stacked inside overflow-hidden rounded-full */}
@@ -169,9 +169,9 @@ function ClockFace({ timezone, city, index, total }: ClockFaceProps) {
       <p
         aria-hidden="true"
         className={cn(
-          '[font-family:var(--font-serif)] font-normal not-italic text-center w-full',
-          '[font-size:var(--text-h3-mobile-size)] [line-height:var(--text-h3-mobile-leading)]',
-          'md:[font-size:var(--text-h3-size)] md:[line-height:var(--text-h3-leading)]',
+          'font-sans [font-weight:var(--text-body-weight)] text-center w-full',
+          '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
+          'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
         )}
       >
         <span className="md:hidden">{cityName}</span>

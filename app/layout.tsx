@@ -1,6 +1,19 @@
 import type { Metadata, Viewport } from 'next';
-import { Instrument_Serif } from 'next/font/google';
+import { Bricolage_Grotesque, Instrument_Serif } from 'next/font/google';
 import './globals.css';
+
+/**
+ * Bricolage Grotesque — editorial variable grotesque, self-hosted via next/font.
+ * Weights 400 (Regular) + 500 (Medium) cover all type-scale uses:
+ *   Regular → body copy, small, labels, labels-sm
+ *   Medium  → display (H1/H2), intro
+ * The CSS variable name matches tokens.css: --font-sans.
+ */
+const bricolageGrotesque = Bricolage_Grotesque({
+  variable: '--font-sans',
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+});
 
 /**
  * Instrument Serif — loaded via next/font so it's self-hosted at build time
@@ -39,7 +52,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${instrumentSerif.variable} antialiased`}>
+      <body className={`${bricolageGrotesque.variable} ${instrumentSerif.variable} antialiased`}>
         {/*
          * Blocking theme script — runs synchronously before first paint so the
          * browser never renders the wrong colour scheme. This is one of the few

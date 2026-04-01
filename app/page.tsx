@@ -323,27 +323,37 @@ export default function HomePage() {
                 variants={interludeContainerVariants}
                 initial="hidden"
                 animate={interludeInView ? 'visible' : 'hidden'}
+                className="flex flex-col gap-0 md:gap-[8px] items-start md:items-center"
               >
+                <motion.p
+                  variants={interludeWordVariants}
+                  className={cn(
+                    'font-serif font-normal not-italic text-[var(--text-muted)]',
+                    '[font-size:var(--text-h3-mobile-size)] [line-height:var(--text-h3-mobile-leading)]',
+                    'md:[font-size:var(--text-h3-size)] md:[line-height:var(--text-h3-leading)]',
+                  )}
+                >
+                  Globo experiments
+                </motion.p>
                 <h2
                   className={cn(
                     'font-normal not-italic text-left md:text-center',
                     'max-w-[var(--content-width-heading)] mx-auto',
                     '[font-size:var(--text-h1-mobile-size)] [line-height:var(--text-h1-mobile-leading)]',
                     'md:[font-size:var(--text-h1-size)] md:[line-height:var(--text-h1-leading)]',
+                    '[letter-spacing:var(--text-h1-tracking)]',
                   )}
                 >
                   <motion.span variants={interludeWordVariants} className="font-sans">Designed</motion.span>
                   <motion.span variants={interludeWordVariants} className="font-serif"> and </motion.span>
                   <motion.span variants={interludeWordVariants} className="font-sans">built</motion.span>
                   <motion.span variants={interludeWordVariants} className="font-serif"> with the help of the </motion.span>
-                  <motion.span variants={interludeWordVariants} className="font-sans">globo</motion.span>
-                  <motion.span variants={interludeWordVariants} className="font-serif"> crew – </motion.span>
-                  <motion.span variants={interludeWordVariants} className="font-sans">Claude Code, </motion.span>
-                  <motion.span variants={interludeWordVariants} className="font-sans">Cursor, </motion.span>
-                  <motion.span variants={interludeWordVariants} className="font-sans">Figma Make, </motion.span>
-                  <motion.span variants={interludeWordVariants} className="font-sans">Lovable</motion.span>
-                  <motion.span variants={interludeWordVariants} className="font-serif"> and </motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-sans">Globo</motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-serif"> crew - Claude Code, </motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-sans">Cursor,</motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-serif"> Figma, </motion.span>
                   <motion.span variants={interludeWordVariants} className="font-sans">Paper</motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-serif"> and others.</motion.span>
                 </h2>
               </motion.div>
             </div>
@@ -368,7 +378,7 @@ export default function HomePage() {
         <AboutSection />
 
         {/* ── §5 Contact + Footer ──────────────────────────────────────────── */}
-        <ContactFooterV3 theme={theme} />
+        <ContactFooterV3 theme={theme} onLogoClick={() => scrollToSection('hero')} />
 
       </main>
     </>

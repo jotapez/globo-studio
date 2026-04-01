@@ -230,9 +230,10 @@ export function ProjectCard({
           onMouseLeave={leave}
           className={cn(
             'relative w-fit pointer-events-auto cursor-pointer',
-            '[font-family:var(--font-serif)] font-normal',
-            // Desktop/H2-Instrument: 32 / 42
-            '[font-size:var(--text-h2-serif-size)] [line-height:var(--text-h2-serif-leading)]',
+            'font-sans [font-weight:var(--text-body-weight)] [letter-spacing:var(--text-intro-tracking)]',
+            // Intro size, Regular weight, -3% tracking
+            '[font-size:var(--text-intro-mobile-size)] [line-height:var(--text-intro-mobile-leading)]',
+            'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',
             '[color:var(--text-primary)]',
           )}
         >
@@ -283,7 +284,7 @@ export function ProjectCard({
                 'md:hidden',
                 '[font-family:var(--font-sans)] font-normal',
                 '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
-                '[color:var(--text-primary)]',
+                '[color:var(--text-muted)]',
               )}
             >
               {description}
@@ -297,7 +298,7 @@ export function ProjectCard({
                 'hidden md:block',
                 '[font-family:var(--font-sans)] font-normal',
                 'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
-                '[color:var(--text-primary)]',
+                '[color:var(--text-muted)]',
                 'md:max-w-[570px]',
               )}
             >
@@ -314,7 +315,7 @@ export function ProjectCard({
               '[font-family:var(--font-sans)] font-normal',
               '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
               'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
-              '[color:var(--text-primary)]',
+              '[color:var(--text-muted)]',
               'md:max-w-[570px]',
             )}
           >

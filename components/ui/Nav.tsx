@@ -288,7 +288,7 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
                   <span
                     className={cn(
                       'relative z-10 whitespace-nowrap',
-                      // Figma: Helvetica Neue Regular — explicit family + weight
+                      // Figma: Bricolage Grotesque Regular — explicit family + weight
                       '[font-family:var(--font-sans)] font-normal',
                       // font size: Label-Small 14/18 on mobile → Label 16/24 on desktop
                       'text-[var(--text-label-sm-size)] leading-[var(--text-label-sm-leading)]',

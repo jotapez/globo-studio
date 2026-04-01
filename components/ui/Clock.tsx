@@ -8,7 +8,7 @@
  * Layout
  * ──────
  * Circular SVG face (1:1 aspect ratio, fills container width) with hour
- * and minute hands. City label centred below in Instrument Serif / H3.
+ * and minute hands. City label centred below in Bricolage Grotesque / Intro-Small.
  *
  * Sizes (controlled by the parent — this component is width-agnostic):
  *   Desktop  392 × 444 px  (face 392 + gap 16 + leading 36)
@@ -160,10 +160,10 @@ export const Clock = forwardRef<HTMLDivElement, ClockProps>(
         <p
           aria-hidden="true"
           className={cn(
-            '[font-family:var(--font-serif)] font-normal not-italic',
-            // mobile: H3-mobile (24/32), desktop: H3 (28/36)
-            '[font-size:var(--text-h3-mobile-size)] [line-height:var(--text-h3-mobile-leading)]',
-            'md:[font-size:var(--text-h3-size)] md:[line-height:var(--text-h3-leading)]',
+            'font-sans [font-weight:var(--text-body-weight)]',
+            // mobile: Body-mobile (14/21), desktop: Body (16/24)
+            '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
+            'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
             'text-center w-full',
           )}
           style={{ color: 'var(--clock-color)' }}

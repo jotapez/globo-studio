@@ -199,6 +199,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
                 'font-serif font-normal not-italic text-left md:text-center',
                 '[font-size:var(--text-h1-mobile-size)] [line-height:var(--text-h1-mobile-leading)]',
                 'md:[font-size:var(--text-h1-size)] md:[line-height:var(--text-h1-leading)]',
+                '[letter-spacing:var(--text-h1-tracking)]',
                 // Cap heading width at var(--content-width-heading) — centred
                 'max-w-[var(--content-width-heading)] mx-auto',
               )}

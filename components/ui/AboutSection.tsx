@@ -141,9 +141,32 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
             )}
           >
             {/* Shader — mask fades edges to transparent so drifting metaballs never hard-clip */}
-            <div
+            <motion.div
               className="absolute inset-0 flex items-center justify-center pointer-events-none"
               style={{ maskImage: 'radial-gradient(ellipse 80% 75% at 50% 55%, black 45%, transparent 100%)' }}
+              initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.90 }}
+              animate={
+                shouldReduceMotion
+                  ? {}
+                  : isInView
+                  ? { opacity: 1, scale: 1, y: [0, -14, 0] }
+                  : { opacity: 0, scale: 0.90 }
+              }
+              transition={
+                shouldReduceMotion
+                  ? {}
+                  : {
+                      opacity: { duration: 0.6, delay: 0.1, ease: 'easeOut' },
+                      scale:   { duration: 0.6, delay: 0.1, ease: 'easeOut' },
+                      y: {
+                        duration:   4.5,
+                        delay:      0.7,
+                        ease:       'easeInOut',
+                        repeat:     Infinity,
+                        repeatType: 'mirror',
+                      },
+                    }
+              }
             >
               <LiquidMetal
                 speed={1}
@@ -162,7 +185,7 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
                 colorTint="#D2D2D2"
                 className="w-full h-full md:w-[758px] md:h-[569px]"
               />
-            </div>
+            </motion.div>
 
             {/* Heading text — word-by-word blur+fade stagger */}
             <motion.h2
@@ -173,6 +196,7 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
                 'relative z-10 font-normal not-italic w-full text-left md:text-center',
                 '[font-size:var(--text-h1-mobile-size)] [line-height:var(--text-h1-mobile-leading)]',
                 'md:[font-size:var(--text-h1-size)] md:[line-height:var(--text-h1-leading)]',
+                '[letter-spacing:var(--text-h1-tracking)]',
               )}
             >
               <motion.span variants={wordVariants} className="font-sans">Rewriting</motion.span>
