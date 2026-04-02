@@ -223,16 +223,16 @@ export function ProjectCard({
       </div>
 
       {/* ── text ──────────────────────────────────────────────────────── */}
-      <div className="flex-shrink-0 flex flex-col gap-[8px] pt-[16px]">
+      <div className="flex-shrink-0 flex flex-col gap-0 pt-[16px]">
         {/* Title — animated underline bar sweeps left-to-right on hover/focus */}
         <h3
           onMouseEnter={enter}
           onMouseLeave={leave}
           className={cn(
             'relative w-fit pointer-events-auto cursor-pointer',
-            '[font-family:var(--font-serif)] font-normal',
-            // Desktop/H2-Instrument: 32 / 42
-            '[font-size:var(--text-h2-serif-size)] [line-height:var(--text-h2-serif-leading)]',
+            'font-sans [font-weight:var(--text-body-weight)]',
+            '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
+            'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
             '[color:var(--text-primary)]',
           )}
         >
@@ -281,9 +281,9 @@ export function ProjectCard({
             <p
               className={cn(
                 'md:hidden',
-                '[font-family:var(--font-sans)] font-normal',
+                '[font-family:var(--font-sans)] [font-weight:var(--text-body-light-weight)]',
                 '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
-                '[color:var(--text-primary)]',
+                '[color:var(--text-muted)]',
               )}
             >
               {description}
@@ -295,9 +295,9 @@ export function ProjectCard({
               animate={hovered ? 'visible' : 'hidden'}
               className={cn(
                 'hidden md:block',
-                '[font-family:var(--font-sans)] font-normal',
+                '[font-family:var(--font-sans)] [font-weight:var(--text-body-light-weight)]',
                 'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
-                '[color:var(--text-primary)]',
+                '[color:var(--text-muted)]',
                 'md:max-w-[570px]',
               )}
             >
@@ -311,10 +311,10 @@ export function ProjectCard({
         ) : (
           <p
             className={cn(
-              '[font-family:var(--font-sans)] font-normal',
+              '[font-family:var(--font-sans)] [font-weight:var(--text-body-light-weight)]',
               '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
               'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
-              '[color:var(--text-primary)]',
+              '[color:var(--text-muted)]',
               'md:max-w-[570px]',
             )}
           >

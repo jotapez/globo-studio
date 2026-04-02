@@ -13,8 +13,18 @@
   /* Fonts are set via next/font in layout.tsx and injected as
      --font-sans / --font-serif CSS vars on <html>.
      The fallback stacks below are used server-side / before hydration. */
-  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-sans: 'Bricolage Grotesque', sans-serif;
   --font-mono: ui-monospace, 'Courier New', monospace;
+}
+
+/* Heading styles for mixed h1/h2 elements:
+   - Bricolage (font-sans) spans → Medium weight from token
+   - Instrument Serif (font-serif) spans → reset letter-spacing to 0 (tracking applies to sans only) */
+h1 .font-sans { font-weight: var(--text-h1-weight); }
+h2 .font-sans { font-weight: var(--text-h2-weight); }
+h1 .font-serif,
+h2 .font-serif {
+  letter-spacing: 0;
 }
 
 /**

@@ -29,6 +29,8 @@ export interface ContactFooterV3Props {
   className?: string;
   /** Background colour override. Defaults to var(--bg-page). */
   bgColor?: string;
+  /** Called when the user clicks the logo — use to smooth-scroll to the hero section. */
+  onLogoClick?: () => void;
 }
 
 type ClockMode = 'light' | 'dark' | 'color-full';
@@ -74,13 +76,13 @@ const CLOCK_COLORS_FULL = [
 
 // ─── shared link classes ──────────────────────────────────────────────────────
 
-const linkCls =
-  'hover:opacity-60 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current rounded-sm';
+const linkBaseCls =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current rounded-sm';
 
 // ─── component ────────────────────────────────────────────────────────────────
 
 export const ContactFooterV3 = forwardRef<HTMLElement, ContactFooterV3Props>(
-  function ContactFooterV3({ theme = 'auto', className, bgColor }, ref) {
+  function ContactFooterV3({ theme = 'auto', className, bgColor, onLogoClick }, ref) {
     const textColor =
       theme === 'dark'  ? 'var(--color-white)'
       : theme === 'light' ? 'var(--color-black)'
@@ -113,7 +115,7 @@ export const ContactFooterV3 = forwardRef<HTMLElement, ContactFooterV3Props>(
         style={{ backgroundColor: bgColor ?? 'var(--bg-page)', color: textColor }}
         className={cn(
           'relative min-h-lvh flex flex-col',
-          'pt-[104px] md:pt-[118px]',
+          'pt-[88px] md:pt-[118px]',
           'pb-8',
           className,
         )}
@@ -132,7 +134,7 @@ export const ContactFooterV3 = forwardRef<HTMLElement, ContactFooterV3Props>(
               <motion.div variants={itemVariants}>
                 <ContactLinks />
               </motion.div>
-              <motion.div variants={itemVariants}>
+              <motion.div variants={itemVariants} className="pb-[24px] md:pb-0">
                 <InteractiveClocksRowV3 theme={theme} />
               </motion.div>
             </div>
@@ -140,7 +142,7 @@ export const ContactFooterV3 = forwardRef<HTMLElement, ContactFooterV3Props>(
 
           {/* Footer bar — pinned to bottom */}
           <motion.div variants={itemVariants}>
-            <FooterBar />
+            <FooterBar onLogoClick={onLogoClick} textColor={textColor} />
           </motion.div>
 
         </motion.div>
@@ -351,7 +353,7 @@ function SolidClockFace({ timezone, city, clockFace, clockBorder, showCircleBord
     <div
       role="img"
       aria-label={`${city}: ${timeString}`}
-      className="flex flex-col items-center gap-[var(--clock-gap)] w-full"
+      className="flex flex-col items-center gap-[var(--clock-gap-mobile)] md:gap-[var(--clock-gap)] w-full"
       style={{
         '--clock-face':   clockFace,
         '--clock-border': clockBorder,
@@ -390,15 +392,71 @@ function SolidClockFace({ timezone, city, clockFace, clockBorder, showCircleBord
       <p
         aria-hidden="true"
         className={cn(
-          '[font-family:var(--font-serif)] font-normal not-italic text-center w-full',
-          '[font-size:var(--text-h3-mobile-size)] [line-height:var(--text-h3-mobile-leading)]',
-          'md:[font-size:var(--text-h3-size)] md:[line-height:var(--text-h3-leading)]',
+          'font-sans [font-weight:var(--text-body-light-weight)] md:[font-weight:var(--text-body-weight)] text-center w-full',
+          '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
+          'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
         )}
       >
         <span className="md:hidden">{city.split(',')[0].trim()}</span>
         <span className="hidden md:inline">{city.split(',')[0].trim()}, {timeString}</span>
       </p>
     </div>
+  );
+}
+
+// ─── ContactLinks (private) ───────────────────────────────────────────────────
+
+// ─── HoverPillLink (private) ──────────────────────────────────────────────────
+
+interface HoverPillLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  pill: string;
+}
+
+function HoverPillLink({ href, pill, children, className, ...props }: HoverPillLinkProps) {
+  const [hovered, setHovered] = useState(false);
+  const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  return (
+    <>
+      <a
+        href={href}
+        className={cn(linkBaseCls, 'w-fit', className)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => { setHovered(false); setCursorPos(null); }}
+        onMouseMove={(e) => setCursorPos({ x: e.clientX, y: e.clientY })}
+        {...props}
+      >
+        {children}
+      </a>
+      {mounted && createPortal(
+        <AnimatePresence>
+          {hovered && cursorPos && (
+            <motion.div
+              key={pill}
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              transition={{ duration: 0.15, ease: 'easeOut' }}
+              style={{ left: cursorPos.x + 16, top: cursorPos.y + 16 }}
+              className={cn(
+                'fixed z-50 hidden md:flex items-center pointer-events-none',
+                'px-8 py-4 rounded-[var(--radius-pill)]',
+                'bg-[var(--bg-page)] text-[var(--text-primary)]',
+                'shadow-[var(--shadow-pill)]',
+                'font-sans [font-weight:var(--text-body-weight)]',
+                '[font-size:var(--text-body-size)] [line-height:var(--text-body-leading)]',
+              )}
+            >
+              {pill}
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
+    </>
   );
 }
 
@@ -412,18 +470,19 @@ function ContactLinks() {
       <div className="flex flex-col gap-0 text-left">
         <h3 className={cn(
           'font-serif font-normal not-italic',
-          '[font-size:var(--text-h3-mobile-size)] [line-height:var(--text-h3-mobile-leading)]',
-          'md:[font-size:var(--text-h3-size)] md:[line-height:var(--text-h3-leading)]',
+          '[font-size:var(--text-h2-serif-mobile-size)] [line-height:var(--text-h2-serif-mobile-leading)]',
+          'md:[font-size:var(--text-h2-serif-size)] md:[line-height:var(--text-h2-serif-leading)]',
         )}>
           Get in touch
         </h3>
         <div className={cn(
-          'flex flex-col font-sans',
+          'flex flex-col font-sans [font-weight:var(--text-h2-weight)]',
           '[font-size:var(--text-h2-mobile-size)] [line-height:var(--text-h2-mobile-leading)]',
           'md:[font-size:var(--text-h2-size)] md:[line-height:var(--text-h2-leading)]',
+          '[letter-spacing:var(--text-h2-tracking)]',
         )}>
-          <a href="mailto:hello@globo.studio" className={linkCls}>hello@globo.studio</a>
-          <a href="tel:+61432520578" className={linkCls}>04 3252 0578</a>
+          <HoverPillLink href="mailto:jp@globo.studio" pill="Write me a letter">jp@globo.studio</HoverPillLink>
+          <HoverPillLink href="tel:+61432520578" pill="I would love to hear your voice">04 3252 0578</HoverPillLink>
         </div>
       </div>
 
@@ -431,18 +490,19 @@ function ContactLinks() {
       <div className="flex flex-col gap-0 text-left">
         <h3 className={cn(
           'font-serif font-normal not-italic',
-          '[font-size:var(--text-h3-mobile-size)] [line-height:var(--text-h3-mobile-leading)]',
-          'md:[font-size:var(--text-h3-size)] md:[line-height:var(--text-h3-leading)]',
+          '[font-size:var(--text-h2-serif-mobile-size)] [line-height:var(--text-h2-serif-mobile-leading)]',
+          'md:[font-size:var(--text-h2-serif-size)] md:[line-height:var(--text-h2-serif-leading)]',
         )}>
           Stalk me
         </h3>
         <div className={cn(
-          'flex flex-col font-sans',
+          'flex flex-col font-sans [font-weight:var(--text-h2-weight)]',
           '[font-size:var(--text-h2-mobile-size)] [line-height:var(--text-h2-mobile-leading)]',
           'md:[font-size:var(--text-h2-size)] md:[line-height:var(--text-h2-leading)]',
+          '[letter-spacing:var(--text-h2-tracking)]',
         )}>
-          <a href="https://www.linkedin.com/in/juanpablo-design/" target="_blank" rel="noopener noreferrer" className={linkCls}>LinkedIn</a>
-          <a href="https://onlyme.life/" target="_blank" rel="noopener noreferrer" className={linkCls}>OnlyMe</a>
+          <HoverPillLink href="https://www.linkedin.com/in/juanpablo-design/" target="_blank" rel="noopener noreferrer" pill="Not particularly my favourite place">LinkedIn</HoverPillLink>
+          <HoverPillLink href="https://onlyme.life/" target="_blank" rel="noopener noreferrer" pill="See more of me">OnlyMe</HoverPillLink>
         </div>
       </div>
 
@@ -452,48 +512,59 @@ function ContactLinks() {
 
 // ─── FooterBar (private) ──────────────────────────────────────────────────────
 
-function FooterBar() {
+function FooterBar({ onLogoClick, textColor }: { onLogoClick?: () => void; textColor: string }) {
   const textCls = cn(
-    'font-sans not-italic',
+    'font-sans not-italic [font-weight:var(--text-body-light-weight)]',
     '[font-size:var(--text-xs-size)] [line-height:var(--text-xs-leading)]',
     'md:[font-size:var(--text-sm-size)] md:[line-height:var(--text-sm-leading)]',
   );
 
   return (
-    <div className={cn(
-      'flex flex-col items-start gap-2',
-      'md:flex-row md:justify-between md:items-end',
-    )}>
+    <div
+      className={cn(
+        'flex flex-col items-start gap-2',
+        'md:flex-row md:justify-between md:items-end',
+      )}
+      style={{ color: textColor }}
+    >
       {/* Logo — left on mobile and desktop */}
       <div className="flex flex-col items-start gap-[8px]">
         {/* Logo — LiquidMetal shader, same size as static SVG was (h-8 mobile / h-[45px] desktop) */}
-        <div
-          role="img"
-          aria-label="Globo Studio"
-          className="relative overflow-hidden h-8 md:h-[45px] aspect-[86/56]"
+        <a
+          href="#hero"
+          aria-label="Back to top"
+          onClick={onLogoClick ? (e) => { e.preventDefault(); onLogoClick(); } : undefined}
         >
-          <LiquidMetal
-            {...LOGO_SHADER_PROPS}
-            className="absolute inset-0 w-full h-full"
-            aria-hidden
-          />
-        </div>
+          <div
+            role="img"
+            aria-label="Globo Studio"
+            className="relative overflow-hidden h-8 md:h-[45px] aspect-[86/56]"
+          >
+            <LiquidMetal
+              {...LOGO_SHADER_PROPS}
+              className="absolute inset-0 w-full h-full"
+              aria-hidden
+            />
+          </div>
+        </a>
 
         {/* Mobile only: two lines + "Built with" stacked below logo */}
         <div className={cn(textCls, 'flex flex-col items-start md:hidden')}>
-          <span>© Globo 2026</span>
-          <span>Designer person born in Chile. Based in Sydney, NSW</span>
-          <span>Built with ♥ and good vibes (coding)</span>
+          <span className="[font-weight:var(--text-body-weight)]">© Globo 2026</span>
+          <span>Designer person born in Chile</span>
+          <span>Based in Sydney, NSW</span>
+          <span>Built with obsession and good vibes (coding)</span>
         </div>
 
-        {/* Desktop only: single dash-separated line below logo */}
-        <p className={cn(textCls, 'hidden md:block')}>
-          © Globo 2026 - Designer person born in Chile. Based in Sydney, NSW
-        </p>
+        {/* Desktop only: stacked lines below logo */}
+        <div className={cn(textCls, 'hidden md:flex flex-col items-start')}>
+          <span className="[font-weight:var(--text-body-weight)]">© Globo 2026</span>
+          <span>Designer person born in Chile. Based in Sydney, NSW</span>
+        </div>
       </div>
 
       {/* Desktop only: tagline (right) */}
-      <p className={cn(textCls, 'hidden md:block')}>Built with ♥ and good vibes (coding)</p>
+      <p className={cn(textCls, 'hidden md:block')}>Built with obsession and good vibes (coding)</p>
     </div>
   );
 }

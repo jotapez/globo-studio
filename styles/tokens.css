@@ -94,7 +94,7 @@
      TYPOGRAPHY — Font Families
      ------------------------------------------------------- */
 
-  --font-sans:  'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-sans:  'Bricolage Grotesque', sans-serif;
   --font-serif: 'Instrument Serif', Georgia, serif;
 
 
@@ -102,20 +102,24 @@
      TYPOGRAPHY — Desktop Type Scale
 
      Each token pair: -size (font-size) + -leading (line-height)
-     Named after Figma layer labels (H1-Helvetica, H2-Instrument, …)
+     Named after Figma layer labels (H1-Bricolage, H2-Instrument, …)
      ------------------------------------------------------- */
 
-  /* H1 — Helvetica Neue, 64 / 84 */
+  /* H1 — Bricolage Grotesque Medium, 64 / 84, -5% tracking */
   --text-h1-size:           4rem;        /* 64px */
   --text-h1-leading:        5.25rem;     /* 84px */
+  --text-h1-tracking:       -0.05em;
+  --text-h1-weight:         500;         /* Medium */
 
   /* H1 Serif — Instrument Serif, 64 / 84 */
   --text-h1-serif-size:     4rem;        /* 64px */
   --text-h1-serif-leading:  5.25rem;     /* 84px */
 
-  /* H2 — Helvetica Neue, 48 / 56 */
+  /* H2 — Bricolage Grotesque Medium, 48 / 56, -5% tracking */
   --text-h2-size:           3rem;        /* 48px */
   --text-h2-leading:        3.5rem;      /* 56px */
+  --text-h2-tracking:       -0.05em;
+  --text-h2-weight:         500;         /* Medium */
 
   /* H2 Serif — Instrument Serif, 32 / 42 */
   --text-h2-serif-size:     2rem;        /* 32px */
@@ -125,39 +129,44 @@
   --text-h3-size:           1.5rem;      /* 24px */
   --text-h3-leading:        2rem;        /* 32px */
 
-  /* Intro — Helvetica Neue, 32 / 40 */
+  /* Intro — Bricolage Grotesque Medium, 32 / 40 */
   --text-intro-size:        2rem;        /* 32px */
   --text-intro-leading:     2.5rem;      /* 40px */
+  --text-intro-weight:      500;         /* Medium */
+  --text-intro-tracking:    -0.03em;     /* -3% letter-spacing */
 
-  /* Intro Small — Helvetica Neue, 20 / 28 */
+  /* Intro Small — Bricolage Grotesque Regular, 20 / 28 */
   --text-intro-sm-size:     1.25rem;     /* 20px */
   --text-intro-sm-leading:  1.75rem;     /* 28px */
+  --text-intro-sm-weight:   400;         /* Regular */
 
-  /* Body — Helvetica Neue, 16 / 24 */
+  /* Body — Bricolage Grotesque Regular, 16 / 24 */
   --text-body-size:         1rem;        /* 16px */
   --text-body-leading:      1.5rem;      /* 24px */
+  --text-body-weight:       400;         /* Regular */
+  --text-body-light-weight: 300;         /* Light */
 
-  /* Small — Helvetica Neue, 14 / 21 */
+  /* Small — Bricolage Grotesque, 14 / 21 */
   --text-sm-size:           0.875rem;    /* 14px */
   --text-sm-leading:        1.3125rem;   /* 21px */
 
-  /* Label — Helvetica Neue, 16 / 24 (interactive elements) */
+  /* Label — Bricolage Grotesque, 16 / 24 (interactive elements) */
   --text-label-size:        1rem;        /* 16px */
   --text-label-leading:     1.5rem;      /* 24px */
 
-  /* Label Small — Helvetica Neue, 14 / 18 */
+  /* Label Small — Bricolage Grotesque, 14 / 18 */
   --text-label-sm-size:     0.875rem;    /* 14px */
   --text-label-sm-leading:  1.125rem;    /* 18px */
 
-  /* Caption — Helvetica Neue, 16 / 24 */
+  /* Caption — Bricolage Grotesque, 16 / 24 */
   --text-caption-size:           1rem;         /* 16px */
   --text-caption-leading:        1.5rem;       /* 24px */
 
-  /* Caption mobile — Helvetica Neue, 14 / 19 */
+  /* Caption mobile — Bricolage Grotesque, 14 / 19 */
   --text-caption-mobile-size:    0.875rem;     /* 14px */
   --text-caption-mobile-leading: 1.1875rem;    /* 19px */
 
-  /* Hero Label — Helvetica Neue, 42 / 52 (year + "Portfolio" below hero) */
+  /* Hero Label — Bricolage Grotesque, 42 / 52 (year + "Portfolio" below hero) */
   --text-hero-label-size:           2.625rem;   /* 42px */
   --text-hero-label-leading:        3.25rem;    /* 52px */
 
@@ -166,7 +175,7 @@
      TYPOGRAPHY — Mobile Type Scale
      ------------------------------------------------------- */
 
-  /* H1 mobile — Helvetica Neue, 36 / 50 */
+  /* H1 mobile — Bricolage Grotesque, 36 / 50 */
   --text-h1-mobile-size:          2.25rem;      /* 36px */
   --text-h1-mobile-leading:       3.125rem;     /* 50px */
 
@@ -174,7 +183,7 @@
   --text-h1-serif-mobile-size:    2.25rem;      /* 36px */
   --text-h1-serif-mobile-leading: 3.125rem;     /* 50px */
 
-  /* H2 mobile — Helvetica Neue, 32 / 40 */
+  /* H2 mobile — Bricolage Grotesque, 32 / 40 */
   --text-h2-mobile-size:          2rem;         /* 32px */
   --text-h2-mobile-leading:       2.5rem;       /* 40px */
 
@@ -186,23 +195,23 @@
   --text-h3-mobile-size:          1rem;         /* 16px */
   --text-h3-mobile-leading:       1.5rem;       /* 24px */
 
-  /* Intro mobile — Helvetica Neue, 24 / 29 */
+  /* Intro mobile — Bricolage Grotesque, 24 / 29 */
   --text-intro-mobile-size:       1.5rem;       /* 24px */
   --text-intro-mobile-leading:    1.8125rem;    /* 29px */
 
-  /* Intro Small mobile — Helvetica Neue, 16 / 24 */
+  /* Intro Small mobile — Bricolage Grotesque, 16 / 24 */
   --text-intro-sm-mobile-size:    1rem;         /* 16px */
   --text-intro-sm-mobile-leading: 1.5rem;       /* 24px */
 
-  /* Body mobile — Helvetica Neue, 14 / 21 */
+  /* Body mobile — Bricolage Grotesque, 14 / 21 */
   --text-body-mobile-size:        0.875rem;     /* 14px */
   --text-body-mobile-leading:     1.3125rem;    /* 21px */
 
-  /* XS / Small mobile — Helvetica Neue, 12 / 18 */
+  /* XS / Small mobile — Bricolage Grotesque, 12 / 18 */
   --text-xs-size:                 0.75rem;      /* 12px */
   --text-xs-leading:              1.125rem;     /* 18px */
 
-  /* Hero Label mobile — Helvetica Neue, 24 / 32 */
+  /* Hero Label mobile — Bricolage Grotesque, 24 / 32 */
   --text-hero-label-mobile-size:    1.5rem;     /* 24px */
   --text-hero-label-mobile-leading: 2rem;       /* 32px */
 
@@ -231,6 +240,7 @@
   --text-primary:            var(--color-black);      /* text/primary */
   --text-secondary:          var(--color-gray-900);   /* text/secondary */
   --text-muted:              rgba(0, 0, 0, 0.70);     /* text/muted — captions, secondary labels */
+  --text-muted-alpha:        0.70;                    /* alpha channel of --text-muted, for opacity use */
   --text-nav-item:           var(--color-white);      /* text/nav-item */
   --text-nav-item-selected:  var(--color-black);      /* text/nav-item-selected */
 
@@ -242,6 +252,7 @@
 
   --bg-page:          var(--color-white);             /* background/page */
   --bg-page-white:    var(--color-white);             /* white variant for project wrappers */
+  --bg-page-home:     var(--color-gray-50);           /* background/page — homepage light mode */
   --bg-nav:           var(--color-black);             /* background/nav-bkg */
   --bg-nav-selected:  var(--color-white);             /* background/nav-selected */
   --bg-nav-hover:     var(--color-gray-600);           /* background/nav-bkg-hover */
@@ -265,8 +276,9 @@
      ------------------------------------------------------- */
 
   --shadow-nav:
-    0px 0px  4px 0px rgba(0, 0, 0, 0.04),
-    0px 8px 16px 0px rgba(0, 0, 0, 0.08);
+    0px 0.733px 0.896px 0px rgba(0, 0, 0, 0.05),
+    0px 3.467px 3.504px 0px rgba(0, 0, 0, 0.09),
+    0px 9px     11px    0px rgba(0, 0, 0, 0.14);
 
   --shadow-pill:
     0px   2px  12px 0px rgba(0, 0, 0, 0.01),
@@ -348,7 +360,7 @@
   --card-gap-mobile:     40px;
 
   --clock-gap:           16px;   /* face → city label: desktop / tablet */
-  --clock-gap-mobile:     4px;   /* face → city label: mobile */
+  --clock-gap-mobile:     8px;   /* face → city label: mobile */
 
   --carousel-height:          64px;
   --carousel-height-mobile:   48px;
