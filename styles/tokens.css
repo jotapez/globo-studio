@@ -252,6 +252,7 @@
 
   --bg-page:          var(--color-white);             /* background/page */
   --bg-page-white:    var(--color-white);             /* white variant for project wrappers */
+  --bg-page-home:     var(--color-gray-50);           /* background/page — homepage light mode */
   --bg-nav:           var(--color-black);             /* background/nav-bkg */
   --bg-nav-selected:  var(--color-white);             /* background/nav-selected */
   --bg-nav-hover:     var(--color-gray-600);           /* background/nav-bkg-hover */
@@ -275,8 +276,9 @@
      ------------------------------------------------------- */
 
   --shadow-nav:
-    0px 0px  4px 0px rgba(0, 0, 0, 0.04),
-    0px 8px 16px 0px rgba(0, 0, 0, 0.08);
+    0px 0.733px 0.896px 0px rgba(0, 0, 0, 0.05),
+    0px 3.467px 3.504px 0px rgba(0, 0, 0, 0.09),
+    0px 9px     11px    0px rgba(0, 0, 0, 0.14);
 
   --shadow-pill:
     0px   2px  12px 0px rgba(0, 0, 0, 0.01),

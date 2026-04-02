@@ -115,7 +115,7 @@ export const ContactFooterV3 = forwardRef<HTMLElement, ContactFooterV3Props>(
         style={{ backgroundColor: bgColor ?? 'var(--bg-page)', color: textColor }}
         className={cn(
           'relative min-h-lvh flex flex-col',
-          'pt-[104px] md:pt-[118px]',
+          'pt-[88px] md:pt-[118px]',
           'pb-8',
           className,
         )}
@@ -134,7 +134,7 @@ export const ContactFooterV3 = forwardRef<HTMLElement, ContactFooterV3Props>(
               <motion.div variants={itemVariants}>
                 <ContactLinks />
               </motion.div>
-              <motion.div variants={itemVariants}>
+              <motion.div variants={itemVariants} className="pb-[24px] md:pb-0">
                 <InteractiveClocksRowV3 theme={theme} />
               </motion.div>
             </div>
@@ -392,7 +392,7 @@ function SolidClockFace({ timezone, city, clockFace, clockBorder, showCircleBord
       <p
         aria-hidden="true"
         className={cn(
-          'font-sans [font-weight:var(--text-body-light-weight)] text-center w-full',
+          'font-sans [font-weight:var(--text-body-light-weight)] md:[font-weight:var(--text-body-weight)] text-center w-full',
           '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
           'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
         )}
@@ -550,21 +550,21 @@ function FooterBar({ onLogoClick, textColor }: { onLogoClick?: () => void; textC
 
         {/* Mobile only: two lines + "Built with" stacked below logo */}
         <div className={cn(textCls, 'flex flex-col items-start md:hidden')}>
-          <span>© Globo 2026</span>
+          <span className="[font-weight:var(--text-body-weight)]">© Globo 2026</span>
           <span>Designer person born in Chile</span>
           <span>Based in Sydney, NSW</span>
-          <span>Built with ♥ and good vibes (coding)</span>
+          <span>Built with obsession and good vibes (coding)</span>
         </div>
 
         {/* Desktop only: stacked lines below logo */}
         <div className={cn(textCls, 'hidden md:flex flex-col items-start')}>
-          <span>© Globo 2026</span>
+          <span className="[font-weight:var(--text-body-weight)]">© Globo 2026</span>
           <span>Designer person born in Chile. Based in Sydney, NSW</span>
         </div>
       </div>
 
       {/* Desktop only: tagline (right) */}
-      <p className={cn(textCls, 'hidden md:block')}>Built with ♥ and good vibes (coding)</p>
+      <p className={cn(textCls, 'hidden md:block')}>Built with obsession and good vibes (coding)</p>
     </div>
   );
 }

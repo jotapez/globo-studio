@@ -255,6 +255,7 @@ export default function HomePage() {
 
   return (
     <>
+      <style>{`:root:not(.dark) { --bg-page: var(--bg-page-home); }`}</style>
       {/* Fixed navigation — always on top */}
       <Nav
         activeSection={activeSection === 'intro' ? 'hero' : activeSection}
