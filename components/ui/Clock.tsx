@@ -160,7 +160,7 @@ export const Clock = forwardRef<HTMLDivElement, ClockProps>(
         <p
           aria-hidden="true"
           className={cn(
-            'font-sans [font-weight:var(--text-body-weight)]',
+            'font-sans [font-weight:var(--text-body-light-weight)]',
             // mobile: Body-mobile (14/21), desktop: Body (16/24)
             '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
             'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',

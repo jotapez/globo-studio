@@ -142,7 +142,7 @@ export const ContactFooterV3 = forwardRef<HTMLElement, ContactFooterV3Props>(
 
           {/* Footer bar — pinned to bottom */}
           <motion.div variants={itemVariants}>
-            <FooterBar onLogoClick={onLogoClick} />
+            <FooterBar onLogoClick={onLogoClick} textColor={textColor} />
           </motion.div>
 
         </motion.div>
@@ -392,7 +392,7 @@ function SolidClockFace({ timezone, city, clockFace, clockBorder, showCircleBord
       <p
         aria-hidden="true"
         className={cn(
-          'font-sans [font-weight:var(--text-body-weight)] text-center w-full',
+          'font-sans [font-weight:var(--text-body-light-weight)] text-center w-full',
           '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
           'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
         )}
@@ -469,9 +469,9 @@ function ContactLinks() {
       {/* Get in touch */}
       <div className="flex flex-col gap-0 text-left">
         <h3 className={cn(
-          'font-serif font-normal not-italic text-[var(--text-muted)]',
-          '[font-size:var(--text-h3-mobile-size)] [line-height:var(--text-h3-mobile-leading)]',
-          'md:[font-size:var(--text-h3-size)] md:[line-height:var(--text-h3-leading)]',
+          'font-serif font-normal not-italic',
+          '[font-size:var(--text-h2-serif-mobile-size)] [line-height:var(--text-h2-serif-mobile-leading)]',
+          'md:[font-size:var(--text-h2-serif-size)] md:[line-height:var(--text-h2-serif-leading)]',
         )}>
           Get in touch
         </h3>
@@ -489,9 +489,9 @@ function ContactLinks() {
       {/* Stalk me */}
       <div className="flex flex-col gap-0 text-left">
         <h3 className={cn(
-          'font-serif font-normal not-italic text-[var(--text-muted)]',
-          '[font-size:var(--text-h3-mobile-size)] [line-height:var(--text-h3-mobile-leading)]',
-          'md:[font-size:var(--text-h3-size)] md:[line-height:var(--text-h3-leading)]',
+          'font-serif font-normal not-italic',
+          '[font-size:var(--text-h2-serif-mobile-size)] [line-height:var(--text-h2-serif-mobile-leading)]',
+          'md:[font-size:var(--text-h2-serif-size)] md:[line-height:var(--text-h2-serif-leading)]',
         )}>
           Stalk me
         </h3>
@@ -512,18 +512,21 @@ function ContactLinks() {
 
 // ─── FooterBar (private) ──────────────────────────────────────────────────────
 
-function FooterBar({ onLogoClick }: { onLogoClick?: () => void }) {
+function FooterBar({ onLogoClick, textColor }: { onLogoClick?: () => void; textColor: string }) {
   const textCls = cn(
-    'font-sans not-italic text-[var(--text-primary)]',
+    'font-sans not-italic [font-weight:var(--text-body-light-weight)]',
     '[font-size:var(--text-xs-size)] [line-height:var(--text-xs-leading)]',
     'md:[font-size:var(--text-sm-size)] md:[line-height:var(--text-sm-leading)]',
   );
 
   return (
-    <div className={cn(
-      'flex flex-col items-start gap-2',
-      'md:flex-row md:justify-between md:items-end',
-    )}>
+    <div
+      className={cn(
+        'flex flex-col items-start gap-2',
+        'md:flex-row md:justify-between md:items-end',
+      )}
+      style={{ color: textColor }}
+    >
       {/* Logo — left on mobile and desktop */}
       <div className="flex flex-col items-start gap-[8px]">
         {/* Logo — LiquidMetal shader, same size as static SVG was (h-8 mobile / h-[45px] desktop) */}

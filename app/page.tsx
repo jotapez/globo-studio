@@ -325,16 +325,7 @@ export default function HomePage() {
                 animate={interludeInView ? 'visible' : 'hidden'}
                 className="flex flex-col gap-0 md:gap-[8px] items-start md:items-center"
               >
-                <motion.p
-                  variants={interludeWordVariants}
-                  className={cn(
-                    'font-serif font-normal not-italic text-[var(--text-muted)]',
-                    '[font-size:var(--text-h3-mobile-size)] [line-height:var(--text-h3-mobile-leading)]',
-                    'md:[font-size:var(--text-h3-size)] md:[line-height:var(--text-h3-leading)]',
-                  )}
-                >
-                  Globo experiments
-                </motion.p>
+
                 <h2
                   className={cn(
                     'font-normal not-italic text-left md:text-center',

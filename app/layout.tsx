@@ -4,7 +4,8 @@ import './globals.css';
 
 /**
  * Bricolage Grotesque — editorial variable grotesque, self-hosted via next/font.
- * Weights 400 (Regular) + 500 (Medium) cover all type-scale uses:
+ * Weights 300 (Light) + 400 (Regular) + 500 (Medium) cover all type-scale uses:
+ *   Light   → clock labels
  *   Regular → body copy, small, labels, labels-sm
  *   Medium  → display (H1/H2), intro
  * The CSS variable name matches tokens.css: --font-sans.
@@ -12,7 +13,7 @@ import './globals.css';
 const bricolageGrotesque = Bricolage_Grotesque({
   variable: '--font-sans',
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
+  weight: ['300', '400', '500', '600'],
 });
 
 /**

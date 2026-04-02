@@ -296,8 +296,8 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
                 'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
               )}
             >
-              <p className="text-[var(--text-primary)]">Juan Pablo Castro (in Kyoto)</p>
-              <p className="text-[var(--text-muted)]">Product Designer</p>
+              <p className="text-[var(--text-primary)] [font-weight:var(--text-body-weight)]">Juan Pablo Castro (in Kyoto)</p>
+              <p className="text-[var(--text-muted)] [font-weight:var(--text-body-light-weight)]">Product Designer</p>
             </div>
           </motion.div>
 

@@ -169,7 +169,7 @@ function ClockFace({ timezone, city, index, total }: ClockFaceProps) {
       <p
         aria-hidden="true"
         className={cn(
-          'font-sans [font-weight:var(--text-body-weight)] text-center w-full',
+          'font-sans [font-weight:var(--text-body-light-weight)] text-center w-full',
           '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
           'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
         )}

@@ -144,6 +144,7 @@
   --text-body-size:         1rem;        /* 16px */
   --text-body-leading:      1.5rem;      /* 24px */
   --text-body-weight:       400;         /* Regular */
+  --text-body-light-weight: 300;         /* Light */
 
   /* Small — Bricolage Grotesque, 14 / 21 */
   --text-sm-size:           0.875rem;    /* 14px */

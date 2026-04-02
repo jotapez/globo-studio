@@ -289,7 +289,7 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
                     className={cn(
                       'relative z-10 whitespace-nowrap',
                       // Figma: Bricolage Grotesque Regular — explicit family + weight
-                      '[font-family:var(--font-sans)] font-normal',
+                      '[font-family:var(--font-sans)] [font-weight:var(--text-body-weight)]',
                       // font size: Label-Small 14/18 on mobile → Label 16/24 on desktop
                       'text-[var(--text-label-sm-size)] leading-[var(--text-label-sm-leading)]',
                       'md:text-[var(--text-label-size)] md:leading-[var(--text-label-leading)]',
