@@ -14,7 +14,7 @@
  * Clocks (shader mode): ShaderClocksRow (Figma 1643:706)
  */
 
-import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion, useInView, useReducedMotion, type Variants } from 'framer-motion';
 import { toZonedTime } from 'date-fns-tz';
@@ -44,7 +44,8 @@ const CLOCKS = [
   { city: 'Kyoto, Japan',          timezone: 'Asia/Tokyo'          },
 ] as const;
 
-const OVERLAP = 40;
+const OVERLAP        = 40;
+const INTRO_DURATION = 2200; // ms
 
 // Logo shader — Paper Design (exported Mar 31 2026, @paper-design/shaders-react@0.0.72)
 // https://app.paper.design/file/01KJ49ZNQEH0F1QK3CFW5W4DZG?node=4-0
@@ -73,6 +74,34 @@ const CLOCK_COLORS_FULL = [
   '#0055FF',  // Zurich — background/clock blue
   '#00FF08',  // Kyoto  — background/clock green
 ] as const;
+
+// ─── helpers ──────────────────────────────────────────────────────────────────
+
+function easeInOutCubic(t: number): number {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function getAngles(timezone: string): { second: number; minute: number; hour: number } {
+  const d   = toZonedTime(new Date(), timezone);
+  const ms  = d.getMilliseconds();
+  const sec = d.getSeconds() + ms / 1000;
+  const min = d.getMinutes() + sec / 60;
+  const hr  = (d.getHours() % 12) + min / 60;
+  return {
+    second: (sec / 60) * 360,
+    minute: (min / 60) * 360,
+    hour:   (hr  / 12) * 360,
+  };
+}
+
+function getTimeLabel(timezone: string): string {
+  const d = toZonedTime(new Date(), timezone);
+  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+
+function setHandTransform(el: SVGLineElement | null, angle: number) {
+  if (el) el.setAttribute('transform', `rotate(${angle}, 50, 50)`);
+}
 
 // ─── shared link classes ──────────────────────────────────────────────────────
 
@@ -166,6 +195,9 @@ function InteractiveClocksRowV3({ theme }: { theme: 'auto' | 'light' | 'dark' })
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
   const [mounted, setMounted] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  // Persists across clock mode changes so the intro doesn't replay when user toggles
+  const hasPlayedIntroRef = useRef(false);
+  const handleIntroComplete = useCallback(() => { hasPlayedIntroRef.current = true; }, []);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -245,7 +277,13 @@ function InteractiveClocksRowV3({ theme }: { theme: 'auto' | 'light' | 'dark' })
             transition={{ duration: 0.25, ease: 'easeInOut' }}
             className="w-full"
           >
-            <SolidClocksRow clockFaces={clockFaces} clockBorder={clockBorder} showCircleBorder={effectiveMode !== 'color-full'} />
+            <SolidClocksRow
+              clockFaces={clockFaces}
+              clockBorder={clockBorder}
+              showCircleBorder={effectiveMode !== 'color-full'}
+              skipIntro={hasPlayedIntroRef.current}
+              onIntroComplete={handleIntroComplete}
+            />
           </motion.div>
         </AnimatePresence>
       </div>
@@ -287,9 +325,13 @@ interface SolidClocksRowProps {
   clockBorder: string;
   /** Whether to show the ring stroke on each circle. Defaults to true. */
   showCircleBorder?: boolean;
+  /** Skip the intro animation and go straight to ticking (e.g. after first play). */
+  skipIntro?: boolean;
+  /** Called when the intro animation completes on the first clock. */
+  onIntroComplete?: () => void;
 }
 
-function SolidClocksRow({ clockFaces, clockBorder, showCircleBorder = true }: SolidClocksRowProps) {
+function SolidClocksRow({ clockFaces, clockBorder, showCircleBorder = true, skipIntro = false, onIntroComplete }: SolidClocksRowProps) {
   return (
     <div className="flex items-center w-full" style={{ paddingRight: OVERLAP }}>
       {CLOCKS.map((clock, i) => (
@@ -304,6 +346,8 @@ function SolidClocksRow({ clockFaces, clockBorder, showCircleBorder = true }: So
             clockFace={clockFaces[i]}
             clockBorder={clockBorder}
             showCircleBorder={showCircleBorder}
+            skipIntro={skipIntro}
+            onIntroComplete={i === 0 ? onIntroComplete : undefined}
           />
         </div>
       ))}
@@ -315,8 +359,9 @@ function SolidClocksRow({ clockFaces, clockBorder, showCircleBorder = true }: So
 //
 // SVG geometry identical to ClockFaceV2 in ContactFooterV2:
 //   viewBox="1.5 1.5 97.0 97.0", r=48.5, strokeWidth=0.25
-//   Hour hand:   (50,50)→(50,24)
-//   Minute hand: (50,50)→(50,15)
+//   Hour hand:    (50,50)→(50,24)
+//   Minute hand:  (50,50)→(50,15)
+//   Seconds hand: (50,50)→(50,12)  ← new
 
 interface SolidClockFaceProps {
   timezone: string;
@@ -324,35 +369,93 @@ interface SolidClockFaceProps {
   clockFace: string;
   clockBorder: string;
   showCircleBorder?: boolean;
+  /** Skip the intro and go straight to ticking (use when intro already played). */
+  skipIntro?: boolean;
+  /** Called when the intro animation completes. */
+  onIntroComplete?: () => void;
 }
 
-function SolidClockFace({ timezone, city, clockFace, clockBorder, showCircleBorder = true }: SolidClockFaceProps) {
-  const [time, setTime] = useState<{ h: number; m: number; s: number } | null>(null);
+function SolidClockFace({ timezone, city, clockFace, clockBorder, showCircleBorder = true, skipIntro = false, onIntroComplete }: SolidClockFaceProps) {
+  const [phase, setPhase] = useState<'idle' | 'animating' | 'ticking'>(skipIntro ? 'ticking' : 'idle');
+  const [timeLabel, setTimeLabel] = useState<string | null>(null);
 
+  const rootRef       = useRef<HTMLDivElement>(null);
+  const hourHandRef   = useRef<SVGLineElement>(null);
+  const minuteHandRef = useRef<SVGLineElement>(null);
+  const secondHandRef = useRef<SVGLineElement>(null);
+  const rafRef        = useRef<number>(0);
+
+  // One-shot IntersectionObserver: idle → animating (skipped when skipIntro=true)
   useEffect(() => {
-    function tick() {
-      const d = toZonedTime(new Date(), timezone);
-      setTime({ h: d.getHours(), m: d.getMinutes(), s: d.getSeconds() });
+    if (phase !== 'idle') return;
+    const el = rootRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPhase('animating');
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [phase]);
+
+  // rAF loop — intro animation ('animating') or real-time ticking ('ticking')
+  useEffect(() => {
+    if (phase === 'idle') return;
+
+    if (phase === 'animating') {
+      const target    = getAngles(timezone);
+      const startTime = performance.now();
+
+      function frame(now: number) {
+        const t     = Math.min((now - startTime) / INTRO_DURATION, 1);
+        const eased = easeInOutCubic(t);
+        setHandTransform(hourHandRef.current,   eased * (360 + target.hour));
+        setHandTransform(minuteHandRef.current, eased * (360 + target.minute));
+        setHandTransform(secondHandRef.current, eased * (360 + target.second));
+        if (t < 1) {
+          rafRef.current = requestAnimationFrame(frame);
+        } else {
+          onIntroComplete?.();
+          setPhase('ticking');
+        }
+      }
+      rafRef.current = requestAnimationFrame(frame);
+
+    } else {
+      // Real-time smooth ticking
+      let lastMinute = -1;
+
+      function tick() {
+        const angles = getAngles(timezone);
+        setHandTransform(hourHandRef.current,   angles.hour);
+        setHandTransform(minuteHandRef.current, angles.minute);
+        setHandTransform(secondHandRef.current, angles.second);
+        const d = toZonedTime(new Date(), timezone);
+        if (d.getMinutes() !== lastMinute) {
+          lastMinute = d.getMinutes();
+          setTimeLabel(getTimeLabel(timezone));
+        }
+        rafRef.current = requestAnimationFrame(tick);
+      }
+      setTimeLabel(getTimeLabel(timezone));
+      rafRef.current = requestAnimationFrame(tick);
     }
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, [timezone]);
 
-  const { h = 0, m = 0, s = 0 } = time ?? {};
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [phase, timezone, onIntroComplete]);
 
-  const minuteAngle = (m / 60) * 360 + (s / 60) * 6;
-  const hourAngle   = ((h % 12) / 12) * 360 + (m / 60) * 30;
-
-  const timeString = useMemo(
-    () => `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`,
-    [h, m],
-  );
+  const label = timeLabel ?? '00:00';
 
   return (
     <div
+      ref={rootRef}
       role="img"
-      aria-label={`${city}: ${timeString}`}
+      aria-label={`${city}: ${label}`}
       className="flex flex-col items-center gap-[var(--clock-gap-mobile)] md:gap-[var(--clock-gap)] w-full"
       style={{
         '--clock-face':   clockFace,
@@ -373,18 +476,26 @@ function SolidClockFace({ timezone, city, clockFace, clockBorder, showCircleBord
             strokeWidth={showCircleBorder ? 0.25 : 0}
           />
           <line
+            ref={hourHandRef}
             x1="50" y1="50" x2="50" y2="24"
             stroke="var(--clock-border)"
             strokeWidth="0.25"
             strokeLinecap="round"
-            transform={`rotate(${hourAngle}, 50, 50)`}
           />
           <line
+            ref={minuteHandRef}
             x1="50" y1="50" x2="50" y2="15"
             stroke="var(--clock-border)"
             strokeWidth="0.25"
             strokeLinecap="round"
-            transform={`rotate(${minuteAngle}, 50, 50)`}
+          />
+          {/* Seconds hand — longest (38/48.5 ≈ 78 %), sweeps fluidly */}
+          <line
+            ref={secondHandRef}
+            x1="50" y1="50" x2="50" y2="12"
+            stroke="var(--clock-border)"
+            strokeWidth="0.25"
+            strokeLinecap="round"
           />
         </svg>
       </div>
@@ -392,13 +503,13 @@ function SolidClockFace({ timezone, city, clockFace, clockBorder, showCircleBord
       <p
         aria-hidden="true"
         className={cn(
-          'font-sans [font-weight:var(--text-body-light-weight)] md:[font-weight:var(--text-body-weight)] text-center w-full',
+          'font-sans [font-weight:var(--text-body-light-weight)] md:[font-weight:var(--text-h2-weight)] text-center w-full',
           '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
           'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
         )}
       >
         <span className="md:hidden">{city.split(',')[0].trim()}</span>
-        <span className="hidden md:inline">{city.split(',')[0].trim()}, {timeString}</span>
+        <span className="hidden md:inline">{city.split(',')[0].trim()}, {label}</span>
       </p>
     </div>
   );
