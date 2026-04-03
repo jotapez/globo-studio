@@ -13,9 +13,6 @@
 import { useState } from 'react';
 import Image, { type ImageProps } from 'next/image';
 
-// Fixed display size for the loading SVG — independent of the container size.
-const LOADER_W = 300;
-const LOADER_H = 165; // preserves 2112:1160 aspect ratio
 
 export function ProjectImage({ onLoad, ...props }: ImageProps) {
   const [loaded, setLoaded] = useState(false);
@@ -27,10 +24,9 @@ export function ProjectImage({ onLoad, ...props }: ImageProps) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/loading-image.svg"
-            width={LOADER_W}
-            height={LOADER_H}
             alt=""
             aria-hidden
+            className="w-[300px] h-[165px] md:w-[450px] md:h-[248px]"
           />
         </div>
       )}
