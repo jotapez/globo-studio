@@ -25,7 +25,8 @@
  * • Active item    → click is suppressed             (no navigation)
  * • Other projects → navigate to their /work/[slug] (page link, same tab)
  * • "Next project" → navigates to `nextHref`         (mobile only, same tab)
- * • On mobile, "Globo" and "Next" show the pill for 0.4s before navigating.
+ * • On mobile, pill stays on the clicked item until the new page has loaded
+ *   (minimum 300 ms). The client label does not update until the pill returns.
  *
  * Dark / light mode
  * ─────────────────
@@ -38,6 +39,7 @@
  * nextHref     — href for the "Next project" item (mobile nav only)
  * allProjects  — ordered list of all projects for the desktop nav items
  * nextLabel    — override the "Next project" label (default: "Next project")
+ * isPending    — true while the next page is loading (from useTransition)
  * disabled     — disables all items (use during page transitions)
  * className    — extra classes forwarded to both <nav> wrappers
  */
@@ -59,11 +61,17 @@ export interface ProjectNavProps {
   allProjects: Array<{ slug: string; clientName: string; bgColor: string }>;
   /** Override the mobile right-hand item label. Defaults to "Next". */
   nextLabel?: string;
+  /** True while the next page is loading — controls when the pill returns. */
+  isPending?: boolean;
   /** Disables all items — use during page transitions. */
   disabled?: boolean;
   /** Extra classes forwarded to the <nav> element via Nav's className prop. */
   className?: string;
 }
+
+// ─── constants ────────────────────────────────────────────────────────────────
+
+const MIN_PILL_MS = 300;
 
 // ─── component ────────────────────────────────────────────────────────────────
 
@@ -75,24 +83,75 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
       nextHref,
       allProjects,
       nextLabel = 'Next',
+      isPending = false,
       disabled,
       className,
     },
     ref,
   ) {
+    // Desktop active tracks activeSlug directly — no buffering needed.
     const [desktopActive, setDesktopActive] = useState(activeSlug);
-    const [mobileActive, setMobileActive]   = useState<string>('client');
+
+    // Mobile active pill position.
+    const [mobileActive, setMobileActive] = useState<string>('client');
+
+    // Displayed client name — only updates when page is ready + 300 ms min.
+    const [displayedClientName, setDisplayedClientName] = useState(clientName);
+
     const { startExit } = useProjectTransition();
-    const mobileDelayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+    // ── navigation tracking refs ──────────────────────────────────────────────
+    const isNavigatingMobileRef = useRef(false);
+    const minWaitUntilRef       = useRef(0);
+    const applyTimeoutRef       = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    // Always-current snapshot of the latest clientName prop (no effect deps needed).
+    const clientNameRef = useRef(clientName);
+    clientNameRef.current = clientName;
+
+    // Desktop: update immediately whenever slug changes.
     useEffect(() => { setDesktopActive(activeSlug); }, [activeSlug]);
-    useEffect(() => { setMobileActive('client'); }, [activeSlug]);
 
+    // Mobile label + pill: only update when NOT in a mobile navigation.
+    // Handles direct URL changes (e.g. browser back/forward).
+    useEffect(() => {
+      if (!isNavigatingMobileRef.current) {
+        setDisplayedClientName(clientName);
+        setMobileActive('client');
+      }
+    }, [clientName, activeSlug]);
+
+    // When the page finishes loading (isPending false → true → false), apply
+    // the buffered update after the 300 ms minimum has elapsed.
+    useEffect(() => {
+      if (!isPending && isNavigatingMobileRef.current) {
+        const remaining = minWaitUntilRef.current - Date.now();
+
+        if (applyTimeoutRef.current) clearTimeout(applyTimeoutRef.current);
+
+        const apply = () => {
+          applyTimeoutRef.current = null;
+          isNavigatingMobileRef.current = false;
+          setDisplayedClientName(clientNameRef.current);
+          setMobileActive('client');
+        };
+
+        if (remaining > 0) {
+          applyTimeoutRef.current = setTimeout(apply, remaining);
+        } else {
+          apply();
+        }
+      }
+    }, [isPending]);
+
+    // Cleanup on unmount.
     useEffect(() => {
       return () => {
-        if (mobileDelayTimeoutRef.current) clearTimeout(mobileDelayTimeoutRef.current);
+        if (applyTimeoutRef.current) clearTimeout(applyTimeoutRef.current);
       };
     }, []);
+
+    // ── click handler ─────────────────────────────────────────────────────────
 
     function handleNavClick(
       itemId: string,
@@ -104,13 +163,11 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
       if (!item?.href) return;
       setActive(itemId);
 
-      const shouldDelay = isMobile && (itemId === 'home' || itemId === 'next');
-      if (shouldDelay) {
-        if (mobileDelayTimeoutRef.current) clearTimeout(mobileDelayTimeoutRef.current);
-        mobileDelayTimeoutRef.current = setTimeout(() => {
-          mobileDelayTimeoutRef.current = null;
-          startExit(item.href);
-        }, 400);
+      if (isMobile && itemId === 'next') {
+        // Mark navigating — pill stays until isPending resolves + min wait.
+        isNavigatingMobileRef.current = true;
+        minWaitUntilRef.current = Date.now() + MIN_PILL_MS;
+        startExit(item.href);
         return;
       }
 
@@ -133,11 +190,11 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
     // Mobile: unchanged — Globo, active client name, Next project.
     const mobileItems = useMemo<NavItem[]>(
       () => [
-        { id: 'home',   label: 'Globo',    href: '/'       },
-        { id: 'client', label: clientName, href: ''          },
-        { id: 'next',   label: nextLabel,  href: nextHref   },
+        { id: 'home',   label: 'Globo',               href: '/'      },
+        { id: 'client', label: displayedClientName,    href: ''       },
+        { id: 'next',   label: nextLabel,              href: nextHref },
       ],
-      [clientName, nextLabel, nextHref],
+      [displayedClientName, nextLabel, nextHref],
     );
 
     return (

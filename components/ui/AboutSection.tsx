@@ -297,7 +297,7 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
               )}
             >
               <p className="text-[var(--text-primary)] [font-weight:var(--text-body-weight)]">Juan Pablo Castro (in Kyoto)</p>
-              <p className="text-[var(--text-muted)] [font-weight:var(--text-body-light-weight)]">Product Designer</p>
+              <p className="text-[var(--text-muted)] [font-weight:var(--text-body-light-weight)]">Designer person</p>
             </div>
           </motion.div>
 

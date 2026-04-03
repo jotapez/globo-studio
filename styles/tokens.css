@@ -240,7 +240,7 @@
   --text-primary:            var(--color-black);      /* text/primary */
   --text-secondary:          var(--color-gray-900);   /* text/secondary */
   --text-muted:              rgba(0, 0, 0, 0.70);     /* text/muted — captions, secondary labels */
-  --text-muted-alpha:        0.70;                    /* alpha channel of --text-muted, for opacity use */
+  --text-muted-alpha:        0.85;                    /* alpha channel of --text-muted, for opacity use */
   --text-nav-item:           var(--color-white);      /* text/nav-item */
   --text-nav-item-selected:  var(--color-black);      /* text/nav-item-selected */
 

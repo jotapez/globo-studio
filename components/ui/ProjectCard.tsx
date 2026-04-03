@@ -230,7 +230,7 @@ export function ProjectCard({
           onMouseLeave={leave}
           className={cn(
             'relative w-fit pointer-events-auto cursor-pointer',
-            'font-sans [font-weight:var(--text-body-weight)]',
+            'font-sans [font-weight:var(--text-h2-weight)]',
             '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
             'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
             '[color:var(--text-primary)]',
@@ -283,7 +283,7 @@ export function ProjectCard({
                 'md:hidden',
                 '[font-family:var(--font-sans)] [font-weight:var(--text-body-light-weight)]',
                 '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
-                '[color:var(--text-muted)]',
+                '[color:var(--text-primary)]',
               )}
             >
               {description}
@@ -297,7 +297,7 @@ export function ProjectCard({
                 'hidden md:block',
                 '[font-family:var(--font-sans)] [font-weight:var(--text-body-light-weight)]',
                 'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
-                '[color:var(--text-muted)]',
+                '[color:var(--text-primary)]',
                 'md:max-w-[570px]',
               )}
             >
@@ -314,7 +314,7 @@ export function ProjectCard({
               '[font-family:var(--font-sans)] [font-weight:var(--text-body-light-weight)]',
               '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
               'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
-              '[color:var(--text-muted)]',
+              '[color:var(--text-primary)]',
               'md:max-w-[570px]',
             )}
           >
