@@ -1,23 +1,32 @@
 'use client';
 
-import { createContext, useContext, useCallback } from 'react';
+import { createContext, useContext, useCallback, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface ProjectTransitionContextValue {
   startExit: (href: string) => void;
+  prefetch: (href: string) => void;
+  isPending: boolean;
 }
 
 const ProjectTransitionContext = createContext<ProjectTransitionContextValue | null>(null);
 
 export function ProjectTransitionProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const [isPending, startPageTransition] = useTransition();
 
   const startExit = useCallback((href: string) => {
-    router.push(href);
+    startPageTransition(() => {
+      router.push(href);
+    });
+  }, [router, startPageTransition]);
+
+  const prefetch = useCallback((href: string) => {
+    router.prefetch(href);
   }, [router]);
 
   return (
-    <ProjectTransitionContext.Provider value={{ startExit }}>
+    <ProjectTransitionContext.Provider value={{ startExit, prefetch, isPending }}>
       {children}
     </ProjectTransitionContext.Provider>
   );

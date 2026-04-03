@@ -33,7 +33,7 @@
  */
 
 import { forwardRef, useRef } from 'react';
-import Image from 'next/image';
+import { ProjectImage as Image } from '@/components/ui/ProjectImage';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 

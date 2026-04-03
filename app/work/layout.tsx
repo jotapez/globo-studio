@@ -1,4 +1,5 @@
 import { WorkTransition } from '@/components/ui/WorkTransition';
+import { ProjectTransitionProvider } from '@/components/ui/ProjectTransitionContext';
 
 export default function WorkLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -20,7 +21,9 @@ export default function WorkLayout({ children }: { children: React.ReactNode }) 
       >
         Skip to content
       </a>
-      <WorkTransition>{children}</WorkTransition>
+      <ProjectTransitionProvider>
+        <WorkTransition>{children}</WorkTransition>
+      </ProjectTransitionProvider>
     </>
   );
 }
