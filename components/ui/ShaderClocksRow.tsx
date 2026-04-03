@@ -24,9 +24,19 @@
  * ─────────────────────
  * Each clock is flex-1 + aspect-square — scales with the container width
  * automatically. No fixed sizes, no DOM measurement.
+ *
+ * Hands
+ * ─────
+ * Hour, minute, and seconds hands. Animated via requestAnimationFrame for
+ * sub-second precision and fluid motion. Angle updates are applied directly
+ * to SVG element refs — bypassing React re-renders for performance.
+ *
+ * On scroll into view (IntersectionObserver), hands play a one-shot intro:
+ * they start at 12 o'clock, sweep one full revolution with cubic ease-in-out,
+ * then settle on the current time. Real-time ticking continues after.
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { toZonedTime } from 'date-fns-tz';
 import { LiquidMetal } from '@paper-design/shaders-react';
 import { cn } from '@/lib/utils';
@@ -40,7 +50,8 @@ const CLOCKS = [
   { city: 'Kyoto, Japan',          timezone: 'Asia/Tokyo'          },
 ] as const;
 
-const OVERLAP = 40; // px — 40 px overlap at every breakpoint
+const OVERLAP       = 40;   // px — 40 px overlap at every breakpoint
+const INTRO_DURATION = 2200; // ms
 
 // Shader params — from Paper Design (exported Mar 31 2026, @paper-design/shaders-react@0.0.72)
 // https://app.paper.design/file/01KMPY83A0XVK3Q2G7D75K4S01?node=S-0
@@ -60,6 +71,34 @@ const SHADER_PROPS = {
   colorTint:  '#00000000',
   colorBack:  '#00000000',
 } as const;
+
+// ─── helpers ──────────────────────────────────────────────────────────────────
+
+function easeInOutCubic(t: number): number {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function getAngles(timezone: string): { second: number; minute: number; hour: number } {
+  const d   = toZonedTime(new Date(), timezone);
+  const ms  = d.getMilliseconds();
+  const sec = d.getSeconds() + ms / 1000;
+  const min = d.getMinutes() + sec / 60;
+  const hr  = (d.getHours() % 12) + min / 60;
+  return {
+    second: (sec / 60) * 360,
+    minute: (min / 60) * 360,
+    hour:   (hr  / 12) * 360,
+  };
+}
+
+function getTimeLabel(timezone: string): string {
+  const d = toZonedTime(new Date(), timezone);
+  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+
+function setHandTransform(el: SVGLineElement | null, angle: number) {
+  if (el) el.setAttribute('transform', `rotate(${angle}, 50, 50)`);
+}
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -101,34 +140,87 @@ interface ClockFaceProps {
 }
 
 function ClockFace({ timezone, city, index, total }: ClockFaceProps) {
-  const [time, setTime] = useState<{ h: number; m: number; s: number } | null>(null);
+  const [phase, setPhase] = useState<'idle' | 'animating' | 'ticking'>('idle');
+  const [timeLabel, setTimeLabel] = useState<string | null>(null);
 
+  const rootRef       = useRef<HTMLDivElement>(null);
+  const hourHandRef   = useRef<SVGLineElement>(null);
+  const minuteHandRef = useRef<SVGLineElement>(null);
+  const secondHandRef = useRef<SVGLineElement>(null);
+  const rafRef        = useRef<number>(0);
+
+  // One-shot IntersectionObserver: idle → animating
+  const observe = useCallback(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPhase('animating');
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(observe, [observe]);
+
+  // rAF loop — intro animation ('animating') or real-time ticking ('ticking')
   useEffect(() => {
-    function tick() {
-      const d = toZonedTime(new Date(), timezone);
-      setTime({ h: d.getHours(), m: d.getMinutes(), s: d.getSeconds() });
+    if (phase === 'idle') return;
+
+    if (phase === 'animating') {
+      const target    = getAngles(timezone);
+      const startTime = performance.now();
+
+      function frame(now: number) {
+        const t     = Math.min((now - startTime) / INTRO_DURATION, 1);
+        const eased = easeInOutCubic(t);
+        setHandTransform(hourHandRef.current,   eased * (360 + target.hour));
+        setHandTransform(minuteHandRef.current, eased * (360 + target.minute));
+        setHandTransform(secondHandRef.current, eased * (360 + target.second));
+        if (t < 1) {
+          rafRef.current = requestAnimationFrame(frame);
+        } else {
+          setPhase('ticking');
+        }
+      }
+      rafRef.current = requestAnimationFrame(frame);
+
+    } else {
+      // Real-time smooth ticking
+      let lastMinute = -1;
+
+      function tick() {
+        const angles = getAngles(timezone);
+        setHandTransform(hourHandRef.current,   angles.hour);
+        setHandTransform(minuteHandRef.current, angles.minute);
+        setHandTransform(secondHandRef.current, angles.second);
+        const d = toZonedTime(new Date(), timezone);
+        if (d.getMinutes() !== lastMinute) {
+          lastMinute = d.getMinutes();
+          setTimeLabel(getTimeLabel(timezone));
+        }
+        rafRef.current = requestAnimationFrame(tick);
+      }
+      setTimeLabel(getTimeLabel(timezone));
+      rafRef.current = requestAnimationFrame(tick);
     }
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, [timezone]);
 
-  const { h = 0, m = 0, s = 0 } = time ?? {};
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [phase, timezone]);
 
-  const minuteAngle = (m / 60) * 360 + (s / 60) * 6;
-  const hourAngle   = ((h % 12) / 12) * 360 + (m / 60) * 30;
-
-  const timeString = useMemo(
-    () => `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`,
-    [h, m],
-  );
-
+  const label    = timeLabel ?? '00:00';
   const cityName = city.split(',')[0].trim();
 
   return (
     <div
+      ref={rootRef}
       role="img"
-      aria-label={`${city}: ${timeString}`}
+      aria-label={`${city}: ${label}`}
       className="relative flex-1 min-w-0 flex flex-col items-center gap-[var(--clock-gap-mobile)] md:gap-[var(--clock-gap)]"
       style={{ marginRight: -OVERLAP, zIndex: total - index }}
     >
@@ -148,19 +240,29 @@ function ClockFace({ timezone, city, index, total }: ClockFaceProps) {
           xmlns="http://www.w3.org/2000/svg"
           className="absolute inset-0 w-full h-full z-10"
         >
+          {/* Hour hand */}
           <line
+            ref={hourHandRef}
             x1="50" y1="50" x2="50" y2="24"
             stroke="black"
             strokeWidth="0.75"
             strokeLinecap="round"
-            transform={`rotate(${hourAngle}, 50, 50)`}
           />
+          {/* Minute hand */}
           <line
+            ref={minuteHandRef}
             x1="50" y1="50" x2="50" y2="15"
             stroke="black"
             strokeWidth="0.75"
             strokeLinecap="round"
-            transform={`rotate(${minuteAngle}, 50, 50)`}
+          />
+          {/* Seconds hand — longest, sweeps fluidly */}
+          <line
+            ref={secondHandRef}
+            x1="50" y1="50" x2="50" y2="12"
+            stroke="black"
+            strokeWidth="0.75"
+            strokeLinecap="round"
           />
         </svg>
       </div>
@@ -175,7 +277,7 @@ function ClockFace({ timezone, city, index, total }: ClockFaceProps) {
         )}
       >
         <span className="md:hidden">{cityName}</span>
-        <span className="hidden md:inline">{cityName}, {timeString}</span>
+        <span className="hidden md:inline">{cityName}, {label}</span>
       </p>
     </div>
   );

@@ -7,8 +7,8 @@
  *
  * Layout
  * ──────
- * Circular SVG face (1:1 aspect ratio, fills container width) with hour
- * and minute hands. City label centred below in Bricolage Grotesque / Intro-Small.
+ * Circular SVG face (1:1 aspect ratio, fills container width) with hour,
+ * minute, and seconds hands. City label centred below in Bricolage Grotesque / Intro-Small.
  *
  * Sizes (controlled by the parent — this component is width-agnostic):
  *   Desktop  392 × 444 px  (face 392 + gap 16 + leading 36)
@@ -18,14 +18,20 @@
  * Theme
  * ─────
  * 'auto'  — follows the CSS token cascade (adapts to light/dark mode).
- * 'light' — forces light appearance via --color-black token override.
+ * 'light' — forces black strokes/text via --color-black token override.
  * 'dark'  — forces dark appearance via --color-white token override.
  *
  * Hands
  * ─────
- * Updated every second via setInterval. Hour angle includes minute
- * interpolation (smooth sweep). Minute angle includes second interpolation.
- * Initialised to null on server to avoid SSR/hydration time mismatch.
+ * Hour, minute, and seconds hands. Animated via requestAnimationFrame for
+ * sub-second precision and fluid motion. Angle updates are applied directly
+ * to SVG element refs — bypassing React re-renders for performance.
+ *
+ * On scroll into view (IntersectionObserver), hands play a one-shot intro:
+ * they start at 12 o'clock, sweep one full revolution with cubic ease-in-out,
+ * then settle on the current time. Real-time ticking continues after.
+ *
+ * Initialised to idle on server — avoids SSR/hydration time mismatch.
  *
  * Accessibility
  * ─────────────
@@ -40,17 +46,40 @@
  * className — extra classes on the root element
  */
 
-import { forwardRef, useEffect, useMemo, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { toZonedTime } from 'date-fns-tz';
 import { cn } from '@/lib/utils';
 
+// ─── constants ────────────────────────────────────────────────────────────────
+
+const INTRO_DURATION = 2200; // ms
+
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
-interface Time { h: number; m: number; s: number }
+function easeInOutCubic(t: number): number {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
 
-function getZonedTime(tz: string): Time {
-  const d = toZonedTime(new Date(), tz);
-  return { h: d.getHours(), m: d.getMinutes(), s: d.getSeconds() };
+function getAngles(timezone: string): { second: number; minute: number; hour: number } {
+  const d   = toZonedTime(new Date(), timezone);
+  const ms  = d.getMilliseconds();
+  const sec = d.getSeconds() + ms / 1000;
+  const min = d.getMinutes() + sec / 60;
+  const hr  = (d.getHours() % 12) + min / 60;
+  return {
+    second: (sec / 60) * 360,
+    minute: (min / 60) * 360,
+    hour:   (hr  / 12) * 360,
+  };
+}
+
+function getTimeLabel(timezone: string): string {
+  const d = toZonedTime(new Date(), timezone);
+  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+
+function setHandTransform(el: SVGLineElement | null, angle: number) {
+  if (el) el.setAttribute('transform', `rotate(${angle}, 50, 50)`);
 }
 
 // ─── types ────────────────────────────────────────────────────────────────────
@@ -75,27 +104,92 @@ export interface ClockProps {
 
 export const Clock = forwardRef<HTMLDivElement, ClockProps>(
   function Clock({ timezone, city, theme = 'auto', className = '' }, ref) {
-    // null on first render (SSR) → avoids hydration time mismatch
-    const [time, setTime] = useState<Time | null>(null);
+    // Phase drives which rAF loop is active
+    const [phase, setPhase] = useState<'idle' | 'animating' | 'ticking'>('idle');
+    // Displayed time string (React state — updates only on minute change to avoid re-renders)
+    const [timeLabel, setTimeLabel] = useState<string | null>(null);
 
-    useEffect(() => {
-      setTime(getZonedTime(timezone));
-      const id = setInterval(() => setTime(getZonedTime(timezone)), 1000);
-      return () => clearInterval(id);
-    }, [timezone]);
+    const internalRef   = useRef<HTMLDivElement>(null);
+    const hourHandRef   = useRef<SVGLineElement>(null);
+    const minuteHandRef = useRef<SVGLineElement>(null);
+    const secondHandRef = useRef<SVGLineElement>(null);
+    const rafRef        = useRef<number>(0);
 
-    const { h, m, s } = time ?? { h: 0, m: 0, s: 0 };
-
-    // Smooth sweep: minute hand interpolates seconds, hour hand interpolates minutes
-    const minuteAngle = (m / 60) * 360 + (s / 60) * 6;
-    const hourAngle   = ((h % 12) / 12) * 360 + (m / 60) * 30;
-
-    // Accessible time string — memoised on [h, m] so it only changes on the minute boundary,
-    // preventing unnecessary re-renders and reducing noise for AT users navigating the element.
-    const timeString = useMemo(
-      () => `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`,
-      [h, m],
+    // Merge forwarded ref with internal ref (needed for IntersectionObserver)
+    const setRef = useCallback(
+      (node: HTMLDivElement | null) => {
+        internalRef.current = node;
+        if (typeof ref === 'function') ref(node);
+        else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+      },
+      [ref],
     );
+
+    // One-shot IntersectionObserver: idle → animating
+    useEffect(() => {
+      const el = internalRef.current;
+      if (!el) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setPhase('animating');
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.4 },
+      );
+      observer.observe(el);
+      return () => observer.disconnect();
+    }, []);
+
+    // rAF loop — intro animation ('animating') or real-time ticking ('ticking')
+    useEffect(() => {
+      if (phase === 'idle') return;
+
+      if (phase === 'animating') {
+        // Snapshot target angles at animation start
+        const target    = getAngles(timezone);
+        const startTime = performance.now();
+
+        function frame(now: number) {
+          const t     = Math.min((now - startTime) / INTRO_DURATION, 1);
+          const eased = easeInOutCubic(t);
+          setHandTransform(hourHandRef.current,   eased * (360 + target.hour));
+          setHandTransform(minuteHandRef.current, eased * (360 + target.minute));
+          setHandTransform(secondHandRef.current, eased * (360 + target.second));
+          if (t < 1) {
+            rafRef.current = requestAnimationFrame(frame);
+          } else {
+            setPhase('ticking');
+          }
+        }
+        rafRef.current = requestAnimationFrame(frame);
+
+      } else {
+        // Real-time smooth ticking
+        let lastMinute = -1;
+
+        function tick() {
+          const angles = getAngles(timezone);
+          setHandTransform(hourHandRef.current,   angles.hour);
+          setHandTransform(minuteHandRef.current, angles.minute);
+          setHandTransform(secondHandRef.current, angles.second);
+          // Update time label only when minute changes (avoids per-frame re-renders)
+          const d = toZonedTime(new Date(), timezone);
+          if (d.getMinutes() !== lastMinute) {
+            lastMinute = d.getMinutes();
+            setTimeLabel(getTimeLabel(timezone));
+          }
+          rafRef.current = requestAnimationFrame(tick);
+        }
+        setTimeLabel(getTimeLabel(timezone));
+        rafRef.current = requestAnimationFrame(tick);
+      }
+
+      return () => cancelAnimationFrame(rafRef.current);
+    }, [phase, timezone]);
+
+    const label = timeLabel ?? '00:00';
 
     // ── theme: map to palette tokens, never raw hex ───────────────────────────
     const clockColor =
@@ -105,9 +199,9 @@ export const Clock = forwardRef<HTMLDivElement, ClockProps>(
 
     return (
       <div
-        ref={ref}
+        ref={setRef}
         role="img"
-        aria-label={`${city}: ${timeString}`}
+        aria-label={`${city}: ${label}`}
         className={cn(
           'flex flex-col items-center w-full',
           // gap: --clock-gap-mobile (4 px) → --clock-gap (16 px) matches Figma face+label spacing
@@ -136,22 +230,32 @@ export const Clock = forwardRef<HTMLDivElement, ClockProps>(
 
             {/* Hour hand — shorter (26/48.5 ≈ 53 %), thicker */}
             <line
+              ref={hourHandRef}
               x1="50" y1="50"
               x2="50" y2="24"
               stroke="var(--clock-color)"
               strokeWidth="0.25"
               strokeLinecap="round"
-              transform={`rotate(${hourAngle}, 50, 50)`}
             />
 
             {/* Minute hand — longer (35/48.5 ≈ 72 %), thinner */}
             <line
+              ref={minuteHandRef}
               x1="50" y1="50"
               x2="50" y2="15"
               stroke="var(--clock-color)"
               strokeWidth="0.25"
               strokeLinecap="round"
-              transform={`rotate(${minuteAngle}, 50, 50)`}
+            />
+
+            {/* Seconds hand — longest (38/48.5 ≈ 78 %), sweeps fluidly */}
+            <line
+              ref={secondHandRef}
+              x1="50" y1="50"
+              x2="50" y2="12"
+              stroke="var(--clock-color)"
+              strokeWidth="0.25"
+              strokeLinecap="round"
             />
           </svg>
         </div>
@@ -168,7 +272,7 @@ export const Clock = forwardRef<HTMLDivElement, ClockProps>(
           )}
           style={{ color: 'var(--clock-color)' }}
         >
-          {city.split(',')[0].trim()} {timeString}
+          {city.split(',')[0].trim()} {label}
         </p>
       </div>
     );
