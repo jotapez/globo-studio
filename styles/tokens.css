@@ -389,7 +389,7 @@
   --carousel-v2-logo-w:      120px;
   --carousel-v2-logo-h:       72px;
 
-  --intro-section-gap:        136px;   /* gap between heading and carousel in IntroSection */
+  --intro-section-gap:        112px;   /* gap between heading and carousel in IntroSection */
   --intro-section-gap-mobile: 40px;    /* gap between heading and carousel — mobile */
   --content-width-heading:  1266px;    /* intro heading max-width cap (Figma desktop) */
 
