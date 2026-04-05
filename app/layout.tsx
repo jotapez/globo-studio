@@ -37,13 +37,13 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Globo Studio — Juan Pablo Castro, Senior Product Designer',
+  title: 'Globo — AI native design studio',
   description:
-    'Portfolio of Juan Pablo Castro, Senior Product Designer specialising in human-centred experiences and scalable design systems. Based in Sydney, Australia.',
+    'Globo is an AI native design studio.',
   openGraph: {
-    title: 'Globo Studio — Juan Pablo Castro',
+    title: 'Globo — AI native design studio',
     description:
-      'Senior Product Designer crafting human-centred experiences and scalable design systems globally.',
+      'Globo is an AI native design studio.',
     type: 'website',
   },
 };
