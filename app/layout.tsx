@@ -37,7 +37,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Globo — AI native design studio',
+  title: 'Globo Studio — Juan Pablo Castro, Product Designer',
   description:
     'Globo is an AI native design studio.',
   openGraph: {
