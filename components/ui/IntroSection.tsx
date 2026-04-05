@@ -50,12 +50,15 @@ import Image from 'next/image';
 import { motion, AnimatePresence, useInView, useReducedMotion, useMotionValue, useSpring, type Variants } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { ClientsCarousel } from '@/components/ui/ClientsCarousel';
+import { ClientsCarouselV2 } from '@/components/ui/ClientsCarouselV2';
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
 export interface IntroSectionProps {
-  /** Forwarded to <ClientsCarousel> for blend-mode theming. Default: 'auto' */
+  /** Forwarded to the carousel for blend-mode theming. Default: 'auto' */
   theme?: 'auto' | 'light' | 'dark';
+  /** Which carousel variant to render. Default: 'v1' */
+  carouselVariant?: 'v1' | 'v2';
   /** Extra classes on the root <section>. */
   className?: string;
 }
@@ -68,7 +71,7 @@ const serif = 'font-serif';
 // ─── component ────────────────────────────────────────────────────────────────
 
 export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
-  function IntroSection({ theme = 'auto', className }, ref) {
+  function IntroSection({ theme = 'auto', carouselVariant = 'v1', className }, ref) {
     const shouldReduceMotion = useReducedMotion();
     const [nameHovered, setNameHovered] = useState(false);
 
@@ -250,7 +253,10 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
 
           {/* ── 2. Client carousel ── */}
           <motion.div {...carouselAnim} className="relative z-10">
-            <ClientsCarousel theme={theme} />
+            {carouselVariant === 'v2'
+              ? <ClientsCarouselV2 theme={theme} />
+              : <ClientsCarousel theme={theme} />
+            }
           </motion.div>
 
         </div>

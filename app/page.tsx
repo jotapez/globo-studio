@@ -271,7 +271,7 @@ export default function HomePage() {
         <Hero onToggle={handleHeroClick} onPortfolioClick={() => scrollToSection('intro')} />
 
         {/* ── §2 Intro ─────────────────────────────────────────────────────── */}
-        <IntroSection theme={theme} />
+        <IntroSection theme={theme} carouselVariant="v2" />
 
         {/* ── §3 Work ──────────────────────────────────────────────────────── */}
         {/*

@@ -45,6 +45,10 @@ export interface LogoItem {
   src?: string;
   /** Slot width (px) rendered at the --carousel-logo-h height. */
   width: number;
+  /** Optional scale multiplier for per-logo size adjustment. Default: 1. */
+  scale?: number;
+  /** Optional scale override for the V2 card carousel. Falls back to `scale`. */
+  scaleV2?: number;
 }
 
 export interface ClientsCarouselProps {
@@ -71,8 +75,8 @@ export const CLIENT_LOGOS: LogoItem[] = [
   { name: 'Bupa',               src: '/client-logos/Bupa.svg',             width:  33 },
   { name: 'Coca-Cola',          src: '/client-logos/Coca-Cola.svg',        width:  68 },
   { name: 'Huddle',             src: '/client-logos/Huddle.svg',           width: 103 },
-  { name: 'Infrastructure',     src: '/client-logos/Infrastructure.svg',   width: 158 },
-  { name: 'NLOA',               src: '/client-logos/NLOA.svg',             width: 124 },
+  { name: 'Infrastructure',     src: '/client-logos/Infrastructure.svg',   width: 158, scale: 1.21, scaleV2: 1.33 },
+  { name: 'NLOA',               src: '/client-logos/NLOA.svg',             width: 124, scale: 1.2, scaleV2: 1.2 },
   { name: 'NSW',                src: '/client-logos/NSW.svg',              width:  47 },
   { name: 'NSWEC',              src: '/client-logos/NSWEC.svg',            width: 105 },
   { name: 'Open',               src: '/client-logos/Open.svg',             width:  86 },
@@ -174,7 +178,7 @@ function LogoSlot({ logo, blendMode, placeholderColor, theme }: LogoSlotProps) {
   return (
     <div
       className="flex-shrink-0 flex items-center justify-center h-[var(--carousel-logo-h-mobile)] md:h-[var(--carousel-logo-h)]"
-      style={{ width: logo.width, marginRight: 'var(--carousel-logo-gap)' }}
+      style={{ width: Math.round(logo.width * (logo.scale ?? 1)), marginRight: 'var(--carousel-logo-gap)' }}
     >
       {logo.src ? (
         <img
