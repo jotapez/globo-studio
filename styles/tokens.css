@@ -87,6 +87,16 @@
   inherits: true;
   initial-value: #ffffff;
 }
+@property --bg-client-logo-card {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #efefef;
+}
+@property --carousel-v2-logo-filter {
+  syntax: '*';
+  inherits: true;
+  initial-value: grayscale(1);
+}
 
 :root {
 
@@ -259,7 +269,9 @@
   --bg-clock-face:    var(--color-gray-300);          /* background/clock-face */
   --bg-clock-v2:      #000000;                        /* V2 clock: black face on light page (Figma: background/clock) */
   --border-clock-v2:  #ffffff;                        /* V2 clock: white ring + hands on dark face (Figma: border/default-light) */
-  --bg-project-card:  #ffffff;                        /* background/project-card — Single Image White Card */
+  --bg-project-card:       #ffffff;                   /* background/project-card — Single Image White Card */
+  --bg-client-logo-card:   #efefef;                   /* background/client-logo-card */
+  --carousel-v2-logo-filter: grayscale(1);            /* auto theme: light mode — no invert */
 
 
   /* -------------------------------------------------------
@@ -369,8 +381,16 @@
   --carousel-logo-h:          64px;   /* logo render height — desktop/tablet */
   --carousel-logo-h-mobile:   48px;   /* logo render height — mobile */
 
+  /* ClientsCarouselV2 — card-style marquee (Figma 994:43399) — desktop defaults */
+  --carousel-v2-card-w:      258px;
+  --carousel-v2-card-h:      151px;
+  --carousel-v2-card-radius:  24px;
+  --carousel-v2-card-gap:     16px;
+  --carousel-v2-logo-w:      120px;
+  --carousel-v2-logo-h:       72px;
+
   --intro-section-gap:        136px;   /* gap between heading and carousel in IntroSection */
-  --intro-section-gap-mobile: 72px;    /* gap between heading and carousel — mobile */
+  --intro-section-gap-mobile: 40px;    /* gap between heading and carousel — mobile */
   --content-width-heading:  1266px;    /* intro heading max-width cap (Figma desktop) */
 
   /* Card text area — fixed height used in image flex-1 calc */
@@ -462,7 +482,9 @@
   --bg-clock-face:   var(--color-gray-900);
   --bg-clock-v2:     #ffffff;   /* V2 clock: white face on dark page */
   --border-clock-v2: #000000;   /* V2 clock: black ring + hands on light face */
-  --bg-project-card: #1a1a1a;
+  --bg-project-card:     #1a1a1a;
+  --bg-client-logo-card: #1a1a1a;
+  --carousel-v2-logo-filter: grayscale(1) invert(1);  /* auto theme: dark mode — invert logos */
 
   --border-default-light: transparent;
   --border-default:       rgba(255, 255, 255, 0.12);
@@ -478,5 +500,13 @@
     --carousel-logo-gap: var(--carousel-logo-gap-mobile);
     --card-text-area-h: 171px;   /* mobile */
     --card-image-min-h: 182px;   /* mobile — ~40% of 455px Figma card height */
+
+    /* ClientsCarouselV2 mobile overrides */
+    --carousel-v2-card-w:      171px;
+    --carousel-v2-card-h:      106px;
+    --carousel-v2-card-radius:  17px;
+    --carousel-v2-card-gap:      8px;
+    --carousel-v2-logo-w:       84px;
+    --carousel-v2-logo-h:       50px;
   }
 }

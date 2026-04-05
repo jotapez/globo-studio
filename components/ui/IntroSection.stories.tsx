@@ -165,3 +165,38 @@ export const Playground: Story = {
   name: 'Playground',
   args: { theme: 'auto' },
 };
+
+// ─── carousel v2 ──────────────────────────────────────────────────────────────
+
+/**
+ * Carousel V2 — card-style marquee (Figma 994:43399).
+ * Each logo sits inside a rounded card with a --bg-client-logo-card fill.
+ */
+export const CarouselV2: Story = {
+  name: 'Carousel V2 · Default',
+  args: { theme: 'auto', carouselVariant: 'v2' },
+};
+
+/**
+ * Carousel V2 · Dark mode — applies :root.dark so card backgrounds and logo
+ * invert respond via the token cascade.
+ */
+export const CarouselV2DarkMode: Story = {
+  name: 'Carousel V2 · Dark mode',
+  parameters: {
+    backgrounds: { default: 'dark' },
+  },
+  decorators: [withDarkMode],
+  args: { theme: 'auto', carouselVariant: 'v2' },
+};
+
+/**
+ * Carousel V2 · Mobile — 393px viewport with smaller cards (171×106 px).
+ */
+export const CarouselV2Mobile: Story = {
+  name: 'Carousel V2 · Mobile',
+  parameters: {
+    viewport: { defaultViewport: 'mobile1' },
+  },
+  args: { theme: 'auto', carouselVariant: 'v2' },
+};
