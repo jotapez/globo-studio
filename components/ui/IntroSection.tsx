@@ -51,6 +51,7 @@ import { motion, AnimatePresence, useInView, useReducedMotion, useMotionValue, u
 import { cn } from '@/lib/utils';
 import { ClientsCarousel } from '@/components/ui/ClientsCarousel';
 import { ClientsCarouselV2 } from '@/components/ui/ClientsCarouselV2';
+import { WavePath } from '@/components/ui/wave-path';
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -222,24 +223,35 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
                * onFocus/onBlur mirror the hover portrait so the effect is reachable
                * via Tab navigation.
                */}
-              <motion.button
-                variants={nameVariants}
-                type="button"
-                aria-label="Go to About section — Juan Pablo Castro"
-                className={cn(
-                  serif,
-                  'relative inline-block bg-transparent border-none p-0 cursor-pointer',
-                  'underline decoration-[var(--text-primary)] [text-decoration-thickness:1px] [text-underline-offset:14px]',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--text-primary)] focus-visible:ring-offset-2 rounded-sm',
-                )}
-                onMouseEnter={() => setNameHovered(true)}
-                onMouseLeave={() => setNameHovered(false)}
-                onFocus={() => setNameHovered(true)}
-                onBlur={() => setNameHovered(false)}
-                onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Juan Pablo Castro
-              </motion.button>
+              <span className="inline-flex flex-col">
+                <motion.button
+                  variants={nameVariants}
+                  type="button"
+                  aria-label="Go to About section — Juan Pablo Castro"
+                  className={cn(
+                    serif,
+                    'relative z-20 bg-transparent border-none p-0 cursor-pointer',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--text-primary)] focus-visible:ring-offset-2 rounded-sm',
+                  )}
+                  onMouseEnter={() => setNameHovered(true)}
+                  onMouseLeave={() => setNameHovered(false)}
+                  onFocus={() => setNameHovered(true)}
+                  onBlur={() => setNameHovered(false)}
+                  onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  Juan Pablo Castro
+                </motion.button>
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ delay: 2.2, duration: 0.8 }}
+                >
+                  <WavePath
+                    onLineMouseEnter={() => setNameHovered(true)}
+                    onLineMouseLeave={() => setNameHovered(false)}
+                  />
+                </motion.span>
+              </span>
 
               <motion.span variants={wordVariants} className={serif}>, a </motion.span>
               <motion.span variants={wordVariants} className={sans}>Product Designer </motion.span>

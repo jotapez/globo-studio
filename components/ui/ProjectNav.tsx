@@ -72,6 +72,7 @@ export interface ProjectNavProps {
 // ─── constants ────────────────────────────────────────────────────────────────
 
 const MIN_PILL_MS = 300;
+const NEXT_NAV_DELAY_MS = 500; // 300 ms spring settle + 200 ms hold
 
 // ─── component ────────────────────────────────────────────────────────────────
 
@@ -102,7 +103,6 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
 
     // ── navigation tracking refs ──────────────────────────────────────────────
     const isNavigatingMobileRef = useRef(false);
-    const minWaitUntilRef       = useRef(0);
     const applyTimeoutRef       = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // Always-current snapshot of the latest clientName prop (no effect deps needed).
@@ -121,29 +121,6 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
       }
     }, [clientName, activeSlug]);
 
-    // When the page finishes loading (isPending false → true → false), apply
-    // the buffered update after the 300 ms minimum has elapsed.
-    useEffect(() => {
-      if (!isPending && isNavigatingMobileRef.current) {
-        const remaining = minWaitUntilRef.current - Date.now();
-
-        if (applyTimeoutRef.current) clearTimeout(applyTimeoutRef.current);
-
-        const apply = () => {
-          applyTimeoutRef.current = null;
-          isNavigatingMobileRef.current = false;
-          setDisplayedClientName(clientNameRef.current);
-          setMobileActive('client');
-        };
-
-        if (remaining > 0) {
-          applyTimeoutRef.current = setTimeout(apply, remaining);
-        } else {
-          apply();
-        }
-      }
-    }, [isPending]);
-
     // Cleanup on unmount.
     useEffect(() => {
       return () => {
@@ -161,13 +138,40 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
     ) {
       const item = items.find((i) => i.id === itemId);
       if (!item?.href) return;
-      setActive(itemId);
+
+      // Cancel any in-flight pill/nav timeout from a previous tap.
+      if (applyTimeoutRef.current) {
+        clearTimeout(applyTimeoutRef.current);
+        applyTimeoutRef.current = null;
+      }
+
+      setActive(itemId); // pill starts moving immediately in all cases
+
+      if (isMobile && itemId === 'home') {
+        // Wait for pill to reach Globo before navigating away.
+        applyTimeoutRef.current = setTimeout(() => {
+          applyTimeoutRef.current = null;
+          startExit(item.href);
+        }, MIN_PILL_MS);
+        return;
+      }
 
       if (isMobile && itemId === 'next') {
-        // Mark navigating — pill stays until isPending resolves + min wait.
+        // Hold pill on 'next' (300 ms settle + 200 ms hold), then return.
+        // The label update is intentionally left to the natural prop change
+        // when the new page loads (~10 ms after startExit) — updating it here
+        // would recalculate mobileItems mid-animation and cause a double pill.
         isNavigatingMobileRef.current = true;
-        minWaitUntilRef.current = Date.now() + MIN_PILL_MS;
-        startExit(item.href);
+        applyTimeoutRef.current = setTimeout(() => {
+          applyTimeoutRef.current = null;
+          isNavigatingMobileRef.current = false;
+          setActive('client'); // pill returns to center
+
+          applyTimeoutRef.current = setTimeout(() => {
+            applyTimeoutRef.current = null;
+            startExit(item.href); // navigate after return animation completes
+          }, MIN_PILL_MS); // ~270 ms spring + buffer
+        }, NEXT_NAV_DELAY_MS);
         return;
       }
 

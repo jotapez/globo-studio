@@ -88,89 +88,11 @@ const PROJECTS: Project[] = [
         alt: 'Officeworks B2B platform overview — hand holding iPad showing catalogue management screen',
         priority: true,
       },
-      {
-        type: 'caption',
-        alignment: 'space-between',
-        text: ['Account management dashboard', 'Officeworks B2B — 2024'],
-      },
-
-      // White card — icon library
-      {
-        type: 'single-white',
-        src: '/Officeworks/Desktop/OW-icons-1.svg',
-        alt: 'Officeworks B2B design system icon library — 200+ custom icons',
-        aspectRatio: '2017/1380',
-      },
-
-      // Color background — design system
-      {
-        type: 'single-color',
-        src: '/Officeworks/Desktop/OW-DesignSystem-1.png',
-        alt: 'Officeworks B2B design system — full component library overview',
-        color: 'var(--bg-project-ow)',
-        aspectRatio: '9665/10954',
-      },
-
       // Full-bleed — UI screenshot
       {
         type: 'full-bleed',
         src: '/Officeworks/Desktop/OW-CustomCatalogues-1.png',
         alt: 'Officeworks B2B custom catalogues — create and manage curated product lists',
-        color: 'var(--bg-project-ow)',
-        aspectRatio: '6336/4344',
-      },
-
-      // White card — colour palette
-      {
-        type: 'single-white',
-        src: '/Officeworks/Desktop/OW-colours.png',
-        alt: 'Officeworks B2B design system colour palette',
-        aspectRatio: '4296/3816',
-      },
-
-      // Two-image — custom catalogues detail + icons
-      {
-        type: 'two-image',
-        srcA: '/Officeworks/Desktop/OW-CustomCatalogues-card.png',
-        altA: 'Officeworks B2B custom catalogues — product list detail view',
-        aspectRatioA: '1929/2730',
-        srcB: '/Officeworks/Desktop/OW-icons-2.png',
-        altB: 'Officeworks B2B design system icon set — second collection',
-        aspectRatioB: '1929/2730',
-        color: 'var(--bg-project-ow)',
-      },
-
-      // White card — icon library vol. 3
-      {
-        type: 'single-white',
-        src: '/Officeworks/Desktop/OW-Icons-3.svg',
-        alt: 'Officeworks B2B design system icon library — third collection',
-        aspectRatio: '1318/904',
-      },
-
-      // Full-bleed — account contacts
-      {
-        type: 'full-bleed',
-        src: '/Officeworks/Desktop/OW-AccountContacts-1.png',
-        alt: 'Officeworks B2B — account contacts management screen',
-        color: 'var(--bg-project-ow)',
-        aspectRatio: '6336/4344',
-      },
-
-      // Full-bleed — address management
-      {
-        type: 'full-bleed',
-        src: '/Officeworks/Desktop/OW-Address.png',
-        alt: 'Officeworks B2B — organisation address management screen',
-        color: 'var(--bg-project-ow)',
-        aspectRatio: '6336/4344',
-      },
-
-      // Full-bleed — cost centres
-      {
-        type: 'full-bleed',
-        src: '/Officeworks/Desktop/OW-CostCentres.png',
-        alt: 'Officeworks B2B — cost centre permissions and delivery address management',
         color: 'var(--bg-project-ow)',
         aspectRatio: '6336/4344',
       },
@@ -193,11 +115,83 @@ const PROJECTS: Project[] = [
         aspectRatio: '6336/4344',
       },
 
+      // Two-image — custom catalogues detail + icons
+      {
+        type: 'two-image',
+        srcA: '/Officeworks/Desktop/OW-CustomCatalogues-card.png',
+        altA: 'Officeworks B2B custom catalogues — product list detail view',
+        aspectRatioA: '1929/2730',
+        srcB: '/Officeworks/Desktop/OW-icons-2.png',
+        altB: 'Officeworks B2B design system icon set — second collection',
+        aspectRatioB: '1929/2730',
+        color: 'var(--bg-project-ow)',
+      },
+
       // Full-bleed — custom catalogues step 4
       {
         type: 'full-bleed',
         src: '/Officeworks/Desktop/OW-CustomCatalogues-4.png',
         alt: 'Officeworks B2B — manage custom catalogue assignment and delete',
+        color: 'var(--bg-project-ow)',
+        aspectRatio: '6336/4344',
+      },
+
+      // White card — icon library
+      {
+        type: 'single-white',
+        src: '/Officeworks/Desktop/OW-icons-1.svg',
+        alt: 'Officeworks B2B design system icon library — 200+ custom icons',
+        aspectRatio: '2017/1380',
+      },
+
+      // Color background — design system
+      {
+        type: 'single-color',
+        src: '/Officeworks/Desktop/OW-DesignSystem-1.png',
+        alt: 'Officeworks B2B design system — full component library overview',
+        color: 'var(--bg-project-ow)',
+        aspectRatio: '9665/10954',
+      },
+
+      // White card — colour palette
+      {
+        type: 'single-white',
+        src: '/Officeworks/Desktop/OW-colours.png',
+        alt: 'Officeworks B2B design system colour palette',
+        aspectRatio: '4296/3816',
+      },
+
+      // Full-bleed — account contacts
+      {
+        type: 'full-bleed',
+        src: '/Officeworks/Desktop/OW-AccountContacts-1.png',
+        alt: 'Officeworks B2B — account contacts management screen',
+        color: 'var(--bg-project-ow)',
+        aspectRatio: '6336/4344',
+      },
+
+      // White card — icon library vol. 3
+      {
+        type: 'single-white',
+        src: '/Officeworks/Desktop/OW-Icons-3.svg',
+        alt: 'Officeworks B2B design system icon library — third collection',
+        aspectRatio: '1318/904',
+      },
+
+      // Full-bleed — address management
+      {
+        type: 'full-bleed',
+        src: '/Officeworks/Desktop/OW-Address.png',
+        alt: 'Officeworks B2B — organisation address management screen',
+        color: 'var(--bg-project-ow)',
+        aspectRatio: '6336/4344',
+      },
+
+      // Full-bleed — cost centres
+      {
+        type: 'full-bleed',
+        src: '/Officeworks/Desktop/OW-CostCentres.png',
+        alt: 'Officeworks B2B — cost centre permissions and delivery address management',
         color: 'var(--bg-project-ow)',
         aspectRatio: '6336/4344',
       },

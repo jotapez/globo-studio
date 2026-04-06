@@ -389,7 +389,7 @@
   --carousel-v2-logo-w:      120px;
   --carousel-v2-logo-h:       72px;
 
-  --intro-section-gap:        136px;   /* gap between heading and carousel in IntroSection */
+  --intro-section-gap:        112px;   /* gap between heading and carousel in IntroSection */
   --intro-section-gap-mobile: 40px;    /* gap between heading and carousel — mobile */
   --content-width-heading:  1266px;    /* intro heading max-width cap (Figma desktop) */
 
@@ -422,9 +422,9 @@
      semantic token — no dark-mode override).
      ------------------------------------------------------- */
 
-  --bg-project-ow:     #e0e2e8;   /* Officeworks — blue-grey tint */
-  --bg-project-oi:     #EBEBEE;   /* Open Insurance — off-white tint */
-  --bg-project-kicbox: #EBEBEE;   /* Kicbox — content block background */
+  --bg-project-ow:     #F4F4F6;   /* Officeworks — image block background */
+  --bg-project-oi:     #F4F4F6;   /* Open Insurance — image block background */
+  --bg-project-kicbox: #F4F4F6;   /* Kicbox — image block background */
   --bg-block-grey: var(--color-gray-150);   /* neutral light-grey — image content block background */
 
   /* -------------------------------------------------------
