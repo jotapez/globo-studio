@@ -162,6 +162,8 @@ export default async function ProjectPage({
             id="project-heading"
             heading={project.intro.heading}
             body={project.intro.body}
+            extraBody={project.intro.extraBody}
+            bodyColor={project.intro.extraBody ? 'primary' : 'muted'}
           />
           {project.contentBlocks.map((block, i) => renderBlock(block, i))}
         </PageWrapper>

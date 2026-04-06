@@ -128,9 +128,13 @@ Respects \`prefers-reduced-motion\`.
   },
 
   argTypes: {
-    heading:   { control: false },
-    body:      { control: false },
-    className: { table: { disable: true } },
+    heading:       { control: false },
+    body:          { control: false },
+    extraBody:     { control: false },
+    bodyColor:     { control: 'select', options: ['muted', 'primary'] },
+    readMoreLabel: { control: 'text' },
+    readLessLabel: { control: 'text' },
+    className:     { table: { disable: true } },
   },
 
   decorators: [withPageWrapper],
@@ -138,6 +142,36 @@ Respects \`prefers-reduced-motion\`.
 
 export default meta;
 type Story = StoryObj<typeof ProjectIntro>;
+
+// ─── shared extra body ────────────────────────────────────────────────────────
+
+const officeworksExtraBody = (
+  <>
+    <p className="mb-[1em]">
+      The design challenge wasn&apos;t just building individual features — it was
+      understanding how a purchasing manager, a finance lead, and a branch buyer all
+      experience the same account differently. A purchasing manager needs to quickly add
+      or suspend users; a finance lead needs cost centre visibility across a team; a
+      branch buyer needs to know exactly what they&apos;re allowed to order. Getting the
+      platform to work for all three, without creating a fractured or over-complicated
+      experience, was the core problem.
+    </p>
+    <p className="mb-[1em]">
+      Working from discovery through to production alongside business analysts, engineers,
+      and stakeholders, we shipped a self-service suite covering custom product catalogues,
+      contact and role management, cost centre permissions, and delivery addresses — across
+      desktop and mobile. Each feature started with the same question: what does this person
+      actually need to do, and what&apos;s stopping them from doing it today?
+    </p>
+    <p>
+      Running alongside the product work, I built the design system from scratch: an
+      accessible visual language covering hundreds of components, colour tokens, and icon
+      libraries. It became the foundation every new feature is built on. I also ran coaching
+      sessions on system thinking, governance, and variables — making sure the knowledge
+      stayed with the team, not just with me.
+    </p>
+  </>
+);
 
 // ─── default ──────────────────────────────────────────────────────────────────
 
@@ -147,6 +181,35 @@ type Story = StoryObj<typeof ProjectIntro>;
  */
 export const Default: Story = {
   name: 'Default',
+};
+
+const officeworksBodyReadMore = (
+  <p>
+    Managing a business account at Officeworks — team members, catalogues, cost centres,
+    delivery addresses — meant calling customer support. There was no other way. As Lead
+    Product Designer on the B2B Digital Experience program, I redesigned that into a
+    self-service platform, built the design system from 0 to 1, and coached the team to
+    sustain it. Customer support dependency dropped 40%.
+  </p>
+);
+
+// ─── read more ────────────────────────────────────────────────────────────────
+
+/**
+ * With Read more — expandable variant.
+ * Body uses `--text-primary` at intro size (32px desktop / 24px mobile).
+ * Click "Read more" to reveal the extra copy at intro-sm size.
+ */
+export const WithReadMore: Story = {
+  name: 'With Read more',
+  args: {
+    heading: officeworksHeading,
+    body: officeworksBodyReadMore,
+    extraBody: officeworksExtraBody,
+    bodyColor: 'primary',
+    readMoreLabel: 'Read more',
+    readLessLabel: 'Read less',
+  },
 };
 
 // ─── dark mode ────────────────────────────────────────────────────────────────
