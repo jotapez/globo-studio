@@ -74,6 +74,7 @@ const MAIN_PROJECTS = [
     href: '/work/kicbox',
     imageSrc: '/Homepage/kicbox-project-card-first-desktop.svg',
     hoverImageSrc: '/Homepage/kicbox-project-card-second-desktop.png',
+    hoverMobileSrc: '/Homepage/kicbox-project-card-first-mobile.png',
     showDescriptionOnHover: true,
     cursorLabel: 'See work',
     targetBg: '#D42929',
@@ -109,8 +110,8 @@ const PERSONAL_PROJECTS = [
     external: true,
   },
   {
-    title: 'Only Me',
-    description: "Every social platform has a stake in your data, your attention, or your behaviour. Only Me doesn't. I designed and built it as a private space to share images, thoughts, and links with friends and family — no algorithms, no metrics, no ads, no pressure to perform. No followers. No feed. Just yours.",
+    title: 'OnlyMe',
+    description: "Every social platform has a stake in your data, your attention, or your behaviour. OnlyMe doesn't. I designed and built it as a private space to share images, thoughts, and links with friends and family — no algorithms, no metrics, no ads, no pressure to perform. No followers. No feed. Just yours.",
     href: 'https://onlyme.life/',
     imageSrc: '/Homepage/OnlyMe-project-card-second-desktop.png',
     staticImage: true,
@@ -265,7 +266,7 @@ export default function HomePage() {
         clickFeedback
       />
 
-      <main>
+      <main id="main-content">
 
         {/* ── §1 Hero ──────────────────────────────────────────────────────── */}
         <Hero onToggle={handleHeroClick} onPortfolioClick={() => scrollToSection('intro')} />

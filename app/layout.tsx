@@ -60,6 +60,14 @@ export default function RootLayout({
          * legitimate uses of dangerouslySetInnerHTML: the content is static,
          * contains no user input, and must execute before React hydrates.
          */}
+        {/* Skip-to-content — visually hidden until focused; gives keyboard users a
+            direct path past the fixed nav to the main content area. */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-[var(--radius-pill)] focus:bg-[#f8f8f7] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-black focus:shadow-lg"
+        >
+          Skip to main content
+        </a>
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('gs-theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);var p=window.location.pathname.indexOf('/work/')===0;if(d&&!p)document.documentElement.classList.add('dark');var c=(d&&!p)?'#000000':'#f8f8f7';var metas=document.querySelectorAll('meta[name="theme-color"]');metas.forEach(function(m){m.setAttribute('content',c)});}catch(e){}})();`,

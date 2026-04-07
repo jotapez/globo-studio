@@ -202,6 +202,7 @@ export function ProjectCard({
             src={hoverMobileSrc}
             alt=""
             fill
+            priority={priority}
             className="object-cover md:hidden"
             sizes="calc(100vw - 40px)"
           />
@@ -211,6 +212,7 @@ export function ProjectCard({
             src={hoverImageSrc}
             alt=""
             fill
+            priority={priority}
             className={cn(
               'object-cover transition-opacity duration-[200ms] ease-out motion-reduce:transition-none',
               'hidden md:block',
@@ -339,6 +341,7 @@ export function ProjectCard({
           href={href}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label={`${title} (opens in a new tab)`}
           className={linkClasses}
         >
           {inner}
