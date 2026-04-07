@@ -52,7 +52,6 @@ function renderBlock(block: ContentBlock, i: number): React.ReactNode {
           mobileSrc={block.mobileSrc}
           alt={block.alt}
           priority={block.priority}
-          className="mt-8 md:mt-0"
         />
       );
 

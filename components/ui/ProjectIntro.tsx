@@ -136,14 +136,14 @@ export const ProjectIntro = forwardRef<HTMLDivElement, ProjectIntroProps>(
         style={lockedMobileWidth != null ? { maxWidth: `${lockedMobileWidth}px` } : undefined}
         className={cn(
           // Mobile: single column
-          'flex flex-col gap-[16px] pt-[8px] px-[8px] mx-auto md:mx-0',
-          // Tablet+: two equal columns
-          'md:flex-row md:items-start md:gap-[32px] md:pt-[24px] md:px-[24px]',
+          'flex flex-col gap-[16px] pt-[8px] px-[8px] pb-[20px] mx-auto md:mx-0',
+          // Tablet+: two equal columns (no items-start — right col stretches to row height)
+          'md:flex-row md:gap-[32px] md:pt-[24px] md:px-[24px] md:pb-[24px]',
           className,
         )}
       >
         {/* ── Left column: heading ── */}
-        <motion.div {...headingAnim} className="flex-1 min-w-0">
+        <motion.div {...headingAnim} className="flex-1 min-w-0 md:self-start">
           <h1
             id={id}
             className={cn(
@@ -158,9 +158,10 @@ export const ProjectIntro = forwardRef<HTMLDivElement, ProjectIntroProps>(
         </motion.div>
 
         {/* ── Right column: body copy ── */}
-        <motion.div {...bodyAnim} className="flex-1 min-w-0">
+        <motion.div {...bodyAnim} className={cn('flex-1 min-w-0', extraBody && 'md:flex md:flex-col')}>
           {/* Body text + toggle share a flex-col so gap matches Figma exactly */}
-          <div className={cn(extraBody && 'flex flex-col gap-[16px] md:gap-[32px] items-start w-full')}>
+          {/* On desktop with extraBody: flex-1 fills right column height; spacer provides min 32px gap */}
+          <div className={cn(extraBody && 'flex flex-col gap-[16px] md:gap-0 items-start w-full md:flex-1')}>
             <div
               className={cn(
                 'font-sans not-italic',
@@ -183,17 +184,23 @@ export const ProjectIntro = forwardRef<HTMLDivElement, ProjectIntroProps>(
             </div>
 
             {extraBody && (
-              <button
-                onClick={() => setExpanded((v) => !v)}
-                className={cn(
-                  'w-full text-left font-sans font-medium not-italic cursor-pointer',
-                  'text-[var(--text-primary)]',
-                  '[font-size:var(--text-intro-mobile-size)] [line-height:var(--text-intro-mobile-leading)]',
-                  'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',
-                )}
-              >
-                {expanded ? (readLessLabel ?? 'Read less') : (readMoreLabel ?? 'Read more')}
-              </button>
+              <>
+                {/* Spacer — desktop only. Grows to fill any remaining height so the
+                    button always sits at the bottom of the right column. Minimum 32px
+                    preserves the Figma gap when the right column is naturally taller. */}
+                <div className="hidden md:block md:flex-1 md:min-h-[32px]" aria-hidden="true" />
+                <button
+                  onClick={() => setExpanded((v) => !v)}
+                  className={cn(
+                    'w-full text-left font-sans font-medium not-italic cursor-pointer',
+                    'text-[var(--text-muted)]',
+                    '[font-size:var(--text-intro-mobile-size)] [line-height:var(--text-intro-mobile-leading)]',
+                    'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',
+                  )}
+                >
+                  {expanded ? (readLessLabel ?? 'Read less') : (readMoreLabel ?? 'Read more')}
+                </button>
+              </>
             )}
           </div>
 
