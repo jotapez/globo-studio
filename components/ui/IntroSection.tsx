@@ -45,7 +45,7 @@
  * className — extra classes on the root <section>
  */
 
-import { forwardRef, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence, useInView, useReducedMotion, useMotionValue, useSpring, type Variants } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -75,6 +75,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
   function IntroSection({ theme = 'auto', carouselVariant = 'v1', className }, ref) {
     const shouldReduceMotion = useReducedMotion();
     const [nameHovered, setNameHovered] = useState(false);
+    const [headingAnimDone, setHeadingAnimDone] = useState(false);
 
     // Cursor tracking for portrait hover effect
     const mouseX = useMotionValue(0);
@@ -91,6 +92,11 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
     // Ref for inView trigger — separate from the forwarded ref
     const innerRef = useRef<HTMLDivElement>(null);
     const isInView = useInView(innerRef, { once: false, amount: 0.2 });
+
+    // Reset underline when section leaves view so it re-animates on re-entry
+    useEffect(() => {
+      if (!isInView) setHeadingAnimDone(false);
+    }, [isInView]);
 
     const containerVariants: Variants = shouldReduceMotion
       ? { hidden: {}, visible: {} }
@@ -190,6 +196,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
+            onAnimationComplete={(def) => { if (def === 'visible') setHeadingAnimDone(true); }}
             className="relative z-10 w-full px-[14px] md:px-0"
           >
             {/*
@@ -245,8 +252,8 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
                 </motion.button>
                 <motion.span
                   initial={{ opacity: 0 }}
-                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                  transition={{ delay: 2.2, duration: 0.8 }}
+                  animate={headingAnimDone ? { opacity: 1 } : { opacity: 0 }}
+                  transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: 'easeOut' }}
                 >
                   <WavePath
                     onLineMouseEnter={() => setNameHovered(true)}
