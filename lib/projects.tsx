@@ -237,6 +237,7 @@ const PROJECTS: Project[] = [
         <>
           <span className="font-sans font-medium [letter-spacing:-0.03em]">Open Insurance</span>
           {' — '}
+          <br aria-hidden="true" />
           <span className="font-sans font-medium [letter-spacing:-0.03em]">Making</span>
           {' insurance '}
           <span className="font-sans font-medium [letter-spacing:-0.03em]">simple.</span>
