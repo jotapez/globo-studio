@@ -231,6 +231,7 @@ export function ProjectCard({
           onMouseEnter={enter}
           onMouseLeave={leave}
           className={cn(
+            'hidden md:block',
             'relative w-fit pointer-events-auto cursor-pointer',
             'font-sans [font-weight:var(--text-h2-weight)]',
             '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',

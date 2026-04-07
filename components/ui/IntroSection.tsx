@@ -215,16 +215,16 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
                 'max-w-[var(--content-width-heading)] mx-auto',
               )}
             >
-              {/* "G'day." — serif */}
-              <motion.span variants={wordVariants} className={serif}>G&apos;day.</motion.span>
-              <br aria-hidden="true" />
+              {/* "G'day." — serif, own line via block display */}
+              <motion.span variants={wordVariants} className={cn(serif, 'block')}>G&apos;day.</motion.span>
 
               {/* Body sentence with alternating typefaces */}
               <motion.span variants={wordVariants} className={sans}>Globo</motion.span>
-              <motion.span variants={wordVariants} className={serif}> is a studio </motion.span>
+              <motion.span variants={wordVariants} className={serif}> is a </motion.span>
+              <motion.span variants={wordVariants} className={sans}>design</motion.span>
+              <motion.span variants={wordVariants} className={serif}> studio </motion.span>
               <motion.span variants={wordVariants} className={sans}>orchestrated</motion.span>
-              <motion.span variants={wordVariants} className={serif}> by</motion.span>
-              <br aria-hidden="true" />
+              <motion.span variants={wordVariants} className={serif}> by </motion.span>
 
               {/*
                * <motion.button> makes this interactive for keyboard + screen reader users.
@@ -262,11 +262,12 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
                 </motion.span>
               </span>
 
-              <motion.span variants={wordVariants} className={serif}>, where </motion.span>
-              <motion.span variants={wordVariants} className={sans}>design</motion.span>
-              <motion.span variants={wordVariants} className={serif}> moves </motion.span>
-              <span className="whitespace-nowrap">
-                <motion.span variants={wordVariants} className={serif}>at the </motion.span>
+              <motion.span variants={wordVariants} className={serif}> — where </motion.span>
+              <motion.span variants={wordVariants} className={sans}>strategy</motion.span>
+              <motion.span variants={wordVariants} className={serif}> and </motion.span>
+              <motion.span variants={wordVariants} className={sans}>craft</motion.span>
+              <motion.span variants={wordVariants} className={serif}> move at the </motion.span>
+              <span className="whitespace-nowrap md:whitespace-normal">
                 <motion.span variants={wordVariants} className={sans}>speed</motion.span>
                 <motion.span variants={wordVariants} className={serif}> of AI.</motion.span>
               </span>
