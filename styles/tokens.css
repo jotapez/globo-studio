@@ -141,13 +141,13 @@
 
   /* Intro — Bricolage Grotesque Medium, 32 / 40 */
   --text-intro-size:        2rem;        /* 32px */
-  --text-intro-leading:     2.5rem;      /* 40px */
+  --text-intro-leading:     2.625rem;    /* 42px */
   --text-intro-weight:      500;         /* Medium */
   --text-intro-tracking:    -0.03em;     /* -3% letter-spacing */
 
   /* Intro Small — Bricolage Grotesque Regular, 20 / 28 */
   --text-intro-sm-size:     1.25rem;     /* 20px */
-  --text-intro-sm-leading:  1.75rem;     /* 28px */
+  --text-intro-sm-leading:  1.875rem;    /* 30px */
   --text-intro-sm-weight:   400;         /* Regular */
 
   /* Body — Bricolage Grotesque Regular, 16 / 24 */
@@ -207,7 +207,7 @@
 
   /* Intro mobile — Bricolage Grotesque, 24 / 29 */
   --text-intro-mobile-size:       1.5rem;       /* 24px */
-  --text-intro-mobile-leading:    1.8125rem;    /* 29px */
+  --text-intro-mobile-leading:    2rem;         /* 32px */
 
   /* Intro Small mobile — Bricolage Grotesque, 16 / 24 */
   --text-intro-sm-mobile-size:    1rem;         /* 16px */

@@ -194,8 +194,8 @@ export const ProjectIntro = forwardRef<HTMLDivElement, ProjectIntroProps>(
                   className={cn(
                     'w-full text-left font-sans font-medium not-italic cursor-pointer',
                     'text-[var(--text-muted)]',
-                    '[font-size:var(--text-intro-mobile-size)] [line-height:var(--text-intro-mobile-leading)]',
-                    'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',
+                    '[font-size:var(--text-intro-sm-mobile-size)] [line-height:var(--text-intro-sm-mobile-leading)]',
+                    'md:[font-size:var(--text-intro-sm-size)] md:[line-height:var(--text-intro-sm-leading)]',
                   )}
                 >
                   {expanded ? (readLessLabel ?? 'Read less') : (readMoreLabel ?? 'Read more')}

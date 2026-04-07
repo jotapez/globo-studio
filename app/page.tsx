@@ -46,9 +46,9 @@ import { useActiveSection } from '@/hooks/useActiveSection';
  */
 const MAIN_PROJECTS = [
   {
-    title: 'Officeworks B2B',
+    title: 'Officeworks',
     description:
-      "Officeworks' B2B customers were managing their accounts over the phone. As Lead Product Designer, I redesigned that into a self-service platform — custom catalogues, team and permissions management, address controls — and built the design system from 0 to 1. Support calls dropped 40%.",
+      "B2B customers were managing their accounts over the phone. I redesigned that into a self-service platform — custom catalogues, team and permissions management, address controls — and built the design system from 0 to 1. Support calls dropped 40%.",
     href: '/work/officeworks',
     imageSrc: '/Homepage/OW-project-card-first-desktop.svg',
     hoverImageSrc: '/Homepage/OW-project-card-second-desktop.png',
@@ -57,9 +57,9 @@ const MAIN_PROJECTS = [
     targetBg: '#001db0',
   },
   {
-    title: 'Open Insurance',
+    title: 'Open',
     description:
-      'Open Insurance builds white-label insurance for brands like Bupa, Polestar, and Slingshot. As Lead Product Designer, I redesigned the quote flows that cut drop-offs by 70% and lifted sales 20% — then built the multi-brand design system that let us deliver Bupa\'s full platform in 10 weeks, half the time a launch like that usually takes.',
+      'Open Insurance builds white-label insurance for brands like Bupa, Polestar, and Slingshot. I redesigned the quote flows that cut drop-offs by 70% and lifted sales 20% — then built the multi-brand design system that let us deliver Bupa\'s full platform in 10 weeks, half the time a launch like that usually takes.',
     href: '/work/open-insurance',
     imageSrc: '/Homepage/OI-project-card-first-desktop.svg',
     hoverImageSrc: '/Homepage/OI-project-card-second-desktop.png',
