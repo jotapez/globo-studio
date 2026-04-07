@@ -73,10 +73,11 @@ const PROJECTS: Project[] = [
     intro: {
       heading: (
         <>
-          <span className="font-serif">Officeworks</span>
-          <span className="font-sans"> — Manage your </span>
-          <span className="font-serif">B2B account</span>
-          <span className="font-sans"> efficiently and do more</span>
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">Officeworks</span>
+          {' — Less '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">admin,</span>
+          {' more '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">control.</span>
         </>
       ),
       body: "Managing a business account at Officeworks — adding team members, assigning product catalogues, controlling who could order to which address and under which cost centre — meant calling customer support. There was no way to do it yourself. The B2B Digital Experience program set out to change that: a 5-year initiative to give business customers real autonomy over how they buy.",
@@ -232,10 +233,11 @@ const PROJECTS: Project[] = [
     intro: {
       heading: (
         <>
-          <span className="font-serif">Open Insurance</span>
-          <span className="font-sans"> — Making </span>
-          <span className="font-serif">insurance</span>
-          <span className="font-sans"> simple</span>
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">Open Insurance</span>
+          {' — '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">Making</span>
+          {' insurance '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">simple.</span>
         </>
       ),
       body: "Insurance has a conversion problem. At Open Insurance — an AirTree-backed insuretech building white-label insurance for businesses — analytics showed most users were dropping off before they ever saw a price. Not because the product was bad, but because the value wasn't visible early enough. That was the first thing I fixed.",
@@ -408,14 +410,15 @@ const PROJECTS: Project[] = [
     intro: {
       heading: (
         <>
-          <span className="font-serif">kicbox - </span>
-          <span className="font-serif text-[var(--text-muted)]">What </span>
-          <span className="font-sans text-[var(--text-muted)]">matters</span>
-          <span className="font-serif text-[var(--text-muted)]"> most to </span>
-          <span className="font-sans text-[var(--text-muted)]">kids</span>
-          <span className="font-serif text-[var(--text-muted)]"> in </span>
-          <span className="font-sans text-[var(--text-muted)]">care</span>
-          <span className="font-serif text-[var(--text-muted)]">?</span>
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">kicbox</span>
+          {' — What '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">matters</span>
+          {' most '}
+          <br aria-hidden="true" />
+          {'to '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">kids</span>
+          {' in '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">care?</span>
         </>
       ),
       body: "Young people in out-of-home care often move between placements, schools, and support workers. In the process, things get lost — documents, photos, memories, the small things that help you know who you are. kicbox was built to fix that: a safe, personal digital space where young people can store important documents, record their life story, set goals, and stay connected with their Child Safety Officer.",
@@ -583,12 +586,9 @@ const PROJECTS: Project[] = [
     intro: {
       heading: (
         <>
-          <span className="font-serif">Retrospective -</span>
-          {' '}
-          <span className="font-sans text-[var(--text-muted)]">Design</span>
-          <span className="font-serif text-[var(--text-muted)]"> work over the last </span>
-          <span className="font-sans text-[var(--text-muted)]">10 years</span>
-          <span className="font-serif text-[var(--text-muted)]">.</span>
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">Retrospective</span>
+          {' — Different sectors, '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">same standard.</span>
         </>
       ),
       body: "Retro is a collection of client work from the past decade — not a single project, but a record of what it looks like to show up to very different briefs with the same standard of care. Government agencies. Enterprise platforms. Conservation charities. Global brands. The variety isn't incidental; it's the point.",
