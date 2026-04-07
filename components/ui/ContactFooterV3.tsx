@@ -612,7 +612,7 @@ function ContactLinks() {
           'md:[font-size:var(--text-h2-size)] md:[line-height:var(--text-h2-leading)]',
           '[letter-spacing:var(--text-h2-tracking)]',
         )}>
-          <HoverPillLink href="https://www.linkedin.com/in/juanpablo-design/" target="_blank" rel="noopener noreferrer" pill="Not particularly my favourite place">LinkedIn</HoverPillLink>
+          <HoverPillLink href="https://www.linkedin.com/in/juanpablo-design/" target="_blank" rel="noopener noreferrer" pill="Necessary evil">LinkedIn</HoverPillLink>
           <HoverPillLink href="https://onlyme.life/" target="_blank" rel="noopener noreferrer" pill="See more of me">OnlyMe</HoverPillLink>
         </div>
       </div>
