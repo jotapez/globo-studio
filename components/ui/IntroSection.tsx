@@ -214,7 +214,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
 
               {/* Body sentence with alternating typefaces */}
               <motion.span variants={wordVariants} className={sans}>Globo</motion.span>
-              <motion.span variants={wordVariants} className={serif}> is an AI native studio </motion.span>
+              <motion.span variants={wordVariants} className={serif}> is a studio </motion.span>
               <motion.span variants={wordVariants} className={sans}>orchestrated</motion.span>
               <motion.span variants={wordVariants} className={serif}> by</motion.span>
               <br aria-hidden="true" />
@@ -257,9 +257,12 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
 
               <motion.span variants={wordVariants} className={serif}>, where </motion.span>
               <motion.span variants={wordVariants} className={sans}>design</motion.span>
-              <motion.span variants={wordVariants} className={serif}> moves at the </motion.span>
-              <motion.span variants={wordVariants} className={sans}>speed</motion.span>
-              <motion.span variants={wordVariants} className={serif}> of intuition.</motion.span>
+              <motion.span variants={wordVariants} className={serif}> moves </motion.span>
+              <span className="whitespace-nowrap">
+                <motion.span variants={wordVariants} className={serif}>at the </motion.span>
+                <motion.span variants={wordVariants} className={sans}>speed</motion.span>
+                <motion.span variants={wordVariants} className={serif}> of AI.</motion.span>
+              </span>
             </h2>
           </motion.div>
 

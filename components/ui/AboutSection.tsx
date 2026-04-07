@@ -225,9 +225,9 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
             <motion.p
               variants={wordVariants}
               className={cn(
-                '[font-size:var(--text-intro-mobile-size)] [line-height:var(--text-intro-mobile-leading)]',
+                '[font-size:var(--text-intro-sm-size)] [line-height:var(--text-intro-sm-leading)]',
                 'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',
-                'mb-[var(--text-intro-mobile-leading)] md:mb-[var(--text-intro-leading)]',
+                'mb-[var(--text-intro-sm-leading)] md:mb-[var(--text-intro-leading)]',
               )}
             >
               {BIO_INTRO}
