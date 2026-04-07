@@ -214,9 +214,10 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
 
               {/* Body sentence with alternating typefaces */}
               <motion.span variants={wordVariants} className={sans}>Globo</motion.span>
-              <motion.span variants={wordVariants} className={serif}> is an AI native design studio </motion.span>
+              <motion.span variants={wordVariants} className={serif}> is an AI native studio </motion.span>
               <motion.span variants={wordVariants} className={sans}>orchestrated</motion.span>
-              <motion.span variants={wordVariants} className={serif}> by </motion.span>
+              <motion.span variants={wordVariants} className={serif}> by</motion.span>
+              <br aria-hidden="true" />
 
               {/*
                * <motion.button> makes this interactive for keyboard + screen reader users.
@@ -229,7 +230,8 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
                   type="button"
                   aria-label="Go to About section — Juan Pablo Castro"
                   className={cn(
-                    serif,
+                    sans,
+                    'font-medium',
                     'relative z-20 bg-transparent border-none p-0 cursor-pointer',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--text-primary)] focus-visible:ring-offset-2 rounded-sm',
                   )}
@@ -253,13 +255,11 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
                 </motion.span>
               </span>
 
-              <motion.span variants={wordVariants} className={serif}>, a </motion.span>
-              <motion.span variants={wordVariants} className={sans}>Product Designer </motion.span>
-              <motion.span variants={wordVariants} className={serif}>crafting </motion.span>
-              <motion.span variants={wordVariants} className={sans}>experiences </motion.span>
-              <motion.span variants={wordVariants} className={serif}>and </motion.span>
-              <motion.span variants={wordVariants} className={sans}>systems </motion.span>
-              <motion.span variants={wordVariants} className={serif}>globally.</motion.span>
+              <motion.span variants={wordVariants} className={serif}>, where </motion.span>
+              <motion.span variants={wordVariants} className={sans}>design</motion.span>
+              <motion.span variants={wordVariants} className={serif}> moves at the </motion.span>
+              <motion.span variants={wordVariants} className={sans}>speed</motion.span>
+              <motion.span variants={wordVariants} className={serif}> of intuition.</motion.span>
             </h2>
           </motion.div>
 
