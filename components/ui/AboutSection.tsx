@@ -52,12 +52,12 @@ export interface AboutSectionProps {
 // ─── bio content ──────────────────────────────────────────────────────────────
 
 const BIO_INTRO =
-  'I specialise in crafting human-centred experiences and scalable design systems that bring brands to life across products, services, and digital platforms.';
+  'For most of my 15 years in design, I had a quiet problem with the industry: it kept fragmenting. UX researcher, UI designer, interaction designer, visual designer — each a separate title, each a separate step, each a new layer of coordination between you and the thing you were actually trying to build. The process became the product. And the product suffered.';
 
 const BIO_REST = [
-  "As a Lead Product Designer at Levo, a leading technology consultancy, I've delivered impactful digital experiences for major clients. I led the Officeworks B2B Digital Experience program, guiding product design from discovery to delivery while establishing their foundational design system and coaching designers on systematic workflows. I also led the product experience design for Taronga Zoo's new website.",
-  'Previously at Open Insurance, I drove product design for car and home insurance products from strategy to delivery, while building and governing their design system.',
-  "When I'm not designing, you'll find me in sunny Clovelly running, playing guitar, or daydreaming by the water. I'm always up for a coffee, chat, freelance projects, and new opportunities. Please say hello—or hola! :)",
+  "I never trusted the double diamond. Not because structure is bad — but because real design doesn't move in a straight line through sticky notes and problem statements toward a static prototype that nobody will ever ship exactly as drawn. The best work I've been part of always started somewhere else: with a solution people couldn't stop reacting to. Something obvious in the best way. Something that made a team say that's it before they could explain why.",
+  "AI didn't just speed up the old process. It made it obsolete. A working prototype used to cost weeks of alignment. Now it costs an afternoon. That changes everything — not just the tools, but the logic of who does what and how quickly a team can learn from something real. I work from 0 to 1 across strategy, design, and implementation. I prototype in code, test with AI agents, iterate fast, and skip any step that doesn't get us closer to something people will actually love using. Craft and taste matter more now, not less — because anyone can generate a starting point, but not anyone can tell when it's genuinely good.",
+  "I'm based in Sydney and working with teams that believe smaller, more autonomous, and more opinionated is better. If you're building something that deserves to be great, I'd like to help make it that way.",
 ];
 
 // ─── component ────────────────────────────────────────────────────────────────

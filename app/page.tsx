@@ -48,7 +48,7 @@ const MAIN_PROJECTS = [
   {
     title: 'Officeworks B2B',
     description:
-      'Product design for car and home insurance products from strategy to delivery, while building and governing the design system at Open Insurance.',
+      "Officeworks' B2B customers were managing their accounts over the phone. As Lead Product Designer, I redesigned that into a self-service platform — custom catalogues, team and permissions management, address controls — and built the design system from 0 to 1. Support calls dropped 40%.",
     href: '/work/officeworks',
     imageSrc: '/Homepage/OW-project-card-first-desktop.svg',
     hoverImageSrc: '/Homepage/OW-project-card-second-desktop.png',
@@ -59,7 +59,7 @@ const MAIN_PROJECTS = [
   {
     title: 'Open Insurance',
     description:
-      'Product design for car and home insurance products from strategy to delivery, while building and governing the design system at Open Insurance.',
+      'Open Insurance builds white-label insurance for brands like Bupa, Polestar, and Slingshot. As Lead Product Designer, I redesigned the quote flows that cut drop-offs by 70% and lifted sales 20% — then built the multi-brand design system that let us deliver Bupa\'s full platform in 10 weeks, half the time a launch like that usually takes.',
     href: '/work/open-insurance',
     imageSrc: '/Homepage/OI-project-card-first-desktop.svg',
     hoverImageSrc: '/Homepage/OI-project-card-second-desktop.png',
@@ -70,7 +70,7 @@ const MAIN_PROJECTS = [
   {
     title: 'kicbox',
     description:
-      'Product design for car and home insurance products from strategy to delivery, while building and governing the design system at Open Insurance.',
+      'Young people in out-of-home care often age out of the system without basic documents — sometimes without ever having seen their own birth certificate. kicbox gives them a safe place to keep what matters. I led design end-to-end, from co-design workshops with young people through to the app, identity, and promotional materials.',
     href: '/work/kicbox',
     imageSrc: '/Homepage/kicbox-project-card-first-desktop.svg',
     hoverImageSrc: '/Homepage/kicbox-project-card-second-desktop.png',
@@ -81,7 +81,7 @@ const MAIN_PROJECTS = [
   {
     title: 'Retro',
     description:
-      'Product design for car and home insurance products from strategy to delivery, while building and governing the design system at Open Insurance.',
+      'From Taronga Zoo to Coca-Cola Amatil to the NSW Electoral Commission — Retro is a decade of client work across sectors that demand very different things from design. Different stakes, different users, the same craft.',
     href: '/work/retro',
     imageSrc: '/Homepage/Retro-project-card-first-desktop.svg',
     hoverImageSrc: '/Homepage/Retro-project-card-second-desktop.png',
@@ -99,7 +99,7 @@ const PERSONAL_PROJECTS = [
   {
     title: 'Compaire',
     description:
-      'A personal exploration in design and creativity.',
+      "Chile's 2025 presidential campaigns were polarised, jargon-heavy, and almost deliberately opaque for ordinary voters. I designed and built Compaire: an AI platform that let anyone query the official presidential programs in plain language, on any topic they cared about. 2,000+ users, 3,000+ questions answered — and a clearer picture of what Chilean voters actually wanted to know.",
     href: 'https://www.compaire.cl',
     imageSrc: '/Homepage/Compaire-project-card-second-desktop.png',
     staticImage: true,
@@ -110,7 +110,7 @@ const PERSONAL_PROJECTS = [
   },
   {
     title: 'Only Me',
-    description: 'A personal exploration in design and creativity.',
+    description: "Every social platform has a stake in your data, your attention, or your behaviour. Only Me doesn't. I designed and built it as a private space to share images, thoughts, and links with friends and family — no algorithms, no metrics, no ads, no pressure to perform. No followers. No feed. Just yours.",
     href: 'https://onlyme.life/',
     imageSrc: '/Homepage/OnlyMe-project-card-second-desktop.png',
     staticImage: true,

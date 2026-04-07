@@ -47,7 +47,10 @@ export interface Project {
   intro: {
     /** Mixed serif/sans JSX heading — defined inline per project */
     heading: React.ReactNode;
-    body: string;
+    /** Short intro paragraph — always visible. */
+    body: React.ReactNode;
+    /** Extra paragraphs revealed via "Read more" toggle. */
+    extraBody?: React.ReactNode;
     /** 150-char max — used for <meta description> and Open Graph */
     description: string;
   };
@@ -70,13 +73,26 @@ const PROJECTS: Project[] = [
     intro: {
       heading: (
         <>
-          <span className="font-serif">Officeworks</span>
-          <span className="font-sans"> — Manage your </span>
-          <span className="font-serif">B2B account</span>
-          <span className="font-sans"> efficiently and do more</span>
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">Officeworks</span>
+          {' — '}
+          <br aria-hidden="true" />
+          {'Less '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">admin,</span>
+          {' more '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">control.</span>
         </>
       ),
-      body: "Officeworks is Australia's largest supplier of office products and services. I led the end-to-end UX and product design for their B2B digital platform — redesigning the account management experience to help business customers order smarter, track spending, and manage their teams with confidence.",
+      body: "Managing a business account at Officeworks — adding team members, assigning product catalogues, controlling who could order to which address and under which cost centre — meant calling customer support. There was no way to do it yourself. The B2B Digital Experience program set out to change that: a 5-year initiative to give business customers real autonomy over how they buy.",
+      extraBody: (
+        <>
+          <p className="mb-[1em]">
+            I joined as Lead Product Designer and led the work end-to-end, from discovery through to production. The challenge wasn&apos;t just designing individual features — it was understanding how a purchasing manager, a finance lead, and a branch buyer all experience the same account differently, and making sure the platform worked for all of them. The result: a self-service suite covering custom product catalogues, contact and role management, cost centre permissions, and delivery addresses — for desktop and mobile. Customer support dependency dropped by 40%.
+          </p>
+          <p>
+            Running alongside the product work, I built the team&apos;s design system from scratch — an accessible visual language covering hundreds of components, colour tokens, and icon libraries. It became the foundation every new feature is built on. I also coached the design team on system thinking, governance, and variables, so the work wouldn&apos;t depend on me to continue.
+          </p>
+        </>
+      ),
       description: "End-to-end UX and product design for Officeworks' B2B digital platform — redesigning account management to help businesses order smarter and manage teams with confidence.",
     },
     contentBlocks: [
@@ -219,13 +235,25 @@ const PROJECTS: Project[] = [
     intro: {
       heading: (
         <>
-          <span className="font-serif">Open Insurance</span>
-          <span className="font-sans"> — Making </span>
-          <span className="font-serif">insurance</span>
-          <span className="font-sans"> simple</span>
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">Open Insurance</span>
+          {' — '}
+          <br aria-hidden="true" />
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">Making</span>
+          {' insurance '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">simple.</span>
         </>
       ),
-      body: 'Content coming soon.',
+      body: "Insurance has a conversion problem. At Open Insurance — an AirTree-backed insuretech building white-label insurance for businesses — analytics showed most users were dropping off before they ever saw a price. Not because the product was bad, but because the value wasn't visible early enough. That was the first thing I fixed.",
+      extraBody: (
+        <>
+          <p className="mb-[1em]">
+            Working with product and marketing, we moved the price to the front of the quote flow — letting people see exactly what they&apos;d pay and customise their cover before committing to the full journey. We tested it in Huddle, Open&apos;s own car insurance brand, before rolling it out to partners including Bupa, ahm, Polestar, and Slingshot. Sales went up 20% in the first month. Drop-offs fell by 70%.
+          </p>
+          <p>
+            The bigger challenge was building at scale. Open&apos;s platform had to feel native to every partner&apos;s brand — from Huddle&apos;s warm, illustrated consumer product to Bupa&apos;s clinical precision — while being fast to deploy. I built the Open Design System: a token-based, multi-brand component library designed to configure and launch quote flows in weeks rather than months. It worked: time-to-market dropped by 50%, and the Bupa partnership went live in 10 weeks — half the time a launch like that typically takes. Throughout, I ran weekly customer interviews using the jobs-to-be-done framework, turning what we heard into specific flow improvements that kept drop-off rates falling long after launch.
+          </p>
+        </>
+      ),
       description: 'Product design for Open Insurance — simplifying the insurance experience with a transparent, people-first digital product.',
     },
     contentBlocks: [
@@ -385,17 +413,30 @@ const PROJECTS: Project[] = [
     intro: {
       heading: (
         <>
-          <span className="font-serif">kicbox - </span>
-          <span className="font-serif text-[var(--text-muted)]">What </span>
-          <span className="font-sans text-[var(--text-muted)]">matters</span>
-          <span className="font-serif text-[var(--text-muted)]"> most to </span>
-          <span className="font-sans text-[var(--text-muted)]">kids</span>
-          <span className="font-serif text-[var(--text-muted)]"> in </span>
-          <span className="font-sans text-[var(--text-muted)]">care</span>
-          <span className="font-serif text-[var(--text-muted)]">?</span>
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">kicbox</span>
+          {' — '}
+          <br aria-hidden="true" />
+          {'What '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">matters</span>
+          {' most '}
+          <br aria-hidden="true" />
+          {'to '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">kids</span>
+          {' in '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">care?</span>
         </>
       ),
-      body: "Young people in care don't always have the things kids in more stable homes take for granted. kicbox gives them a safe and secure place to keep important information and documents that can help them get ahead in education and employment. It also helps them keep photos, memorabilia and other childhood memories of growing up that help with their sense of identity through life.",
+      body: "Young people in out-of-home care often move between placements, schools, and support workers. In the process, things get lost — documents, photos, memories, the small things that help you know who you are. kicbox was built to fix that: a safe, personal digital space where young people can store important documents, record their life story, set goals, and stay connected with their Child Safety Officer.",
+      extraBody: (
+        <>
+          <p className="mb-[1em]">
+            The project started with ethnographic research and co-design workshops with young people, carers, and Child Safety Officers across Queensland. Rather than designing for them, we designed with them — running moodboard exercises and dot-voting sessions where young people chose the look and feel themselves. They voted for playful, colourful, and personal: custom backgrounds, their own photos, emoji to log how they&apos;re feeling. The visual identity reflects exactly what they asked for.
+          </p>
+          <p>
+            The result was a full product ecosystem — a cross-platform app for young people, a companion app for carers, and a dashboard for Child Safety Staff to monitor activity and keep in touch. Pilot feedback was immediate. Many young people uploaded their birth certificate on first use. For some, it was the first time they&apos;d ever seen it. Several, according to the evaluation report, couldn&apos;t stop grinning.
+          </p>
+        </>
+      ),
       description: 'UX and product design for kicbox — a safe digital home for young people in care to store important documents, memories, and build their sense of identity.',
     },
     contentBlocks: [
@@ -416,13 +457,6 @@ const PROJECTS: Project[] = [
         aspectRatio: '4224/2366',
       },
 
-      // 2b. Caption
-      {
-        type: 'caption',
-        alignment: 'left',
-        text: 'Working closely with UX design on a variety of activities designed to uncover the needs, habits, thoughts and feelings of the app\'s users, which ranged from the youth, their carers and the Child Safety team. These included ethnographic research, interviews and workshops. Rapid prototype testing and pilots. Led the design of the app\'s interface, visual identity and the related promotional material.',
-      },
-
       // 3+4. Two-Image — ethnographic research + ideation
       {
         type: 'two-image',
@@ -435,13 +469,6 @@ const PROJECTS: Project[] = [
         color: 'var(--bg-project-kicbox)',
       },
 
-      // Caption
-      {
-        type: 'caption',
-        alignment: 'left',
-        text: 'Without a preconceived idea of what kicbox could be we wanted to make the most of the fixed time and funding available for an initial pilot by designing and building the features that would make the biggest difference to Young People.',
-      },
-
       // 5+6. Two-Image — moodboard + rapid prototype
       {
         type: 'two-image',
@@ -452,13 +479,6 @@ const PROJECTS: Project[] = [
         altB: 'kicbox — rapid prototype testing',
         aspectRatioB: '1223/1070',
         color: 'var(--bg-project-kicbox)',
-      },
-
-      // Caption — rapid prototype
-      {
-        type: 'caption',
-        alignment: 'left',
-        text: "We put Young People in the driver's seat when it came to visual design. I ran moodboard and sticker exercises and took their direction through to the final design.",
       },
 
       // 7. Full-Bleed — backgrounds
@@ -571,15 +591,24 @@ const PROJECTS: Project[] = [
     intro: {
       heading: (
         <>
-          <span className="font-serif">Retrospective -</span>
-          {' '}
-          <span className="font-sans text-[var(--text-muted)]">Design</span>
-          <span className="font-serif text-[var(--text-muted)]"> work over the last </span>
-          <span className="font-sans text-[var(--text-muted)]">10 years</span>
-          <span className="font-serif text-[var(--text-muted)]">.</span>
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">Retrospective</span>
+          {' — '}
+          <br aria-hidden="true" />
+          {'Different sectors, '}
+          <span className="font-sans font-medium [letter-spacing:-0.03em]">same standard.</span>
         </>
       ),
-      body: '',
+      body: "Retro is a collection of client work from the past decade — not a single project, but a record of what it looks like to show up to very different briefs with the same standard of care. Government agencies. Enterprise platforms. Conservation charities. Global brands. The variety isn't incidental; it's the point.",
+      extraBody: (
+        <>
+          <p className="mb-[1em]">
+            At Taronga Zoo, I led the UX process for a website redesign centred on the zoo&apos;s conservation mission — running gut tests, moodboard workshops, and mobile-first usability sessions to establish what content needed to land before visitors scrolled anywhere. At the NSW Electoral Commission, I built a design system from the ground up using atomic design methodology, now used across all of the commission&apos;s digital properties. And at Coca-Cola Amatil, I led interaction and visual design for MYCCA — their B2B e-commerce platform serving business customers across Australia and New Zealand.
+          </p>
+          <p>
+            The full list also includes Fidelity Life, Toyota, Infrastructure Australia, and the National Library of Australia. What connects them isn&apos;t the sector or the scale — it&apos;s the same starting point: understand the problem properly, then make something that genuinely works for the people who have to use it.
+          </p>
+        </>
+      ),
       description: 'UX and product design for Levo — building financial tools that help modern teams spend, track, and grow with confidence.',
     },
     contentBlocks: [

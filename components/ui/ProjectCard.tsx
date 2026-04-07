@@ -223,7 +223,7 @@ export function ProjectCard({
       </div>
 
       {/* ── text ──────────────────────────────────────────────────────── */}
-      <div className="flex-shrink-0 flex flex-col gap-0 pt-[16px]">
+      <div className="flex-shrink-0 flex flex-col gap-0 pt-[16px] md:h-[var(--card-text-area-h)] md:overflow-hidden">
         {/* Title — animated underline bar sweeps left-to-right on hover/focus */}
         <h3
           onMouseEnter={enter}
@@ -298,7 +298,6 @@ export function ProjectCard({
                 '[font-family:var(--font-sans)] [font-weight:var(--text-body-light-weight)]',
                 'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
                 '[color:var(--text-primary)]',
-                'md:max-w-[570px]',
               )}
             >
               {description.split(' ').map((word, i, arr) => (
@@ -315,7 +314,6 @@ export function ProjectCard({
               '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
               'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
               '[color:var(--text-primary)]',
-              'md:max-w-[570px]',
             )}
           >
             {description}
