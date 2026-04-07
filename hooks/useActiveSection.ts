@@ -128,6 +128,15 @@ export function useActiveSection(): UseActiveSectionReturn {
         scrollingToRef.current = null;
         window.removeEventListener('scroll', onScroll);
         scrollListenerRef.current = null;
+        // Move focus to the target section so keyboard users don't stay
+        // anchored in the nav after navigation (WCAG 2.4.3 Focus Order).
+        // tabIndex="-1" makes non-interactive elements programmatically focusable
+        // without inserting them into the natural tab order.
+        const target = document.getElementById(id);
+        if (target) {
+          if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+          target.focus({ preventScroll: true });
+        }
       }, 150);
     };
 

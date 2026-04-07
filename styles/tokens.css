@@ -145,9 +145,9 @@
   --text-intro-weight:      500;         /* Medium */
   --text-intro-tracking:    -0.03em;     /* -3% letter-spacing */
 
-  /* Intro Small — Bricolage Grotesque Regular, 20 / 28 */
+  /* Intro Small — Bricolage Grotesque Regular, 20 / 29 */
   --text-intro-sm-size:     1.25rem;     /* 20px */
-  --text-intro-sm-leading:  1.875rem;    /* 30px */
+  --text-intro-sm-leading:  1.8125rem;   /* 29px */
   --text-intro-sm-weight:   400;         /* Regular */
 
   /* Body — Bricolage Grotesque Regular, 16 / 24 */
