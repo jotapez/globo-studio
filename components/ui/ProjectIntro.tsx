@@ -186,7 +186,7 @@ export const ProjectIntro = forwardRef<HTMLDivElement, ProjectIntroProps>(
               <button
                 onClick={() => setExpanded((v) => !v)}
                 className={cn(
-                  'w-full text-left font-sans font-medium not-italic',
+                  'w-full text-left font-sans font-medium not-italic cursor-pointer',
                   'text-[var(--text-primary)]',
                   '[font-size:var(--text-intro-mobile-size)] [line-height:var(--text-intro-mobile-leading)]',
                   'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',

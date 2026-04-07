@@ -74,7 +74,9 @@ const PROJECTS: Project[] = [
       heading: (
         <>
           <span className="font-sans font-medium [letter-spacing:-0.03em]">Officeworks</span>
-          {' — Less '}
+          {' — '}
+          <br aria-hidden="true" />
+          {'Less '}
           <span className="font-sans font-medium [letter-spacing:-0.03em]">admin,</span>
           {' more '}
           <span className="font-sans font-medium [letter-spacing:-0.03em]">control.</span>
@@ -411,7 +413,9 @@ const PROJECTS: Project[] = [
       heading: (
         <>
           <span className="font-sans font-medium [letter-spacing:-0.03em]">kicbox</span>
-          {' — What '}
+          {' — '}
+          <br aria-hidden="true" />
+          {'What '}
           <span className="font-sans font-medium [letter-spacing:-0.03em]">matters</span>
           {' most '}
           <br aria-hidden="true" />
@@ -587,7 +591,9 @@ const PROJECTS: Project[] = [
       heading: (
         <>
           <span className="font-sans font-medium [letter-spacing:-0.03em]">Retrospective</span>
-          {' — Different sectors, '}
+          {' — '}
+          <br aria-hidden="true" />
+          {'Different sectors, '}
           <span className="font-sans font-medium [letter-spacing:-0.03em]">same standard.</span>
         </>
       ),
