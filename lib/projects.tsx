@@ -33,6 +33,10 @@ export interface Project {
   clientName: string;
   /** Slug of the next project in the cycle */
   nextSlug: string;
+  /** When true, renders a password gate before the project content. */
+  passwordProtected?: boolean;
+  /** Password required to unlock this project. Only used when passwordProtected is true. */
+  password?: string;
   /** Outer page background — raw hex, project-specific (not a token) */
   bgColor: string;
   /** Optional override for the PageWrapper background. Defaults to var(--bg-page).
@@ -65,6 +69,8 @@ const PROJECTS: Project[] = [
     slug: 'officeworks',
     clientName: 'Officeworks',
     nextSlug: 'open-insurance',
+    passwordProtected: true,
+    password: 'officeworks',
     bgColor: 'var(--bg-page-project-ow)',
     wrapperColor: 'var(--bg-page)',
     footerBgColor: 'var(--bg-footer-project-ow)',
@@ -228,6 +234,8 @@ const PROJECTS: Project[] = [
     slug: 'open-insurance',
     clientName: 'Open Insurance',
     nextSlug: 'kicbox',
+    passwordProtected: true,
+    password: 'openinsurance',
     bgColor: 'var(--bg-page-project-oi)',
     footerBgColor: 'var(--bg-footer-project-oi)',
     footerTheme: 'dark',

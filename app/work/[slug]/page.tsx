@@ -15,6 +15,7 @@ import { ContactFooterV3 } from '@/components/ui/ContactFooterV3';
 import { TwoImageLayout } from '@/components/ui/TwoImageLayout';
 import { ScrollPaddingShell } from '@/components/ui/ScrollPaddingShell';
 import { VideoBlock } from '@/components/ui/VideoBlock';
+import { PasswordGate } from '@/components/ui/PasswordGate';
 
 // ─── static params ────────────────────────────────────────────────────────────
 
@@ -143,36 +144,53 @@ export default async function ProjectPage({
   const project = getProject(slug);
   if (!project) notFound();
 
-  return (
+  const projectContent = (
     <>
       {project.footerThemeColor && (
         <style>{`html, body { background-color: ${project.footerThemeColor} !important; }`}</style>
       )}
       <main aria-labelledby="project-heading">
-      <ScrollPaddingShell
-        bgColor={project.bgColor}
-        estimatedContentBottom={estimateContentBottomMobile(project.contentBlocks)}
-        className="
-          pt-[var(--hero-padding-top-mobile)] md:pt-[var(--hero-padding-top-desktop)]
-        "
-      >
-        <PageWrapper bgColor={project.wrapperColor}>
-          <ProjectIntro
-            id="project-heading"
-            heading={project.intro.heading}
-            body={project.intro.body}
-            extraBody={project.intro.extraBody}
-            bodyColor={project.intro.extraBody ? 'primary' : 'muted'}
-          />
-          {project.contentBlocks.map((block, i) => renderBlock(block, i))}
-        </PageWrapper>
-      </ScrollPaddingShell>
+        <ScrollPaddingShell
+          bgColor={project.bgColor}
+          estimatedContentBottom={estimateContentBottomMobile(project.contentBlocks)}
+          className="
+            pt-[var(--hero-padding-top-mobile)] md:pt-[var(--hero-padding-top-desktop)]
+          "
+        >
+          <PageWrapper bgColor={project.wrapperColor}>
+            <ProjectIntro
+              id="project-heading"
+              heading={project.intro.heading}
+              body={project.intro.body}
+              extraBody={project.intro.extraBody}
+              bodyColor={project.intro.extraBody ? 'primary' : 'muted'}
+            />
+            {project.contentBlocks.map((block, i) => renderBlock(block, i))}
+          </PageWrapper>
+        </ScrollPaddingShell>
 
-      <ContactFooterV3
-        bgColor={project.footerBgColor}
-        theme={project.footerTheme}
-      />
-    </main>
+        <ContactFooterV3
+          bgColor={project.footerBgColor}
+          theme={project.footerTheme}
+        />
+      </main>
     </>
   );
+
+  if (project.passwordProtected && project.password) {
+    return (
+      <PasswordGate
+        password={project.password}
+        slug={project.slug}
+        bgColor={project.bgColor}
+        accentColor={project.footerThemeColor ?? '#000000'}
+        footerBgColor={project.footerBgColor}
+        footerTheme={project.footerTheme}
+      >
+        {projectContent}
+      </PasswordGate>
+    );
+  }
+
+  return projectContent;
 }
