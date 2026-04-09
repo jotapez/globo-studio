@@ -93,7 +93,7 @@ const PROJECTS: Project[] = [
           </p>
         </>
       ),
-      description: "End-to-end UX and product design for Officeworks' B2B digital platform — redesigning account management to help businesses order smarter and manage teams with confidence.",
+      description: "Officeworks — Less admin, more control. Officeworks B2B customers were managing their accounts over the phone. I redesigned that into a self-service platform — custom catalogues, team and permissions management, address controls — and built the design system from 0 to 1. Support calls dropped 40%.",
     },
     contentBlocks: [
       // Hero
@@ -254,7 +254,7 @@ const PROJECTS: Project[] = [
           </p>
         </>
       ),
-      description: 'Product design for Open Insurance — simplifying the insurance experience with a transparent, people-first digital product.',
+      description: 'Open Insurance — Making insurance simple. Open Insurance builds white-label insurance for brands like Bupa, Polestar, and Slingshot. I redesigned the quote flows that cut drop-offs by 70% and lifted sales 20% — then built the multi-brand design system that let us deliver Bupa\'s full platform in 10 weeks, half the time a launch like that usually takes.',
     },
     contentBlocks: [
       {
@@ -437,7 +437,7 @@ const PROJECTS: Project[] = [
           </p>
         </>
       ),
-      description: 'UX and product design for kicbox — a safe digital home for young people in care to store important documents, memories, and build their sense of identity.',
+      description: 'kicbox — What matters most to kids in care? Young people in out-of-home care often age out of the system without basic documents — sometimes without ever having seen their own birth certificate. kicbox gives them a safe place to keep what matters. I led design end-to-end, from co-design workshops with young people through to the app, identity, and promotional materials.',
     },
     contentBlocks: [
       // 1. Hero
@@ -609,7 +609,7 @@ const PROJECTS: Project[] = [
           </p>
         </>
       ),
-      description: 'UX and product design for Levo — building financial tools that help modern teams spend, track, and grow with confidence.',
+      description: 'Retrospective — Different sectors, same standard. From Taronga Zoo to Coca-Cola Amatil to the NSW Electoral Commission — Retro is a decade of client work across sectors that demand very different things from design. Different stakes, different users, the same craft.',
     },
     contentBlocks: [
       { type: 'full-bleed', src: '/Retro/Taronga-hero.png',               alt: 'Taronga Zoo — hero',              color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
