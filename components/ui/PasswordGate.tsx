@@ -21,7 +21,7 @@
  */
 
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
-import { AnimatePresence, motion, useAnimation } from 'framer-motion';
+import { AnimatePresence, motion, useAnimation, useReducedMotion } from 'framer-motion';
 import { ContactFooterV3 } from '@/components/ui/ContactFooterV3';
 
 // ─── types ─────────────────────────────────────────────────────────────────────
@@ -56,8 +56,25 @@ export function PasswordGate({
   const [value, setValue]       = useState('');
   const [error, setError]       = useState(false);
 
-  const inputRef    = useRef<HTMLInputElement>(null);
+  const inputRef     = useRef<HTMLInputElement>(null);
   const pillControls = useAnimation();
+  const shouldReduceMotion = useReducedMotion();
+
+  const headingAnim = shouldReduceMotion
+    ? {}
+    : {
+        initial:    { opacity: 0, y: 20 },
+        animate:    { opacity: 1, y: 0 },
+        transition: { duration: 0.5, ease: 'easeOut' as const },
+      };
+
+  const bodyAnim = shouldReduceMotion
+    ? {}
+    : {
+        initial:    { opacity: 0, y: 20 },
+        animate:    { opacity: 1, y: 0 },
+        transition: { duration: 0.5, ease: 'easeOut' as const, delay: 0.1 },
+      };
 
   // ── hydration + sessionStorage check ──────────────────────────────────────
   useEffect(() => {
@@ -97,7 +114,7 @@ export function PasswordGate({
   if (!mounted) return null;
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
+    <AnimatePresence mode="wait">
       {!unlocked ? (
         <motion.div
           key="gate"
@@ -110,16 +127,19 @@ export function PasswordGate({
             <div className="w-full max-w-[350px] md:max-w-[1024px] flex flex-col gap-6">
 
               {/* Mixed heading — Instrument Serif + Bricolage Grotesque Medium */}
-              <h1 className="text-white font-serif text-[36px] md:text-[64px] leading-[50px] md:leading-[84px] m-0">
+              <motion.h1
+                {...headingAnim}
+                className="text-white font-serif text-[36px] md:text-[64px] leading-[50px] md:leading-[84px] m-0"
+              >
                 {'This '}
                 <span className="font-sans font-medium [letter-spacing:-0.03em]">work</span>
                 {' is '}
                 <br className="md:hidden" aria-hidden="true" />
                 <span className="font-sans font-medium [letter-spacing:-0.03em]">password-</span>
                 {'protected.'}
-              </h1>
+              </motion.h1>
 
-              <div className="flex flex-col gap-4">
+              <motion.div {...bodyAnim} className="flex flex-col gap-4">
                 <p className="text-white text-base leading-6 m-0">
                   Enter the password to continue
                 </p>
@@ -181,7 +201,7 @@ export function PasswordGate({
                     )}
                   </AnimatePresence>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
 
