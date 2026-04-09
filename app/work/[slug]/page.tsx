@@ -16,6 +16,7 @@ import { TwoImageLayout } from '@/components/ui/TwoImageLayout';
 import { ScrollPaddingShell } from '@/components/ui/ScrollPaddingShell';
 import { VideoBlock } from '@/components/ui/VideoBlock';
 import { PasswordGate } from '@/components/ui/PasswordGate';
+import { ChapterTracker } from '@/components/ui/ChapterTracker';
 
 // ─── static params ────────────────────────────────────────────────────────────
 
@@ -44,9 +45,20 @@ export async function generateMetadata({
 
 function renderBlock(block: ContentBlock, i: number): React.ReactNode {
   const key = `${block.type}-${i}`;
+  const sentinel = block.chapterLabel ? (
+    <div
+      key={`sentinel-${i}`}
+      data-chapter-sentinel={block.chapterLabel}
+      aria-hidden="true"
+      style={{ height: 0, overflow: 'hidden' }}
+    />
+  ) : null;
+  const wrap = (node: React.ReactNode) =>
+    sentinel ? <React.Fragment key={key}>{sentinel}{node}</React.Fragment> : node;
+
   switch (block.type) {
     case 'hero':
-      return (
+      return wrap(
         <HeroImageLayout
           key={key}
           src={block.src}
@@ -57,7 +69,7 @@ function renderBlock(block: ContentBlock, i: number): React.ReactNode {
       );
 
     case 'single-white':
-      return (
+      return wrap(
         <SingleImageWhiteCard
           key={key}
           src={block.src}
@@ -67,7 +79,7 @@ function renderBlock(block: ContentBlock, i: number): React.ReactNode {
       );
 
     case 'single-color':
-      return (
+      return wrap(
         <SingleImageColorBackground
           key={key}
           src={block.src}
@@ -78,7 +90,7 @@ function renderBlock(block: ContentBlock, i: number): React.ReactNode {
       );
 
     case 'full-bleed':
-      return (
+      return wrap(
         <FullBleedImageLayout
           key={key}
           src={block.src}
@@ -90,7 +102,7 @@ function renderBlock(block: ContentBlock, i: number): React.ReactNode {
       );
 
     case 'two-image':
-      return (
+      return wrap(
         <TwoImageLayout
           key={key}
           srcA={block.srcA}
@@ -106,7 +118,7 @@ function renderBlock(block: ContentBlock, i: number): React.ReactNode {
       );
 
     case 'video':
-      return (
+      return wrap(
         <VideoBlock
           key={key}
           src={block.src}
@@ -118,14 +130,14 @@ function renderBlock(block: ContentBlock, i: number): React.ReactNode {
 
     case 'caption':
       if (block.alignment === 'space-between' && Array.isArray(block.text)) {
-        return (
+        return wrap(
           <CaptionText key={key} alignment="space-between">
             <span>{block.text[0]}</span>
             <span>{block.text[1]}</span>
           </CaptionText>
         );
       }
-      return (
+      return wrap(
         <CaptionText key={key} alignment={block.alignment}>
           <span>{block.text as string}</span>
         </CaptionText>
@@ -165,10 +177,16 @@ export default async function ProjectPage({
               extraBody={project.intro.extraBody}
               bodyColor={project.intro.extraBody ? 'primary' : 'muted'}
             />
+            <ChapterTracker />
             {project.contentBlocks.map((block, i) => renderBlock(block, i))}
           </PageWrapper>
         </ScrollPaddingShell>
 
+        <div
+          data-chapter-sentinel=""
+          aria-hidden="true"
+          style={{ height: 0, overflow: 'hidden' }}
+        />
         <ContactFooterV3
           bgColor={project.footerBgColor}
           theme={project.footerTheme}
