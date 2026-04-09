@@ -35,7 +35,7 @@
 
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -125,10 +125,14 @@ export function ProjectCard({
   const [hovered, setHovered] = useState(false);
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
   const [mounted, setMounted] = useState(false);
+  const lastTouchRef = useRef(0);
 
   useEffect(() => setMounted(true), []);
 
-  const enter = useCallback(() => setHovered(true), []);
+  const enter = useCallback(() => {
+    if (Date.now() - lastTouchRef.current < 500) return;
+    setHovered(true);
+  }, []);
   const leave = useCallback(() => { setHovered(false); setCursorPos(null); }, []);
 
   const handleClick = useCallback(() => {
@@ -147,9 +151,10 @@ export function ProjectCard({
     <>
       {/* ── image ─────────────────────────────────────────────────────── */}
       <div
+        onTouchStart={() => { lastTouchRef.current = Date.now(); setHovered(false); setCursorPos(null); }}
         onMouseEnter={enter}
         onMouseLeave={leave}
-        onMouseMove={(e) => setCursorPos({ x: e.clientX, y: e.clientY })}
+        onMouseMove={(e) => { if (Date.now() - lastTouchRef.current < 500) return; setCursorPos({ x: e.clientX, y: e.clientY }); }}
         className={cn(
           'relative min-h-0 h-[390px] md:flex-1 md:h-auto md:max-h-[var(--card-image-max-h)] overflow-hidden pointer-events-auto cursor-pointer',
           // border-radius: morphs to circle on hover (standard variant only)
