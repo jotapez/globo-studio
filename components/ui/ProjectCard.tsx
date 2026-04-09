@@ -208,68 +208,30 @@ export function ProjectCard({
 
       {/* ── text ──────────────────────────────────────────────────────── */}
       <div className="flex-shrink-0 flex flex-col gap-0 pt-[16px] md:h-[var(--card-text-area-h)] md:overflow-hidden">
-        {/* Title — animated underline bar sweeps left-to-right on hover/focus */}
-        <h3
-          onMouseEnter={enter}
-          onMouseLeave={leave}
-          className={cn(
-            'hidden md:block',
-            'relative w-fit pointer-events-auto cursor-pointer',
-            'font-sans [font-weight:var(--text-h2-weight)]',
-            '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
-            'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
-            '[color:var(--text-primary)]',
-          )}
-        >
-          <span className="inline-flex items-baseline gap-[0.25em]">
-            {title}
-            {external && (
-              <span
-                aria-hidden="true"
-                className={cn(
-                  'inline-flex items-center self-center transition-opacity duration-300 ease-in-out',
-                  hovered ? 'opacity-100' : 'opacity-0',
-                )}
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="7" y1="17" x2="17" y2="7" />
-                  <polyline points="7 7 17 7 17 17" />
-                </svg>
-              </span>
-            )}
-          </span>
-          {!hoverImageSrc && !staticImage && (
-            <span
-              aria-hidden="true"
-              className={cn(
-                'absolute bottom-0 left-0 h-px bg-[var(--text-primary)]',
-                'transition-[width] duration-300 ease-in-out',
-                hovered ? 'w-full' : 'w-0 group-focus-visible:w-full',
-              )}
-            />
-          )}
-        </h3>
+        {/* Title — visually hidden; title is inlined into the description on md+ */}
+        <h3 className="sr-only">{title}</h3>
 
-        {/* Description — mobile 14 / 21, desktop 16 / 24 */}
+        {/* Description — mobile: description only; desktop/tablet: title + description inline */}
         <p
           className={cn(
-            '[font-family:var(--font-sans)] [font-weight:var(--text-body-light-weight)]',
+            '[font-family:var(--font-sans)]',
             '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
             'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
-            'transition-colors duration-300 ease-in-out',
-            hovered ? '[color:var(--text-primary)]' : '[color:var(--text-muted)]',
           )}
         >
-          {description}
+          <span className="hidden md:inline [font-weight:var(--text-h2-weight)] [color:var(--text-primary)]">
+            {title} -{' '}
+          </span>
+          <span
+            className={cn(
+              '[font-weight:var(--text-body-light-weight)]',
+              'transition-colors duration-300 ease-in-out',
+              '[color:var(--text-primary)] md:[color:var(--text-muted)]',
+              hovered && 'md:[color:var(--text-primary)]',
+            )}
+          >
+            {description}
+          </span>
         </p>
       </div>
     </>
