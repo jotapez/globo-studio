@@ -195,6 +195,7 @@ function InteractiveClocksRowV3({ theme }: { theme: 'auto' | 'light' | 'dark' })
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
   const [mounted, setMounted] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const lastTouchRef = useRef(0);
   // Persists across clock mode changes so the intro doesn't replay when user toggles
   const hasPlayedIntroRef = useRef(false);
   const handleIntroComplete = useCallback(() => { hasPlayedIntroRef.current = true; }, []);
@@ -214,6 +215,7 @@ function InteractiveClocksRowV3({ theme }: { theme: 'auto' | 'light' | 'dark' })
   const effectiveMode: ClockMode = hasInteracted ? clockMode : themeDefault;
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (Date.now() - lastTouchRef.current < 500) return;
     const pos = { x: e.clientX, y: e.clientY };
     setCursorPos(pos);
 
@@ -264,6 +266,7 @@ function InteractiveClocksRowV3({ theme }: { theme: 'auto' | 'light' | 'dark' })
         aria-label="Toggle clock theme — click to switch between light, dark, and colour"
         onClick={handleToggle}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleToggle(); } }}
+        onTouchStart={() => { lastTouchRef.current = Date.now(); setIsOverCircle(false); setCursorPos(null); }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         className="w-full cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current rounded-sm"
@@ -527,6 +530,7 @@ function HoverPillLink({ href, pill, children, className, ...props }: HoverPillL
   const [hovered, setHovered] = useState(false);
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
   const [mounted, setMounted] = useState(false);
+  const lastTouchRef = useRef(0);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -535,9 +539,10 @@ function HoverPillLink({ href, pill, children, className, ...props }: HoverPillL
       <a
         href={href}
         className={cn(linkBaseCls, 'w-fit', className)}
-        onMouseEnter={() => setHovered(true)}
+        onTouchStart={() => { lastTouchRef.current = Date.now(); setHovered(false); setCursorPos(null); }}
+        onMouseEnter={() => { if (Date.now() - lastTouchRef.current < 500) return; setHovered(true); }}
         onMouseLeave={() => { setHovered(false); setCursorPos(null); }}
-        onMouseMove={(e) => setCursorPos({ x: e.clientX, y: e.clientY })}
+        onMouseMove={(e) => { if (Date.now() - lastTouchRef.current < 500) return; setCursorPos({ x: e.clientX, y: e.clientY }); }}
         {...props}
       >
         {children}

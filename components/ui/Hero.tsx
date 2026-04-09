@@ -34,7 +34,7 @@
  * className — extra classes on the root <section>
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { LiquidMetal } from '@paper-design/shaders-react';
@@ -73,12 +73,22 @@ export function Hero({ id = 'hero', animate = true, className = '', onToggle, on
   const [hovered, setHovered]     = useState(false);
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
   const [mounted, setMounted]     = useState(false);
+  const lastTouchRef = useRef(0);
 
   useEffect(() => { setMounted(true); }, []);
 
-  const handleMouseEnter = useCallback(() => setHovered(true), []);
+  const handleTouchStart = useCallback(() => {
+    lastTouchRef.current = Date.now();
+    setHovered(false);
+    setCursorPos(null);
+  }, []);
+  const handleMouseEnter = useCallback(() => {
+    if (Date.now() - lastTouchRef.current < 500) return;
+    setHovered(true);
+  }, []);
   const handleMouseLeave = useCallback(() => { setHovered(false); setCursorPos(null); }, []);
   const handleMouseMove  = useCallback((e: React.MouseEvent) => {
+    if (Date.now() - lastTouchRef.current < 500) return;
     setCursorPos({ x: e.clientX, y: e.clientY });
   }, []);
 
@@ -107,6 +117,7 @@ export function Hero({ id = 'hero', animate = true, className = '', onToggle, on
         <motion.div
           className={['relative overflow-hidden', onToggle ? 'cursor-pointer' : ''].join(' ')}
           onClick={onToggle}
+          onTouchStart={handleTouchStart}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onMouseMove={handleMouseMove}
