@@ -217,15 +217,19 @@ export function ProjectCard({
             '[font-family:var(--font-sans)]',
             '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
             'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
-            'transition-colors duration-300 ease-in-out',
-            '[color:var(--text-primary)] md:[color:var(--text-muted)]',
-            hovered && 'md:[color:var(--text-primary)]',
           )}
         >
-          <span className="hidden md:inline [font-weight:var(--text-h2-weight)]">
+          <span className="hidden md:inline [font-weight:var(--text-h2-weight)] [color:var(--text-primary)]">
             {title} -{' '}
           </span>
-          <span className="[font-weight:var(--text-body-light-weight)]">
+          <span
+            className={cn(
+              '[font-weight:var(--text-body-light-weight)]',
+              'transition-colors duration-300 ease-in-out',
+              '[color:var(--text-primary)] md:[color:var(--text-muted)]',
+              hovered && 'md:[color:var(--text-primary)]',
+            )}
+          >
             {description}
           </span>
         </p>
