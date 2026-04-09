@@ -175,7 +175,13 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
         return;
       }
 
-      startExit(item.href);
+      // Wait for the pill spring to settle before navigating.
+      // On mouse, cursorActive pre-positions the pill so the wait is imperceptible.
+      // On touch (tablet), this gives the full spring animation time to complete.
+      applyTimeoutRef.current = setTimeout(() => {
+        applyTimeoutRef.current = null;
+        startExit(item.href);
+      }, MIN_PILL_MS);
     }
 
     // Desktop: Globo + one item per project, all navigable except the active one.
