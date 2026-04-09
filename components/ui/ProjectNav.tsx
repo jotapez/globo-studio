@@ -53,6 +53,8 @@ import { useProjectTransition } from '@/components/ui/ProjectTransitionContext';
 export interface ProjectNavProps {
   /** Label for the active item — should match the case study name. */
   clientName: string;
+  /** Dynamic chapter label that overrides the active item label on scroll (Retro). */
+  chapterLabel?: string | null;
   /** Slug of the current project — determines the active pill on desktop. */
   activeSlug: string;
   /** href for the "Next project" link (e.g. "/work/taronga-zoo"). Mobile only. */
@@ -80,6 +82,7 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
   function ProjectNav(
     {
       clientName,
+      chapterLabel,
       activeSlug,
       nextHref,
       allProjects,
@@ -190,21 +193,21 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
         { id: 'home', label: 'Globo', href: '/' },
         ...allProjects.map((p) => ({
           id: p.slug,
-          label: p.clientName,
+          label: p.slug === activeSlug && chapterLabel ? chapterLabel : p.clientName,
           href: `/work/${p.slug}`,
         })),
       ],
-      [allProjects],
+      [allProjects, activeSlug, chapterLabel],
     );
 
     // Mobile: unchanged — Globo, active client name, Next project.
     const mobileItems = useMemo<NavItem[]>(
       () => [
         { id: 'home',   label: 'Globo',               href: '/'      },
-        { id: 'client', label: displayedClientName,    href: ''       },
+        { id: 'client', label: chapterLabel || displayedClientName, href: '' },
         { id: 'next',   label: nextLabel,              href: nextHref },
       ],
-      [displayedClientName, nextLabel, nextHref],
+      [chapterLabel, displayedClientName, nextLabel, nextHref],
     );
 
     return (

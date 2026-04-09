@@ -19,13 +19,13 @@ export type { CaptionAlignment };
 // ─── types ────────────────────────────────────────────────────────────────────
 
 export type ContentBlock =
-  | { id?: string; type: 'hero';         src: string; mobileSrc?: string; alt: string; priority?: boolean }
-  | { id?: string; type: 'single-white'; src: string; alt: string; aspectRatio: string }
-  | { id?: string; type: 'single-color'; src: string; alt: string; color: string; aspectRatio: string }
-  | { id?: string; type: 'full-bleed';   src: string; alt: string; color: string; aspectRatio: string; objectFit?: 'cover' | 'contain' }
-  | { id?: string; type: 'two-image';    srcA: string; altA: string; aspectRatioA: string; srcB: string; altB: string; aspectRatioB: string; color: string; colorB?: string; maxHeightB?: string }
-  | { id?: string; type: 'caption'; alignment: CaptionAlignment; text: string | [string, string] }
-  | { id?: string; type: 'video'; src: string; title: string; color?: string; aspectRatio?: string }
+  | { id?: string; chapterLabel?: string; type: 'hero';         src: string; mobileSrc?: string; alt: string; priority?: boolean }
+  | { id?: string; chapterLabel?: string; type: 'single-white'; src: string; alt: string; aspectRatio: string }
+  | { id?: string; chapterLabel?: string; type: 'single-color'; src: string; alt: string; color: string; aspectRatio: string }
+  | { id?: string; chapterLabel?: string; type: 'full-bleed';   src: string; alt: string; color: string; aspectRatio: string; objectFit?: 'cover' | 'contain' }
+  | { id?: string; chapterLabel?: string; type: 'two-image';    srcA: string; altA: string; aspectRatioA: string; srcB: string; altB: string; aspectRatioB: string; color: string; colorB?: string; maxHeightB?: string }
+  | { id?: string; chapterLabel?: string; type: 'caption'; alignment: CaptionAlignment; text: string | [string, string] }
+  | { id?: string; chapterLabel?: string; type: 'video'; src: string; title: string; color?: string; aspectRatio?: string }
 
 export interface Project {
   slug: string;
@@ -620,30 +620,30 @@ const PROJECTS: Project[] = [
       description: 'Retrospective — Different sectors, same standard. From Taronga Zoo to Coca-Cola Amatil to the NSW Electoral Commission — Retro is a decade of client work across sectors that demand very different things from design. Different stakes, different users, the same craft.',
     },
     contentBlocks: [
-      { type: 'full-bleed', src: '/Retro/Taronga-hero.png',               alt: 'Taronga Zoo — hero',              color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { chapterLabel: 'Taronga Zoo',                type: 'full-bleed', src: '/Retro/Taronga-hero.png',               alt: 'Taronga Zoo — hero',              color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
       { type: 'full-bleed', src: '/Retro/Taronga-elephants-1.png',        alt: 'Taronga Zoo — elephants 1',       color: 'var(--bg-block-project-retro)', aspectRatio: '4224/2896' },
       { type: 'full-bleed', src: '/Retro/Taronga-elephants-2.png',        alt: 'Taronga Zoo — elephants 2',       color: 'var(--bg-block-project-retro)', aspectRatio: '4250/2904' },
-      { type: 'full-bleed', src: '/Retro/mycca-homepage.png',             alt: 'Mycca — homepage',                color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { chapterLabel: 'Coca-Cola MyCCA',            type: 'full-bleed', src: '/Retro/mycca-homepage.png',             alt: 'Mycca — homepage',                color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
       { type: 'two-image',  srcA: '/Retro/mycca-invoices.png', altA: 'Mycca — invoices', aspectRatioA: '1561/1361', srcB: '/Retro/mycca-mobile.png', altB: 'Mycca — mobile', aspectRatioB: '1561/1361', color: 'var(--bg-block-project-retro)' },
       { type: 'full-bleed', src: '/Retro/mycca-catalogue.png',            alt: 'Mycca — catalogue',               color: 'var(--bg-block-project-retro)', aspectRatio: '2112/1448' },
-      { type: 'full-bleed', src: '/Retro/NSWEC-homepage.png',             alt: 'NSWEC — homepage',                color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { chapterLabel: 'NSW Electoral Commission',   type: 'full-bleed', src: '/Retro/NSWEC-homepage.png',             alt: 'NSWEC — homepage',                color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
       { type: 'two-image',  srcA: '/Retro/NSWEC-mobile-hero.png', altA: 'NSWEC — mobile hero', aspectRatioA: '1688/1832', srcB: '/Retro/NSWEC-icons.png', altB: 'NSWEC — icons', aspectRatioB: '2522/2735', color: 'var(--bg-block-project-retro)' },
       { type: 'full-bleed', src: '/Retro/NSWEC-mobile.png',               alt: 'NSWEC — mobile',                  color: 'var(--bg-block-project-retro)', aspectRatio: '2303/1579' },
-      { type: 'full-bleed', src: '/Retro/Achiever-homepage.png',          alt: 'Achiever — homepage',             color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { chapterLabel: 'Achiever',                   type: 'full-bleed', src: '/Retro/Achiever-homepage.png',          alt: 'Achiever — homepage',             color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
       { type: 'full-bleed', src: '/Retro/Achiever-logo.png',              alt: 'Achiever — logo',                 color: 'var(--bg-block-project-retro)', aspectRatio: '3455/1883' },
       { type: 'full-bleed', src: '/Retro/Achiever-1.png',                 alt: 'Achiever — screen 1',             color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
       { type: 'full-bleed', src: '/Retro/Achiever-2.png',                 alt: 'Achiever — screen 2',             color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
-      { type: 'full-bleed', src: '/Retro/FidelityLife-homepage.png',      alt: 'FidelityLife — homepage',         color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { chapterLabel: 'Fidelity Life',              type: 'full-bleed', src: '/Retro/FidelityLife-homepage.png',      alt: 'FidelityLife — homepage',         color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
       { type: 'full-bleed', src: '/Retro/FidelityLife-application.png',   alt: 'FidelityLife — application',     color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
       { type: 'full-bleed', src: '/Retro/FidelityLife-illustration.png',  alt: 'FidelityLife — illustration',    color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
-      { type: 'full-bleed', src: '/Retro/Toyota-homepage.png',            alt: 'Toyota — homepage',               color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { chapterLabel: 'Toyota',                     type: 'full-bleed', src: '/Retro/Toyota-homepage.png',            alt: 'Toyota — homepage',               color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
       { type: 'two-image',  srcA: '/Retro/Toyota-make-mobile.png', altA: 'Toyota — make mobile', aspectRatioA: '797/1020', srcB: '/Retro/Toyota-nav-laptop.png', altB: 'Toyota — nav laptop', aspectRatioB: '797/1020', color: 'var(--bg-block-project-retro)' },
       { type: 'two-image',  srcA: '/Retro/Toyota-nav-mobile.png',  altA: 'Toyota — nav mobile',  aspectRatioA: '797/1020', srcB: '/Retro/Toyota-service.png',    altB: 'Toyota — service',    aspectRatioB: '797/1020', color: 'var(--bg-block-project-retro)' },
-      { type: 'full-bleed', src: '/Retro/CC-hero.png',              alt: 'CC — hero',               color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { chapterLabel: 'Queensland Government',      type: 'full-bleed', src: '/Retro/CC-hero.png',              alt: 'CC — hero',               color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
       { type: 'full-bleed', src: '/Retro/CC-mobile.png',            alt: 'CC — mobile',             color: 'var(--bg-block-project-retro)', aspectRatio: '3318/2172' },
       { type: 'full-bleed', src: '/Retro/Domestic-hero.png',        alt: 'Domestic — hero',         color: 'var(--bg-block-project-retro)', aspectRatio: '2733/1874' },
       { type: 'full-bleed', src: '/Retro/Domestic-home.png',        alt: 'Domestic — home',         color: 'var(--bg-block-project-retro)', aspectRatio: '3168/3747' },
-      { type: 'full-bleed', src: '/Retro/Trove-hero.png',           alt: 'Trove — hero',            color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
+      { chapterLabel: 'National Library of Australia', type: 'full-bleed', src: '/Retro/Trove-hero.png',           alt: 'Trove — hero',            color: 'var(--bg-block-project-retro)', aspectRatio: '3168/2172' },
     ],
   },
 ];
