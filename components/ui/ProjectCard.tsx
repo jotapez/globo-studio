@@ -224,12 +224,9 @@ export function ProjectCard({
             'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
           )}
         >
-          <span className="inline [font-weight:var(--text-h2-weight)] [color:var(--text-primary)]">
-            {title} -{' '}
-          </span>
           <span
             className={cn(
-              '[font-weight:var(--text-body-light-weight)]',
+              '[font-weight:var(--text-body-weight)]',
               'transition-colors duration-300 ease-in-out',
               '[color:var(--text-primary)] md:[color:var(--text-muted)]',
               hovered && 'md:[color:var(--text-primary)]',

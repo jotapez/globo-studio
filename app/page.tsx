@@ -48,7 +48,7 @@ const MAIN_PROJECTS = [
   {
     title: 'Officeworks',
     description:
-      "B2B customers were managing their accounts over the phone. I redesigned that into a self-service platform — custom catalogues, team and permissions management, address controls — and built the design system from 0 to 1. Support calls dropped 40%.",
+      "Officeworks B2B customers were managing their accounts over the phone. I redesigned that into a self-service platform — custom catalogues, team and permissions management, address controls — and built the design system from 0 to 1. Support calls dropped 40%.",
     href: '/work/officeworks',
     imageSrc: '/Homepage/OW-project-card-first-desktop.svg',
     hoverImageSrc: '/Homepage/OW-project-card-second-desktop.png',
