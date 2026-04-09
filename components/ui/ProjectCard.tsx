@@ -266,7 +266,8 @@ export function ProjectCard({
             '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
             'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
             'transition-colors duration-300 ease-in-out',
-            hovered ? '[color:var(--text-primary)]' : '[color:var(--text-muted)]',
+            '[color:var(--text-primary)] md:[color:var(--text-muted)]',
+            hovered && 'md:[color:var(--text-primary)]',
           )}
         >
           {description}
