@@ -39,7 +39,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AnimatePresence, motion, useReducedMotion, type Variants } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 // ─── types ────────────────────────────────────────────────────────────────────
@@ -122,27 +122,9 @@ export function ProjectCard({
   cursorLabel,
   cursorIcon = false,
 }: ProjectCardProps) {
-  const shouldReduceMotion = useReducedMotion();
   const [hovered, setHovered] = useState(false);
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
   const [mounted, setMounted] = useState(false);
-
-  const wordVariants: Variants = shouldReduceMotion
-    ? { hidden: {}, visible: {} }
-    : {
-        hidden: { opacity: 0 },
-        visible: {
-          opacity: 1,
-          transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
-        },
-      };
-
-  const containerVariants: Variants = shouldReduceMotion
-    ? { hidden: {}, visible: {} }
-    : {
-        hidden: {},
-        visible: { transition: { staggerChildren: 0.03 } },
-      };
 
   useEffect(() => setMounted(true), []);
 
@@ -278,50 +260,17 @@ export function ProjectCard({
         </h3>
 
         {/* Description — mobile 14 / 21, desktop 16 / 24 */}
-        {showDescriptionOnHover ? (
-          <>
-            {/* Mobile — always visible, no animation */}
-            <p
-              className={cn(
-                'md:hidden',
-                '[font-family:var(--font-sans)] [font-weight:var(--text-body-light-weight)]',
-                '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
-                '[color:var(--text-primary)]',
-              )}
-            >
-              {description}
-            </p>
-            {/* Desktop — word-by-word opacity fade on hover */}
-            <motion.p
-              variants={containerVariants}
-              initial="hidden"
-              animate={hovered ? 'visible' : 'hidden'}
-              className={cn(
-                'hidden md:block',
-                '[font-family:var(--font-sans)] [font-weight:var(--text-body-light-weight)]',
-                'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
-                '[color:var(--text-primary)]',
-              )}
-            >
-              {description.split(' ').map((word, i, arr) => (
-                <motion.span key={i} variants={wordVariants}>
-                  {word}{i < arr.length - 1 ? ' ' : ''}
-                </motion.span>
-              ))}
-            </motion.p>
-          </>
-        ) : (
-          <p
-            className={cn(
-              '[font-family:var(--font-sans)] [font-weight:var(--text-body-light-weight)]',
-              '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
-              'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
-              '[color:var(--text-primary)]',
-            )}
-          >
-            {description}
-          </p>
-        )}
+        <p
+          className={cn(
+            '[font-family:var(--font-sans)] [font-weight:var(--text-body-light-weight)]',
+            '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
+            'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
+            'transition-colors duration-300 ease-in-out',
+            hovered ? '[color:var(--text-primary)]' : '[color:var(--text-muted)]',
+          )}
+        >
+          {description}
+        </p>
       </div>
     </>
   );
