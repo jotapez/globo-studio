@@ -268,7 +268,7 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
             )}
           >
             {/* Photo */}
-            <div className="relative w-full aspect-[326/216] md:aspect-auto md:h-[540px] overflow-hidden rounded-[10.719px] md:rounded-[26.796px]">
+            <div className="relative w-full aspect-[326/216] md:aspect-auto md:h-[540px] overflow-hidden rounded-[var(--radius-card-mobile)] md:rounded-[var(--radius-card)]">
               {/* Mobile image */}
               <Image
                 src="/Homepage/jpc-home-mobile.png"
