@@ -219,7 +219,7 @@ export function ProjectCard({
             'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
           )}
         >
-          <span className="hidden md:inline [font-weight:var(--text-h2-weight)] [color:var(--text-primary)]">
+          <span className="inline [font-weight:var(--text-h2-weight)] [color:var(--text-primary)]">
             {title} -{' '}
           </span>
           <span

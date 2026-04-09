@@ -59,7 +59,7 @@ const MAIN_PROJECTS = [
   {
     title: 'Open',
     description:
-      'Open Insurance builds white-label insurance for brands like Bupa, Polestar, and Slingshot. I redesigned the quote flows that cut drop-offs by 70% and lifted sales 20% — then built the multi-brand design system that let us deliver Bupa\'s full platform in 10 weeks, half the time a launch like that usually takes.',
+      'Open builds white-label insurance for brands like Bupa, Polestar, and Slingshot. I redesigned the quote flows that cut drop-offs by 70% and lifted sales 20% — then built the multi-brand design system that let us deliver Bupa\'s full platform in 10 weeks, half the time a launch like that usually takes.',
     href: '/work/open-insurance',
     imageSrc: '/Homepage/OI-project-card-first-desktop.svg',
     hoverImageSrc: '/Homepage/OI-project-card-second-desktop.png',

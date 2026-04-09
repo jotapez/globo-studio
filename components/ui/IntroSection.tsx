@@ -51,7 +51,6 @@ import { motion, AnimatePresence, useInView, useReducedMotion, useMotionValue, u
 import { cn } from '@/lib/utils';
 import { ClientsCarousel } from '@/components/ui/ClientsCarousel';
 import { ClientsCarouselV2 } from '@/components/ui/ClientsCarouselV2';
-import { WavePath } from '@/components/ui/wave-path';
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -75,7 +74,6 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
   function IntroSection({ theme = 'auto', carouselVariant = 'v1', className }, ref) {
     const shouldReduceMotion = useReducedMotion();
     const [nameHovered, setNameHovered] = useState(false);
-    const [headingAnimDone, setHeadingAnimDone] = useState(false);
 
     // Cursor tracking for portrait hover effect
     const mouseX = useMotionValue(0);
@@ -92,11 +90,6 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
     // Ref for inView trigger — separate from the forwarded ref
     const innerRef = useRef<HTMLDivElement>(null);
     const isInView = useInView(innerRef, { once: false, amount: 0.2 });
-
-    // Reset underline when section leaves view so it re-animates on re-entry
-    useEffect(() => {
-      if (!isInView) setHeadingAnimDone(false);
-    }, [isInView]);
 
     const containerVariants: Variants = shouldReduceMotion
       ? { hidden: {}, visible: {} }
@@ -185,7 +178,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
                   alt=""
                   width={254}
                   height={330}
-                  className="object-cover object-top rounded-lg cursor-pointer"
+                  className="object-cover object-top rounded-[24px] cursor-pointer"
                 />
               </motion.div>
             )}
@@ -196,7 +189,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            onAnimationComplete={(def) => { if (def === 'visible') setHeadingAnimDone(true); }}
+
             className="relative z-10 w-full px-[14px] md:px-0"
           >
             {/*
@@ -216,7 +209,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
               )}
             >
               {/* "G'day." — serif, own line via block display */}
-              <motion.span variants={wordVariants} className={cn(serif, 'block')}>G&apos;day.</motion.span>
+              <span className="block"><motion.span variants={wordVariants} className={serif}>G&apos;day.</motion.span></span>
 
               {/* Body sentence with alternating typefaces */}
               <motion.span variants={wordVariants} className={sans}>Globo</motion.span>
@@ -231,36 +224,24 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
                * onFocus/onBlur mirror the hover portrait so the effect is reachable
                * via Tab navigation.
                */}
-              <span className="inline-flex flex-col">
-                <motion.button
-                  variants={nameVariants}
-                  type="button"
-                  aria-label="Go to About section — Juan Pablo Castro"
-                  className={cn(
-                    sans,
-                    'font-medium',
-                    'relative z-20 bg-transparent border-none p-0 cursor-pointer',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--text-primary)] focus-visible:ring-offset-2 rounded-sm',
-                  )}
-                  onMouseEnter={() => setNameHovered(true)}
-                  onMouseLeave={() => setNameHovered(false)}
-                  onFocus={() => setNameHovered(true)}
-                  onBlur={() => setNameHovered(false)}
-                  onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  Juan Pablo Castro
-                </motion.button>
-                <motion.span
-                  initial={{ opacity: 0 }}
-                  animate={headingAnimDone ? { opacity: 1 } : { opacity: 0 }}
-                  transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: 'easeOut' }}
-                >
-                  <WavePath
-                    onLineMouseEnter={() => setNameHovered(true)}
-                    onLineMouseLeave={() => setNameHovered(false)}
-                  />
-                </motion.span>
-              </span>
+              <motion.button
+                variants={nameVariants}
+                type="button"
+                aria-label="Go to About section — Juan Pablo Castro"
+                className={cn(
+                  sans,
+                  'font-medium underline underline-offset-[calc(0.15em+4px)] decoration-[1px]',
+                  'relative z-20 bg-transparent border-none p-0 cursor-pointer',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--text-primary)] focus-visible:ring-offset-2 rounded-sm',
+                )}
+                onMouseEnter={() => setNameHovered(true)}
+                onMouseLeave={() => setNameHovered(false)}
+                onFocus={() => setNameHovered(true)}
+                onBlur={() => setNameHovered(false)}
+                onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                Juan Pablo Castro
+              </motion.button>
 
               <motion.span variants={wordVariants} className={serif}> — where </motion.span>
               <motion.span variants={wordVariants} className={sans}>strategy</motion.span>
