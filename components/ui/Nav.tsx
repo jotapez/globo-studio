@@ -216,7 +216,7 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
             const liFlexClass =
               isProject && (index === 0 || index === resolvedItems.length - 1)
                 ? 'flex shrink-0 md:flex-1'
-                : 'flex flex-1 min-w-0';
+                : isProject ? 'flex flex-1 min-w-0' : 'flex flex-1';
 
             return (
               <li key={item.id} data-id={item.id} className={liFlexClass}>
@@ -254,7 +254,9 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
                    * focus-visible: ring outside the pill for keyboard nav (WCAG 2.4.7)
                    */
                   className={cn(
-                    'relative flex flex-1 items-center justify-center min-w-0',
+                    isProject
+                      ? 'relative flex flex-1 items-center justify-center min-w-0'
+                      : 'relative flex flex-1 items-center justify-center',
                     'rounded-[var(--radius-pill)] select-none',
                     isProject && isActive ? 'cursor-default' : 'cursor-pointer',
                     'focus-visible:outline-none focus-visible:ring-2',
@@ -287,7 +289,7 @@ export const Nav = React.forwardRef<HTMLElement, NavProps>(function Nav(
                   {/* ── label ───────────────────────────────────────────── */}
                   <span
                     className={cn(
-                      'relative z-10 truncate',
+                      isProject ? 'relative z-10 truncate' : 'relative z-10 whitespace-nowrap',
                       // Figma: Bricolage Grotesque Regular — explicit family + weight
                       '[font-family:var(--font-sans)] [font-weight:var(--text-body-weight)]',
                       // font size: Label-Small 14/18 on mobile → Label 16/24 on desktop
