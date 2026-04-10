@@ -148,7 +148,7 @@ export function PasswordGate({
                   {/* Input pill */}
                   <motion.div
                     animate={pillControls}
-                    className="flex items-center h-[52px] w-full md:w-[480px] pl-5 pr-2 py-2 rounded-full bg-white/[0.08] border border-white/40 focus-within:border-white transition-colors duration-150 overflow-hidden"
+                    className="flex items-center h-[54px] w-full md:w-[480px] pl-5 pr-1 py-1 rounded-full bg-white/[0.08] border border-white/40 focus-within:border-white transition-colors duration-150 overflow-hidden"
                   >
                     <input
                       ref={inputRef}
@@ -170,7 +170,7 @@ export function PasswordGate({
                     <button
                       onClick={attempt}
                       aria-label="Submit password"
-                      className="shrink-0 size-9 rounded-full bg-white flex items-center justify-center ml-2 transition-transform hover:scale-105 active:scale-95"
+                      className="shrink-0 size-11 rounded-full bg-white flex items-center justify-center ml-2 transition-transform hover:scale-105 active:scale-95"
                     >
                       <svg
                         width="16" height="16" viewBox="0 0 16 16"
