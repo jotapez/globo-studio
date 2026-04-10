@@ -73,6 +73,13 @@ body {
   font-family: var(--font-sans);
 }
 
+/* Suppress focus outline on sections focused programmatically via scrollToSection.
+   tabindex="-1" is added at runtime by useActiveSection — these elements are never
+   reached by keyboard Tab navigation, so showing a browser focus ring is incorrect. */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
 /* Egstad-style: wiggle animation when clicking already-active nav item */
 [data-wiggling] {
   animation: nav-wiggle 0.6s ease;
