@@ -89,7 +89,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
 
     // Ref for inView trigger — separate from the forwarded ref
     const innerRef = useRef<HTMLDivElement>(null);
-    const isInView = useInView(innerRef, { once: false, amount: 0.2 });
+    const isInView = useInView(innerRef, { once: true, amount: 0.2 });
 
     const containerVariants: Variants = shouldReduceMotion
       ? { hidden: {}, visible: {} }
@@ -97,7 +97,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
           hidden: {},
           visible: {
             transition: {
-              staggerChildren: 0.1,
+              staggerChildren: 0.06,
               delayChildren: 0,
             },
           },
@@ -106,21 +106,24 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
     const wordVariants: Variants = shouldReduceMotion
       ? { hidden: {}, visible: {} }
       : {
-          hidden: { opacity: 0, y: 28 },
+          hidden: { opacity: 0, y: 10, filter: 'blur(10px)' },
           visible: {
             opacity: 1,
             y: 0,
-            transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
+            filter: 'blur(0px)',
+            transition: { duration: 0.75, ease: [0.25, 0.1, 0.25, 1.0] },
           },
         };
 
     const nameVariants: Variants = shouldReduceMotion
       ? { hidden: {}, visible: {} }
       : {
-          hidden: { opacity: 0 },
+          hidden: { opacity: 0, y: 10, filter: 'blur(10px)' },
           visible: {
             opacity: 1,
-            transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
+            y: 0,
+            filter: 'blur(0px)',
+            transition: { duration: 0.75, ease: [0.25, 0.1, 0.25, 1.0] },
           },
         };
 

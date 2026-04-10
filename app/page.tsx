@@ -162,23 +162,24 @@ export default function HomePage() {
 
   // ── Interlude text animation ──────────────────────────────────────────────
   const interludeRef = useRef<HTMLDivElement>(null);
-  const interludeInView = useInView(interludeRef, { once: false, amount: 0.2 });
+  const interludeInView = useInView(interludeRef, { once: true, amount: 0.2 });
 
   const interludeContainerVariants: Variants = shouldReduceMotion
     ? { hidden: {}, visible: {} }
     : {
         hidden: {},
-        visible: { transition: { staggerChildren: 0.1, delayChildren: 0 } },
+        visible: { transition: { staggerChildren: 0.06, delayChildren: 0 } },
       };
 
   const interludeWordVariants: Variants = shouldReduceMotion
     ? { hidden: {}, visible: {} }
     : {
-        hidden: { opacity: 0, y: 28 },
+        hidden: { opacity: 0, y: 10, filter: 'blur(10px)' },
         visible: {
           opacity: 1,
           y: 0,
-          transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
+          filter: 'blur(0px)',
+          transition: { duration: 0.75, ease: [0.25, 0.1, 0.25, 1.0] },
         },
       };
 
