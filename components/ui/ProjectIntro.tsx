@@ -193,7 +193,7 @@ export const ProjectIntro = forwardRef<HTMLDivElement, ProjectIntroProps>(
                   onClick={() => setExpanded((v) => !v)}
                   className={cn(
                     'w-full text-left font-sans font-medium not-italic cursor-pointer',
-                    'text-[var(--text-muted)]',
+                    'text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors duration-150',
                     '[font-size:var(--text-intro-sm-mobile-size)] [line-height:var(--text-intro-sm-mobile-leading)]',
                     'md:[font-size:var(--text-intro-sm-size)] md:[line-height:var(--text-intro-sm-leading)]',
                   )}

@@ -156,6 +156,10 @@
   --text-body-weight:       400;         /* Regular */
   --text-body-light-weight: 300;         /* Light */
 
+  /* Card caption — project card description, desktop only, 18 / 26 */
+  --text-card-caption-size:    1.125rem;   /* 18px */
+  --text-card-caption-leading: 1.625rem;   /* 26px */
+
   /* Small — Bricolage Grotesque, 14 / 21 */
   --text-sm-size:           0.875rem;    /* 14px */
   --text-sm-leading:        1.3125rem;   /* 21px */

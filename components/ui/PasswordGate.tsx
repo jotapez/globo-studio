@@ -76,6 +76,14 @@ export function PasswordGate({
         transition: { duration: 0.5, ease: 'easeOut' as const, delay: 0.1 },
       };
 
+  const ctaAnim = shouldReduceMotion
+    ? {}
+    : {
+        initial:    { opacity: 0, y: 20 },
+        animate:    { opacity: 1, y: 0 },
+        transition: { duration: 0.5, ease: 'easeOut' as const, delay: 0.2 },
+      };
+
   // ── hydration + sessionStorage check ──────────────────────────────────────
   useEffect(() => {
     if (sessionStorage.getItem(storageKey) === '1') setUnlocked(true);
@@ -123,13 +131,13 @@ export function PasswordGate({
           style={{ backgroundColor: bgColor }}
         >
           {/* ── Gate content area — full viewport height, content centred ── */}
-          <div className="min-h-svh flex items-center justify-center px-6 md:px-0">
-            <div className="w-full max-w-[350px] md:max-w-[1024px] flex flex-col gap-6">
+          <div className="min-h-svh flex items-center justify-center px-8 md:px-0">
+            <div className="w-full md:w-max flex flex-col items-start md:items-center">
 
               {/* Mixed heading — Instrument Serif + Bricolage Grotesque Medium */}
               <motion.h1
                 {...headingAnim}
-                className="text-white font-serif text-[36px] md:text-[64px] leading-[50px] md:leading-[84px] m-0"
+                className="w-full md:whitespace-nowrap text-white font-serif text-[36px] md:text-[64px] leading-[50px] md:leading-[84px] m-0"
               >
                 {'This '}
                 <span className="font-sans font-medium [letter-spacing:-0.03em]">work</span>
@@ -139,7 +147,8 @@ export function PasswordGate({
                 {'protected.'}
               </motion.h1>
 
-              <motion.div {...bodyAnim} className="flex flex-col gap-4">
+              {/* Input section — full width mobile, 480px centered on desktop */}
+              <motion.div {...bodyAnim} className="flex flex-col gap-4 w-full md:w-[480px] mt-6">
                 <p className="text-white text-base leading-6 m-0">
                   Enter the password to continue
                 </p>
@@ -148,7 +157,7 @@ export function PasswordGate({
                   {/* Input pill */}
                   <motion.div
                     animate={pillControls}
-                    className="flex items-center h-[54px] w-full md:w-[480px] pl-5 pr-1 py-1 rounded-full bg-white/[0.08] border border-white/40 focus-within:border-white transition-colors duration-150 overflow-hidden"
+                    className="flex items-center h-[54px] w-full pl-5 pr-1 py-1 rounded-full bg-white/[0.08] border border-white/40 focus-within:border-white transition-colors duration-150 overflow-hidden"
                   >
                     <input
                       ref={inputRef}
@@ -170,7 +179,7 @@ export function PasswordGate({
                     <button
                       onClick={attempt}
                       aria-label="Submit password"
-                      className="shrink-0 size-11 rounded-full bg-white flex items-center justify-center ml-2 transition-transform hover:scale-105 active:scale-95"
+                      className="shrink-0 size-11 md:size-[46px] rounded-full bg-white flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
                     >
                       <svg
                         width="16" height="16" viewBox="0 0 16 16"
@@ -202,6 +211,22 @@ export function PasswordGate({
                   </AnimatePresence>
                 </div>
               </motion.div>
+
+              {/* Contact CTA */}
+              <motion.p {...ctaAnim} className="mt-20 text-white text-base leading-6 m-0 whitespace-nowrap md:whitespace-normal md:text-center">
+                Do you want a password?{' '}
+                <a
+                  href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="underline underline-offset-2 cursor-pointer"
+                >
+                  Contact me
+                </a>
+              </motion.p>
+
             </div>
           </div>
 
