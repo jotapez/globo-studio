@@ -76,6 +76,14 @@ export function PasswordGate({
         transition: { duration: 0.5, ease: 'easeOut' as const, delay: 0.1 },
       };
 
+  const ctaAnim = shouldReduceMotion
+    ? {}
+    : {
+        initial:    { opacity: 0, y: 20 },
+        animate:    { opacity: 1, y: 0 },
+        transition: { duration: 0.5, ease: 'easeOut' as const, delay: 0.2 },
+      };
+
   // ── hydration + sessionStorage check ──────────────────────────────────────
   useEffect(() => {
     if (sessionStorage.getItem(storageKey) === '1') setUnlocked(true);
@@ -171,7 +179,7 @@ export function PasswordGate({
                     <button
                       onClick={attempt}
                       aria-label="Submit password"
-                      className="shrink-0 size-9 md:size-[46px] rounded-full bg-white flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
+                      className="shrink-0 size-11 md:size-[46px] rounded-full bg-white flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
                     >
                       <svg
                         width="16" height="16" viewBox="0 0 16 16"
@@ -205,7 +213,7 @@ export function PasswordGate({
               </motion.div>
 
               {/* Contact CTA */}
-              <p className="mt-20 text-white text-base leading-6 m-0 whitespace-nowrap md:whitespace-normal md:text-center">
+              <motion.p {...ctaAnim} className="mt-20 text-white text-base leading-6 m-0 whitespace-nowrap md:whitespace-normal md:text-center">
                 Do you want a password?{' '}
                 <a
                   href="#contact"
@@ -217,7 +225,7 @@ export function PasswordGate({
                 >
                   Contact me
                 </a>
-              </p>
+              </motion.p>
 
             </div>
           </div>
