@@ -81,18 +81,37 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
       };
     }
 
-    const containerVariants: Variants = shouldReduceMotion
+    // Heading: tight word-by-word stagger (Linear-style blur materialise)
+    const headingContainerVariants: Variants = shouldReduceMotion
       ? { hidden: {}, visible: {} }
-      : { hidden: {}, visible: { transition: { staggerChildren: 0.1 } } };
+      : { hidden: {}, visible: { transition: { staggerChildren: 0.06 } } };
 
-    const wordVariants: Variants = shouldReduceMotion
+    const headingWordVariants: Variants = shouldReduceMotion
       ? { hidden: {}, visible: {} }
       : {
-          hidden: { opacity: 0, y: 28 },
+          hidden: { opacity: 0, y: 10, filter: 'blur(10px)' },
           visible: {
             opacity: 1,
             y: 0,
-            transition: { duration: 2.0, ease: [0.22, 1, 0.36, 1] },
+            filter: 'blur(0px)',
+            transition: { duration: 0.75, ease: [0.25, 0.1, 0.25, 1.0] },
+          },
+        };
+
+    // Bio: paragraph-by-paragraph, same blur materialise, slightly larger motion
+    const bioContainerVariants: Variants = shouldReduceMotion
+      ? { hidden: {}, visible: {} }
+      : { hidden: {}, visible: { transition: { staggerChildren: 0.18 } } };
+
+    const bioParaVariants: Variants = shouldReduceMotion
+      ? { hidden: {}, visible: {} }
+      : {
+          hidden: { opacity: 0, y: 16, filter: 'blur(8px)' },
+          visible: {
+            opacity: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            transition: { duration: 0.9, ease: [0.25, 0.1, 0.25, 1.0] },
           },
         };
 
@@ -187,9 +206,9 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
               />
             </motion.div>
 
-            {/* Heading text — word-by-word blur+fade stagger */}
+            {/* Heading text — word-by-word blur+fade stagger (Linear-style) */}
             <motion.h2
-              variants={containerVariants}
+              variants={headingContainerVariants}
               initial="hidden"
               animate={isInView ? 'visible' : 'hidden'}
               className={cn(
@@ -199,12 +218,12 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
                 '[letter-spacing:var(--text-h1-tracking)]',
               )}
             >
-              <motion.span variants={wordVariants} className="font-sans">Rewriting</motion.span>
-              <motion.span variants={wordVariants} className="font-serif"> the </motion.span>
-              <motion.span variants={wordVariants} className="font-sans">process</motion.span>
-              <motion.span variants={wordVariants} className="font-serif"> at the </motion.span>
-              <motion.span variants={wordVariants} className="font-sans">speed</motion.span>
-              <motion.span variants={wordVariants} className="font-serif"> of AI.</motion.span>
+              <motion.span variants={headingWordVariants} className="font-sans">Rewriting</motion.span>
+              <motion.span variants={headingWordVariants} className="font-serif"> the </motion.span>
+              <motion.span variants={headingWordVariants} className="font-sans">process</motion.span>
+              <motion.span variants={headingWordVariants} className="font-serif"> at the </motion.span>
+              <motion.span variants={headingWordVariants} className="font-sans">speed</motion.span>
+              <motion.span variants={headingWordVariants} className="font-serif"> of AI.</motion.span>
             </motion.h2>
           </div>
 
@@ -216,14 +235,14 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
            * Inter-paragraph spacing = one line-height of whitespace (mirrors Figma's empty-§ pattern).
            */}
           <motion.div
-            variants={containerVariants}
+            variants={bioContainerVariants}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
             className="w-full md:max-w-[832px] md:mx-auto font-sans font-normal not-italic"
           >
             {/* First paragraph — larger on mobile */}
             <motion.p
-              variants={wordVariants}
+              variants={bioParaVariants}
               className={cn(
                 '[font-size:var(--text-intro-sm-size)] [line-height:var(--text-intro-sm-leading)]',
                 'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',
@@ -237,7 +256,7 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
             {BIO_REST.map((paragraph, i) => (
               <motion.p
                 key={i}
-                variants={wordVariants}
+                variants={bioParaVariants}
                 className={cn(
                   '[font-size:var(--text-intro-sm-size)] [line-height:var(--text-intro-sm-leading)]',
                   'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',
