@@ -344,8 +344,8 @@ export default function HomePage() {
                   <motion.span variants={interludeWordVariants} className="font-serif"> with the help of the </motion.span>
                   <motion.span variants={interludeWordVariants} className="font-sans">Globo</motion.span>
                   <motion.span variants={interludeWordVariants} className="font-serif"> crew - Claude Code, </motion.span>
-                  <motion.span variants={interludeWordVariants} className="font-sans">Cursor,</motion.span>
-                  <motion.span variants={interludeWordVariants} className="font-serif"> Figma, </motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-sans">Cursor,{' '}</motion.span>
+                  <motion.span variants={interludeWordVariants} className="font-serif">Figma, </motion.span>
                   <motion.span variants={interludeWordVariants} className="font-sans">Paper</motion.span>
                   <motion.span variants={interludeWordVariants} className="font-serif"> and others.</motion.span>
                 </h2>

@@ -221,7 +221,7 @@ export function ProjectCard({
           className={cn(
             '[font-family:var(--font-sans)]',
             '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
-            'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
+            'md:[font-size:var(--text-card-caption-size)] md:[line-height:var(--text-card-caption-leading)]',
           )}
         >
           <span
