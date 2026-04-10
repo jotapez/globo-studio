@@ -126,14 +126,15 @@ export function Hero({ id = 'hero', animate = true, className = '', onToggle, on
             aspectRatio: '1431 / 940',
             maxHeight: 'min(100%, 1080px)',
           }}
-          initial={shouldAnimate ? { opacity: 0, scale: 0.90 } : false}
+          initial={shouldAnimate ? { opacity: 0, scale: 0.90, filter: 'blur(12px)' } : false}
           animate={shouldAnimate
-            ? { opacity: 1, scale: 1, y: [0, -14, 0] }
-            : { opacity: 1, scale: 1 }
+            ? { opacity: 1, scale: 1, filter: 'blur(0px)', y: [0, -14, 0] }
+            : { opacity: 1, scale: 1, filter: 'blur(0px)' }
           }
           transition={{
-            opacity: { duration: 0.6, delay: 0.1, ease: 'easeOut' },
-            scale:   { duration: 0.6, delay: 0.1, ease: 'easeOut' },
+            opacity: { duration: 0.75, delay: 0.1, ease: [0.25, 0.1, 0.25, 1.0] },
+            scale:   { duration: 0.75, delay: 0.1, ease: [0.25, 0.1, 0.25, 1.0] },
+            filter:  { duration: 0.75, delay: 0.1, ease: [0.25, 0.1, 0.25, 1.0] },
             y: {
               duration:   4.5,
               delay:      0.7,
@@ -238,12 +239,15 @@ export function Hero({ id = 'hero', animate = true, className = '', onToggle, on
           'md:[font-size:var(--text-hero-label-size)] md:[line-height:var(--text-hero-label-leading)]',
           '[color:var(--text-primary)]',
         ].join(' ')}
-        initial={shouldAnimate ? { y: 100 } : false}
-        animate={{ y: 0 }}
+        initial={shouldAnimate ? { y: 100, filter: 'blur(8px)' } : false}
+        animate={{ y: 0, filter: 'blur(0px)' }}
         transition={
           reduceMotion
             ? { duration: 0 }
-            : { type: 'spring', stiffness: 300, damping: 28, delay: 0.4 }
+            : {
+                y:      { type: 'spring', stiffness: 300, damping: 28, delay: 0.4 },
+                filter: { duration: 0.75, delay: 0.4, ease: [0.25, 0.1, 0.25, 1.0] },
+              }
         }
       >
         <span>2026</span>

@@ -66,33 +66,47 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
   function AboutSection({ className }, ref) {
     const shouldReduceMotion = useReducedMotion();
 
+    // Heading inView — reverses on scroll back (once: false)
     const innerRef = useRef<HTMLDivElement>(null);
-    const isInView = useInView(innerRef, { once: false, amount: 0.1 });
+    const isInView = useInView(innerRef, { once: true, amount: 0.1 });
 
-    const photoRef = useRef<HTMLDivElement>(null);
-    const isPhotoInView = useInView(photoRef, { once: true, amount: 0.1 });
+    // Each paragraph + photo triggers independently as user scrolls (once: true)
+    const para0Ref = useRef<HTMLParagraphElement>(null);
+    const para1Ref = useRef<HTMLParagraphElement>(null);
+    const para2Ref = useRef<HTMLParagraphElement>(null);
+    const para3Ref = useRef<HTMLParagraphElement>(null);
+    const isPara0InView = useInView(para0Ref, { once: true, amount: 0.1 });
+    const isPara1InView = useInView(para1Ref, { once: true, amount: 0.1 });
+    const isPara2InView = useInView(para2Ref, { once: true, amount: 0.1 });
+    const isPara3InView = useInView(para3Ref, { once: true, amount: 0.1 });
 
-    function fadeUp(delay: number) {
-      if (shouldReduceMotion) return {};
-      return {
-        initial: { opacity: 0, y: 40 },
-        animate: isPhotoInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 },
-        transition: { duration: 0.5, ease: 'easeOut' as const, delay },
-      };
-    }
-
-    const containerVariants: Variants = shouldReduceMotion
+    // Heading: tight word-by-word stagger (Linear-style blur materialise)
+    const headingContainerVariants: Variants = shouldReduceMotion
       ? { hidden: {}, visible: {} }
-      : { hidden: {}, visible: { transition: { staggerChildren: 0.1 } } };
+      : { hidden: {}, visible: { transition: { staggerChildren: 0.06 } } };
 
-    const wordVariants: Variants = shouldReduceMotion
+    const headingWordVariants: Variants = shouldReduceMotion
       ? { hidden: {}, visible: {} }
       : {
-          hidden: { opacity: 0, y: 28 },
+          hidden: { opacity: 0, y: 10, filter: 'blur(10px)' },
           visible: {
             opacity: 1,
             y: 0,
-            transition: { duration: 2.0, ease: [0.22, 1, 0.36, 1] },
+            filter: 'blur(0px)',
+            transition: { duration: 0.75, ease: [0.25, 0.1, 0.25, 1.0] },
+          },
+        };
+
+    // Shared blur-materialise for individual paragraphs + photo
+    const revealVariants: Variants = shouldReduceMotion
+      ? { hidden: {}, visible: {} }
+      : {
+          hidden: { opacity: 0, y: 16, filter: 'blur(8px)' },
+          visible: {
+            opacity: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            transition: { duration: 0.9, ease: [0.25, 0.1, 0.25, 1.0] },
           },
         };
 
@@ -187,9 +201,9 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
               />
             </motion.div>
 
-            {/* Heading text — word-by-word blur+fade stagger */}
+            {/* Heading text — word-by-word blur+fade stagger (Linear-style) */}
             <motion.h2
-              variants={containerVariants}
+              variants={headingContainerVariants}
               initial="hidden"
               animate={isInView ? 'visible' : 'hidden'}
               className={cn(
@@ -199,12 +213,12 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
                 '[letter-spacing:var(--text-h1-tracking)]',
               )}
             >
-              <motion.span variants={wordVariants} className="font-sans">Rewriting</motion.span>
-              <motion.span variants={wordVariants} className="font-serif"> the </motion.span>
-              <motion.span variants={wordVariants} className="font-sans">process</motion.span>
-              <motion.span variants={wordVariants} className="font-serif"> at the </motion.span>
-              <motion.span variants={wordVariants} className="font-sans">speed</motion.span>
-              <motion.span variants={wordVariants} className="font-serif"> of AI.</motion.span>
+              <motion.span variants={headingWordVariants} className="font-sans">Rewriting</motion.span>
+              <motion.span variants={headingWordVariants} className="font-serif"> the </motion.span>
+              <motion.span variants={headingWordVariants} className="font-sans">process</motion.span>
+              <motion.span variants={headingWordVariants} className="font-serif"> at the </motion.span>
+              <motion.span variants={headingWordVariants} className="font-sans">speed</motion.span>
+              <motion.span variants={headingWordVariants} className="font-serif"> of AI.</motion.span>
             </motion.h2>
           </div>
 
@@ -215,15 +229,13 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
            * Mobile: first § 24px/29px (--text-intro-mobile-*), rest 20px/28px (--text-intro-sm-*)
            * Inter-paragraph spacing = one line-height of whitespace (mirrors Figma's empty-§ pattern).
            */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
-            className="w-full md:max-w-[832px] md:mx-auto font-sans font-normal not-italic"
-          >
-            {/* First paragraph — larger on mobile */}
+          <div className="w-full md:max-w-[832px] md:mx-auto font-sans font-normal not-italic">
+            {/* Paragraph 0 — triggers independently on scroll */}
             <motion.p
-              variants={wordVariants}
+              ref={para0Ref}
+              variants={revealVariants}
+              initial="hidden"
+              animate={isPara0InView ? 'visible' : 'hidden'}
               className={cn(
                 '[font-size:var(--text-intro-sm-size)] [line-height:var(--text-intro-sm-leading)]',
                 'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',
@@ -233,22 +245,50 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
               {BIO_INTRO}
             </motion.p>
 
-            {/* Remaining paragraphs */}
-            {BIO_REST.map((paragraph, i) => (
-              <motion.p
-                key={i}
-                variants={wordVariants}
-                className={cn(
-                  '[font-size:var(--text-intro-sm-size)] [line-height:var(--text-intro-sm-leading)]',
-                  'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',
-                  i < BIO_REST.length - 1 &&
-                    'mb-[var(--text-intro-sm-leading)] md:mb-[var(--text-intro-leading)]',
-                )}
-              >
-                {paragraph}
-              </motion.p>
-            ))}
-          </motion.div>
+            {/* Paragraph 1 */}
+            <motion.p
+              ref={para1Ref}
+              variants={revealVariants}
+              initial="hidden"
+              animate={isPara1InView ? 'visible' : 'hidden'}
+              className={cn(
+                '[font-size:var(--text-intro-sm-size)] [line-height:var(--text-intro-sm-leading)]',
+                'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',
+                'mb-[var(--text-intro-sm-leading)] md:mb-[var(--text-intro-leading)]',
+              )}
+            >
+              {BIO_REST[0]}
+            </motion.p>
+
+            {/* Paragraph 2 */}
+            <motion.p
+              ref={para2Ref}
+              variants={revealVariants}
+              initial="hidden"
+              animate={isPara2InView ? 'visible' : 'hidden'}
+              className={cn(
+                '[font-size:var(--text-intro-sm-size)] [line-height:var(--text-intro-sm-leading)]',
+                'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',
+                'mb-[var(--text-intro-sm-leading)] md:mb-[var(--text-intro-leading)]',
+              )}
+            >
+              {BIO_REST[1]}
+            </motion.p>
+
+            {/* Paragraph 3 — triggers together with photo */}
+            <motion.p
+              ref={para3Ref}
+              variants={revealVariants}
+              initial="hidden"
+              animate={isPara3InView ? 'visible' : 'hidden'}
+              className={cn(
+                '[font-size:var(--text-intro-sm-size)] [line-height:var(--text-intro-sm-leading)]',
+                'md:[font-size:var(--text-intro-size)] md:[line-height:var(--text-intro-leading)]',
+              )}
+            >
+              {BIO_REST[2]}
+            </motion.p>
+          </div>
 
           {/* ── [3] Photo + Caption ──────────────────────────────────────────── */}
           {/*
@@ -258,8 +298,9 @@ export const AboutSection = forwardRef<HTMLElement, AboutSectionProps>(
            * Caption gap: 20px mobile / 16px desktop
            */}
           <motion.div
-            ref={photoRef}
-            {...fadeUp(0.2)}
+            variants={revealVariants}
+            initial="hidden"
+            animate={isPara3InView ? 'visible' : 'hidden'}
             className={cn(
               'w-full md:max-w-[832px] md:mx-auto',
               'flex flex-col',
