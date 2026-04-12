@@ -234,8 +234,6 @@ const PROJECTS: Project[] = [
     slug: 'open-insurance',
     clientName: 'Open Insurance',
     nextSlug: 'kicbox',
-    passwordProtected: true,
-    password: 'openinsurance',
     bgColor: 'var(--bg-page-project-oi)',
     footerBgColor: 'var(--bg-footer-project-oi)',
     footerTheme: 'dark',
