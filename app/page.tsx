@@ -112,7 +112,7 @@ const PERSONAL_PROJECTS = [
   {
     title: 'OnlyMe',
     description: "Every social platform has a stake in your data, your attention, or your behaviour. OnlyMe doesn't. I designed and built it as a private space to share images, thoughts, and links with friends and family — no algorithms, no metrics, no ads, no pressure to perform. No followers. No feed. Just yours.",
-    href: 'https://onlyme.life/',
+    href: 'https://onlyme.life/juanpablo',
     imageSrc: '/Homepage/OnlyMe-project-card-second-desktop.png',
     staticImage: true,
     showDescriptionOnHover: true,

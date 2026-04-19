@@ -25,7 +25,9 @@
  * className — extra classes on the root <section>
  */
 
-import { forwardRef } from 'react';
+import { forwardRef, useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Clock } from '@/components/ui/Clock';
 
@@ -128,6 +130,14 @@ ContactFooter.displayName = 'ContactFooter';
 // ─── ContactLinks (private) ───────────────────────────────────────────────────
 
 function ContactLinks() {
+  const [emailHovered, setEmailHovered] = useState(false);
+  const [emailCursorPos, setEmailCursorPos] = useState<{ x: number; y: number } | null>(null);
+  const [emailCopied, setEmailCopied] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const lastTouchRef = useRef(0);
+
+  useEffect(() => { setMounted(true); }, []);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-[var(--card-gap)]">
 
@@ -149,14 +159,57 @@ function ContactLinks() {
             'md:[font-size:var(--text-h2-size)] md:[line-height:var(--text-h2-leading)]',
           )}
         >
-          <a href="mailto:hello@globo.studio" className={linkCls}>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText('hello@globo.studio');
+              setEmailCopied(true);
+              setTimeout(() => setEmailCopied(false), 2000);
+            }}
+            onMouseEnter={() => {
+              if (Date.now() - lastTouchRef.current < 500) return;
+              setEmailHovered(true);
+            }}
+            onMouseLeave={() => { setEmailHovered(false); setEmailCursorPos(null); }}
+            onMouseMove={(e) => {
+              if (Date.now() - lastTouchRef.current < 500) return;
+              setEmailCursorPos({ x: e.clientX, y: e.clientY });
+            }}
+            onTouchStart={() => { lastTouchRef.current = Date.now(); }}
+            className={cn(linkCls, 'text-left')}
+          >
             hello@globo.studio
-          </a>
+          </button>
           <a href="tel:+61432520578" className={linkCls}>
             04 3252 0578
           </a>
         </div>
       </div>
+
+      {mounted && createPortal(
+        <AnimatePresence>
+          {emailHovered && emailCursorPos && (
+            <motion.div
+              key={emailCopied ? 'copied' : 'copy'}
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              transition={{ duration: 0.15, ease: 'easeOut' }}
+              style={{ left: emailCursorPos.x + 16, top: emailCursorPos.y + 16 }}
+              className={cn(
+                'fixed z-50 hidden md:flex items-center pointer-events-none',
+                'px-8 py-4 rounded-[var(--radius-pill)]',
+                'bg-[var(--bg-page)] text-[var(--text-primary)]',
+                'shadow-[var(--shadow-pill)]',
+                'font-sans [font-weight:var(--text-body-weight)]',
+                '[font-size:var(--text-body-size)] [line-height:var(--text-body-leading)]',
+              )}
+            >
+              {emailCopied ? 'Copied!' : 'Copy email'}
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
 
       {/* ── Stalk me ── */}
       <div className="flex flex-col gap-[8px] text-center md:text-left">
@@ -185,7 +238,7 @@ function ContactLinks() {
             LinkedIn
           </a>
           <a
-            href="https://onlyme.com/globostudio"
+            href="https://onlyme.life/juanpablo"
             target="_blank"
             rel="noopener noreferrer"
             className={linkCls}

@@ -576,6 +576,62 @@ function HoverPillLink({ href, pill, children, className, ...props }: HoverPillL
   );
 }
 
+// ─── HoverPillCopyButton (private) ────────────────────────────────────────────
+
+function HoverPillCopyButton({ value, children, className }: { value: string; children: React.ReactNode; className?: string }) {
+  const [hovered, setHovered] = useState(false);
+  const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const lastTouchRef = useRef(0);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  return (
+    <>
+      <button
+        onClick={() => {
+          navigator.clipboard.writeText(value);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        }}
+        onTouchStart={() => { lastTouchRef.current = Date.now(); setHovered(false); setCursorPos(null); }}
+        onMouseEnter={() => { if (Date.now() - lastTouchRef.current < 500) return; setHovered(true); }}
+        onMouseLeave={() => { setHovered(false); setCursorPos(null); }}
+        onMouseMove={(e) => { if (Date.now() - lastTouchRef.current < 500) return; setCursorPos({ x: e.clientX, y: e.clientY }); }}
+        className={cn(linkBaseCls, 'w-fit text-left', className)}
+      >
+        {children}
+      </button>
+      {mounted && createPortal(
+        <AnimatePresence>
+          {hovered && cursorPos && (
+            <motion.div
+              key={copied ? 'copied' : 'copy'}
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              transition={{ duration: 0.15, ease: 'easeOut' }}
+              style={{ left: cursorPos.x + 16, top: cursorPos.y + 16 }}
+              className={cn(
+                'fixed z-50 hidden md:flex items-center pointer-events-none',
+                'px-8 py-4 rounded-[var(--radius-pill)]',
+                'bg-[var(--bg-page)] text-[var(--text-primary)]',
+                'shadow-[var(--shadow-pill)]',
+                'font-sans [font-weight:var(--text-body-weight)]',
+                '[font-size:var(--text-body-size)] [line-height:var(--text-body-leading)]',
+              )}
+            >
+              {copied ? 'Copied!' : 'Copy email'}
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
+    </>
+  );
+}
+
 // ─── ContactLinks (private) ───────────────────────────────────────────────────
 
 function ContactLinks() {
@@ -597,8 +653,8 @@ function ContactLinks() {
           'md:[font-size:var(--text-h2-size)] md:[line-height:var(--text-h2-leading)]',
           '[letter-spacing:var(--text-h2-tracking)]',
         )}>
-          <HoverPillLink href="mailto:jp@globo.studio" pill="Write me a letter">jp@globo.studio</HoverPillLink>
-          <HoverPillLink href="tel:+61432520578" pill="I would love to hear your voice">04 3252 0578</HoverPillLink>
+          <HoverPillCopyButton value="jp@globo.studio">jp@globo.studio</HoverPillCopyButton>
+          <HoverPillLink href="tel:+61432520578" pill="Call now!">04 3252 0578</HoverPillLink>
         </div>
       </div>
 
