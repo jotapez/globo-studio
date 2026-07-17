@@ -88,14 +88,14 @@ const PROJECTS: Project[] = [
           <span className="font-sans font-medium [letter-spacing:-0.03em]">control.</span>
         </>
       ),
-      body: "Managing a business account at Officeworks — adding team members, assigning product catalogues, controlling who could order to which address and under which cost centre — meant calling customer support. There was no way to do it yourself. The B2B Digital Experience program set out to change that: a 5-year initiative to give business customers real autonomy over how they buy.",
+      body: "Managing a business account at Officeworks (adding team members, assigning product catalogues, controlling who could order to which address and under which cost centre) meant calling customer support. There was no way to do it yourself. The B2B Digital Experience program set out to change that: a 5-year initiative to give business customers real autonomy over how they buy.",
       extraBody: (
         <>
           <p className="mb-[1em]">
-            I joined as Lead Product Designer and led the work end-to-end, from discovery through to production. The challenge wasn&apos;t just designing individual features — it was understanding how a purchasing manager, a finance lead, and a branch buyer all experience the same account differently, and making sure the platform worked for all of them. The result: a self-service suite covering custom product catalogues, contact and role management, cost centre permissions, and delivery addresses — for desktop and mobile. Customer support dependency dropped by 40%.
+            I joined as Lead Product Designer and led the work end-to-end, from discovery through to production. The challenge wasn&apos;t just designing individual features: it was understanding how a purchasing manager, a finance lead, and a branch buyer all experience the same account differently, and making sure the platform worked for all of them. The result: a self-service suite covering custom product catalogues, contact and role management, cost centre permissions, and delivery addresses, for desktop and mobile. Customer support dependency dropped by 40%.
           </p>
           <p>
-            Running alongside the product work, I built the team&apos;s design system from scratch — an accessible visual language covering hundreds of components, colour tokens, and icon libraries. It became the foundation every new feature is built on. I also coached the design team on system thinking, governance, and variables, so the work wouldn&apos;t depend on me to continue.
+            Running alongside the product work, I built the team&apos;s design system from scratch: an accessible visual language covering hundreds of components, colour tokens, and icon libraries. It became the foundation every new feature is built on. I also coached the design team on system thinking, governance, and variables, so the work wouldn&apos;t depend on me to continue.
           </p>
         </>
       ),
@@ -249,14 +249,14 @@ const PROJECTS: Project[] = [
           <span className="font-sans font-medium [letter-spacing:-0.03em]">simple.</span>
         </>
       ),
-      body: "Insurance has a conversion problem. At Open Insurance — an AirTree-backed insuretech building white-label insurance for businesses — analytics showed most users were dropping off before they ever saw a price. Not because the product was bad, but because the value wasn't visible early enough. That was the first thing I fixed.",
+      body: "Insurance has a conversion problem. At Open Insurance (an AirTree-backed insuretech building white-label insurance for businesses), analytics showed most users were dropping off before they ever saw a price. Not because the product was bad, but because the value wasn't visible early enough. That was the first thing I fixed.",
       extraBody: (
         <>
           <p className="mb-[1em]">
-            Working with product and marketing, we moved the price to the front of the quote flow — letting people see exactly what they&apos;d pay and customise their cover before committing to the full journey. We tested it in Huddle, Open&apos;s own car insurance brand, before rolling it out to partners including Bupa, ahm, Polestar, and Slingshot. Sales went up 20% in the first month. Drop-offs fell by 70%.
+            Working with product and marketing, we moved the price to the front of the quote flow, letting people see exactly what they&apos;d pay and customise their cover before committing to the full journey. We tested it in Huddle, Open&apos;s own car insurance brand, before rolling it out to partners including Bupa, ahm, Polestar, and Slingshot. Sales went up 20% in the first month. Drop-offs fell by 70%.
           </p>
           <p>
-            The bigger challenge was building at scale. Open&apos;s platform had to feel native to every partner&apos;s brand — from Huddle&apos;s warm, illustrated consumer product to Bupa&apos;s clinical precision — while being fast to deploy. I built the Open Design System: a token-based, multi-brand component library designed to configure and launch quote flows in weeks rather than months. It worked: time-to-market dropped by 50%, and the Bupa partnership went live in 10 weeks — half the time a launch like that typically takes. Throughout, I ran weekly customer interviews using the jobs-to-be-done framework, turning what we heard into specific flow improvements that kept drop-off rates falling long after launch.
+            The bigger challenge was building at scale. Open&apos;s platform had to feel native to every partner&apos;s brand (from Huddle&apos;s warm, illustrated consumer product to Bupa&apos;s clinical precision) while being fast to deploy. I built the Open Design System: a token-based, multi-brand component library designed to configure and launch quote flows in weeks rather than months. It worked: time-to-market dropped by 50%, and the Bupa partnership went live in 10 weeks, half the time a launch like that typically takes. Throughout, I ran weekly customer interviews using the jobs-to-be-done framework, turning what we heard into specific flow improvements that kept drop-off rates falling long after launch.
           </p>
         </>
       ),
@@ -432,14 +432,14 @@ const PROJECTS: Project[] = [
           <span className="font-sans font-medium [letter-spacing:-0.03em]">care?</span>
         </>
       ),
-      body: "Young people in out-of-home care often move between placements, schools, and support workers. In the process, things get lost — documents, photos, memories, the small things that help you know who you are. kicbox was built to fix that: a safe, personal digital space where young people can store important documents, record their life story, set goals, and stay connected with their Child Safety Officer.",
+      body: "Young people in out-of-home care often move between placements, schools, and support workers. In the process, things get lost: documents, photos, memories, the small things that help you know who you are. kicbox was built to fix that: a safe, personal digital space where young people can store important documents, record their life story, set goals, and stay connected with their Child Safety Officer.",
       extraBody: (
         <>
           <p className="mb-[1em]">
-            The project started with ethnographic research and co-design workshops with young people, carers, and Child Safety Officers across Queensland. Rather than designing for them, we designed with them — running moodboard exercises and dot-voting sessions where young people chose the look and feel themselves. They voted for playful, colourful, and personal: custom backgrounds, their own photos, emoji to log how they&apos;re feeling. The visual identity reflects exactly what they asked for.
+            The project started with ethnographic research and co-design workshops with young people, carers, and Child Safety Officers across Queensland. Rather than designing for them, we designed with them, running moodboard exercises and dot-voting sessions where young people chose the look and feel themselves. They voted for playful, colourful, and personal: custom backgrounds, their own photos, emoji to log how they&apos;re feeling. The visual identity reflects exactly what they asked for.
           </p>
           <p>
-            The result was a full product ecosystem — a cross-platform app for young people, a companion app for carers, and a dashboard for Child Safety Staff to monitor activity and keep in touch. Pilot feedback was immediate. Many young people uploaded their birth certificate on first use. For some, it was the first time they&apos;d ever seen it. Several, according to the evaluation report, couldn&apos;t stop grinning.
+            The result was a full product ecosystem: a cross-platform app for young people, a companion app for carers, and a dashboard for Child Safety Staff to monitor activity and keep in touch. Pilot feedback was immediate. Many young people uploaded their birth certificate on first use. For some, it was the first time they&apos;d ever seen it. Several, according to the evaluation report, couldn&apos;t stop grinning.
           </p>
         </>
       ),
@@ -604,14 +604,14 @@ const PROJECTS: Project[] = [
           <span className="font-sans font-medium [letter-spacing:-0.03em]">same standard.</span>
         </>
       ),
-      body: "Retro is a collection of client work from the past decade — not a single project, but a record of what it looks like to show up to very different briefs with the same standard of care. Government agencies. Enterprise platforms. Conservation charities. Global brands. The variety isn't incidental; it's the point.",
+      body: "Retro is a collection of client work from the past decade, not a single project, but a record of what it looks like to show up to very different briefs with the same standard of care. Government agencies. Enterprise platforms. Conservation charities. Global brands. The variety isn't incidental; it's the point.",
       extraBody: (
         <>
           <p className="mb-[1em]">
-            At Taronga Zoo, I led the UX process for a website redesign centred on the zoo&apos;s conservation mission — running gut tests, moodboard workshops, and mobile-first usability sessions to establish what content needed to land before visitors scrolled anywhere. At the NSW Electoral Commission, I built a design system from the ground up using atomic design methodology, now used across all of the commission&apos;s digital properties. And at Coca-Cola Amatil, I led interaction and visual design for MYCCA — their B2B e-commerce platform serving business customers across Australia and New Zealand.
+            At Taronga Zoo, I led the UX process for a website redesign centred on the zoo&apos;s conservation mission, running gut tests, moodboard workshops, and mobile-first usability sessions to establish what content needed to land before visitors scrolled anywhere. At the NSW Electoral Commission, I built a design system from the ground up using atomic design methodology, now used across all of the commission&apos;s digital properties. And at Coca-Cola Amatil, I led interaction and visual design for MYCCA: their B2B e-commerce platform serving business customers across Australia and New Zealand.
           </p>
           <p>
-            The full list also includes Fidelity Life, Toyota, Infrastructure Australia, and the National Library of Australia. What connects them isn&apos;t the sector or the scale — it&apos;s the same starting point: understand the problem properly, then make something that genuinely works for the people who have to use it.
+            The full list also includes Fidelity Life, Toyota, Infrastructure Australia, and the National Library of Australia. What connects them isn&apos;t the sector or the scale; it&apos;s the same starting point: understand the problem properly, then make something that genuinely works for the people who have to use it.
           </p>
         </>
       ),
