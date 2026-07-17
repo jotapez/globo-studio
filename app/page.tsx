@@ -270,7 +270,7 @@ export default function HomePage() {
       <main id="main-content">
 
         {/* ── §1 Hero ──────────────────────────────────────────────────────── */}
-        <Hero onToggle={handleHeroClick} onPortfolioClick={() => scrollToSection('intro')} />
+        <Hero onToggle={handleHeroClick} onPortfolioClick={() => scrollToSection('intro')} showWordmark={false} />
 
         {/* ── §2 Intro ─────────────────────────────────────────────────────── */}
         <IntroSection theme={theme} carouselVariant="v2" />

@@ -56,7 +56,7 @@ const hoverQuery =
 // ─── types ────────────────────────────────────────────────────────────────────
 
 export const NAV_ITEMS = [
-  { id: 'hero',    label: 'Globo',   href: '#hero'    },
+  { id: 'hero',    label: 'globo',   href: '#hero'    },
   { id: 'work',    label: 'Work',    href: '#work'    },
   { id: 'about',   label: 'About',   href: '#about'   },
   { id: 'contact', label: 'Contact', href: '#contact' },

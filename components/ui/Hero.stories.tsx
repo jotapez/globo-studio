@@ -59,6 +59,11 @@ Full-viewport hero section — the first impression of Globo Studio.
       description: 'Play entrance animation on mount.',
       table: { defaultValue: { summary: 'true' } },
     },
+    showWordmark: {
+      control: 'boolean',
+      description: 'Render the "Studio" SVG wordmark over the shader.',
+      table: { defaultValue: { summary: 'true' } },
+    },
   },
 };
 
@@ -113,6 +118,17 @@ export const Tablet: Story = {
     viewport: { defaultViewport: 'tablet' },
   },
   args: { animate: false },
+};
+
+// ─── no wordmark ──────────────────────────────────────────────────────────────
+
+/**
+ * NoWordmark — the "Studio" SVG wordmark hidden, shader only.
+ * For comparing look and feel against the default with the wordmark shown.
+ */
+export const NoWordmark: Story = {
+  name: 'No wordmark',
+  args: { animate: false, showWordmark: false },
 };
 
 // ─── dark mode ────────────────────────────────────────────────────────────────

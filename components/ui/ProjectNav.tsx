@@ -190,7 +190,7 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
     // Desktop: Globo + one item per project, all navigable except the active one.
     const desktopItems = useMemo<NavItem[]>(
       () => [
-        { id: 'home', label: 'Globo', href: '/' },
+        { id: 'home', label: 'globo', href: '/' },
         ...allProjects.map((p) => ({
           id: p.slug,
           label: p.slug === activeSlug && chapterLabel ? chapterLabel : p.clientName,
@@ -203,7 +203,7 @@ export const ProjectNav = React.forwardRef<HTMLElement, ProjectNavProps>(
     // Mobile: unchanged — Globo, active client name, Next project.
     const mobileItems = useMemo<NavItem[]>(
       () => [
-        { id: 'home',   label: 'Globo',               href: '/'      },
+        { id: 'home',   label: 'globo',               href: '/'      },
         { id: 'client', label: chapterLabel || displayedClientName, href: '' },
         { id: 'next',   label: nextLabel,              href: nextHref },
       ],
