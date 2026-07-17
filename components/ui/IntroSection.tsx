@@ -199,7 +199,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
              * Page-level h1 — visually hidden so it does not appear in the design
              * but satisfies WCAG 2.4.6 and gives screen readers a document title.
              */}
-            <h1 className="sr-only">Globo Studio — Juan Pablo Castro, Senior Product Designer</h1>
+            <h1 className="sr-only">Globo Studio: Juan Pablo Castro, Senior Product Designer</h1>
             <h2
               className={cn(
                 // Base text — serif fallback; individual spans override family
@@ -230,7 +230,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
               <motion.button
                 variants={nameVariants}
                 type="button"
-                aria-label="Go to About section — Juan Pablo Castro"
+                aria-label="Go to About section: Juan Pablo Castro"
                 className={cn(
                   sans,
                   'font-medium underline underline-offset-[calc(0.15em+4px)] decoration-[1px]',
@@ -246,7 +246,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
                 Juan Pablo Castro
               </motion.button>
 
-              <motion.span variants={wordVariants} className={serif}> — where </motion.span>
+              <motion.span variants={wordVariants} className={serif}>, where </motion.span>
               <motion.span variants={wordVariants} className={sans}>strategy</motion.span>
               <motion.span variants={wordVariants} className={serif}> and </motion.span>
               <motion.span variants={wordVariants} className={sans}>craft</motion.span>
