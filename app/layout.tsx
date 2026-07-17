@@ -37,11 +37,11 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Globo | Juan Pablo Castro | Designer',
+  title: 'globo | Juan Pablo Castro | Designer',
   description:
     'Design studio orchestrated by Juan Pablo Castro — where strategy and craft move at the speed of AI.',
   openGraph: {
-    title: 'Globo Studio',
+    title: 'globo Studio',
     description:
       'Design studio orchestrated by Juan Pablo Castro — where strategy and craft move at the speed of AI.',
     type: 'website',

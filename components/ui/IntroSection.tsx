@@ -215,7 +215,7 @@ export const IntroSection = forwardRef<HTMLElement, IntroSectionProps>(
               <span className="block"><motion.span variants={wordVariants} className={serif}>G&apos;day.</motion.span></span>
 
               {/* Body sentence with alternating typefaces */}
-              <motion.span variants={wordVariants} className={sans}>Globo</motion.span>
+              <motion.span variants={wordVariants} className={sans}>globo</motion.span>
               <motion.span variants={wordVariants} className={serif}> is a </motion.span>
               <motion.span variants={wordVariants} className={sans}>design</motion.span>
               <motion.span variants={wordVariants} className={serif}> studio </motion.span>

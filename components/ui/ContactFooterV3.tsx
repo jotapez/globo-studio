@@ -709,7 +709,7 @@ function FooterBar({ onLogoClick, textColor }: { onLogoClick?: () => void; textC
         >
           <div
             role="img"
-            aria-label="Globo Studio"
+            aria-label="globo Studio"
             className="relative overflow-hidden h-8 md:h-[45px] aspect-[86/56]"
           >
             <LiquidMetal
@@ -722,7 +722,7 @@ function FooterBar({ onLogoClick, textColor }: { onLogoClick?: () => void; textC
 
         {/* Mobile only: two lines + "Built with" stacked below logo */}
         <div className={cn(textCls, 'flex flex-col items-start md:hidden')}>
-          <span className="[font-weight:var(--text-body-weight)]">© Globo 2026</span>
+          <span className="[font-weight:var(--text-body-weight)]">© globo 2026</span>
           <span>Designer person born in Chile</span>
           <span>Based in Sydney, NSW</span>
           <span>Built with obsession and good vibes (coding)</span>
@@ -730,7 +730,7 @@ function FooterBar({ onLogoClick, textColor }: { onLogoClick?: () => void; textC
 
         {/* Desktop only: stacked lines below logo */}
         <div className={cn(textCls, 'hidden md:flex flex-col items-start')}>
-          <span className="[font-weight:var(--text-body-weight)]">© Globo 2026</span>
+          <span className="[font-weight:var(--text-body-weight)]">© globo 2026</span>
           <span>Designer person born in Chile. Based in Sydney, NSW</span>
         </div>
       </div>

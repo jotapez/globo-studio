@@ -35,7 +35,7 @@ export async function generateMetadata({
   const project = getProject(slug);
   if (!project) return {};
   return {
-    title: `${project.clientName} — Globo Studio`,
+    title: `${project.clientName} — globo Studio`,
     description: project.intro.description,
     ...(project.footerThemeColor && { themeColor: project.footerThemeColor }),
   };
