@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Bricolage_Grotesque, Instrument_Serif } from 'next/font/google';
 import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
 /**
@@ -77,6 +78,7 @@ export default function RootLayout({
         {/* Contentsquare — UX analytics / session tracking, loads on every route via this root layout. */}
         <Script src="https://t.contentsquare.net/uxa/d48835e25c19f.js" strategy="afterInteractive" />
         {children}
+        <Analytics />
       </body>
     </html>
   );
