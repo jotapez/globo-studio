@@ -31,6 +31,8 @@ export interface ContactFooterV3Props {
   bgColor?: string;
   /** Called when the user clicks the logo — use to smooth-scroll to the hero section. */
   onLogoClick?: () => void;
+  /** Click an individual clock to swap it to a random different city. Default: false. */
+  randomizeCitiesOnClick?: boolean;
 }
 
 type ClockMode = 'light' | 'dark' | 'color-full';
@@ -43,6 +45,67 @@ const CLOCKS = [
   { city: 'Zurich, Switzerland',   timezone: 'Europe/Zurich'       },
   { city: 'Kyoto, Japan',          timezone: 'Asia/Tokyo'          },
 ] as const;
+
+type ClockEntry = { city: string; timezone: string };
+
+/** The leftmost clock always shows one of these two, alternating on each click. */
+const ANCHORS: ClockEntry[] = [
+  { city: 'Sydney, Australia', timezone: 'Australia/Sydney' },
+  { city: 'Santiago, Chile',   timezone: 'America/Santiago' },
+];
+
+/** Cities to randomly fill the other 3 clocks when `randomizeCitiesOnClick` is on. */
+const FOLLOWER_CITY_POOL: ClockEntry[] = [
+  { city: 'Buenos Aires, Argentina', timezone: 'America/Argentina/Buenos_Aires' },
+  { city: 'Rio de Janeiro, Brazil',  timezone: 'America/Sao_Paulo'              },
+  { city: 'Mexico City, Mexico',     timezone: 'America/Mexico_City'            },
+  { city: 'San Francisco, USA',      timezone: 'America/Los_Angeles'            },
+  { city: 'New York, USA',           timezone: 'America/New_York'               },
+  { city: 'Barcelona, Spain',        timezone: 'Europe/Madrid'                  },
+  { city: 'Girona, Spain',           timezone: 'Europe/Madrid'                  },
+  { city: 'Manila, Philippines',     timezone: 'Asia/Manila'                    },
+  { city: 'Hong Kong',               timezone: 'Asia/Hong_Kong'                 },
+  { city: 'Tokyo, Japan',            timezone: 'Asia/Tokyo'                     },
+  { city: 'Kyoto, Japan',            timezone: 'Asia/Tokyo'                     },
+  { city: 'Osaka, Japan',            timezone: 'Asia/Tokyo'                     },
+  { city: 'Berlin, Germany',         timezone: 'Europe/Berlin'                  },
+  { city: 'Zurich, Switzerland',     timezone: 'Europe/Zurich'                  },
+  { city: 'Paris, France',           timezone: 'Europe/Paris'                   },
+  { city: 'Marseille, France',       timezone: 'Europe/Paris'                   },
+  { city: 'Stockholm, Sweden',       timezone: 'Europe/Stockholm'               },
+  { city: 'Copenhagen, Denmark',     timezone: 'Europe/Copenhagen'              },
+  { city: 'Easter Island, Chile',    timezone: 'Pacific/Easter'                 },
+  { city: 'Singapore',               timezone: 'Asia/Singapore'                 },
+  { city: 'Amsterdam, Netherlands',  timezone: 'Europe/Amsterdam'               },
+];
+
+/** The part after the last comma (e.g. "Spain"), or the whole label if there's no comma (e.g. "Singapore"). */
+function countryOf(entry: ClockEntry): string {
+  const idx = entry.city.lastIndexOf(',');
+  return idx === -1 ? entry.city.trim() : entry.city.slice(idx + 1).trim();
+}
+
+/**
+ * Builds the 4 clocks for a given anchor (0 = Sydney, 1 = Santiago): the
+ * anchor itself, plus 3 distinct cities picked at random from
+ * `FOLLOWER_CITY_POOL` (no time-gap constraint between them), never two
+ * from the same country as each other or as the anchor.
+ */
+function buildClocksForAnchor(anchorIndex: number): ClockEntry[] {
+  const anchor = ANCHORS[anchorIndex];
+  const usedCountries = new Set([countryOf(anchor)]);
+  const pool = [...FOLLOWER_CITY_POOL];
+  const followers: ClockEntry[] = [];
+  for (let i = 0; i < 3; i++) {
+    const candidates = pool.filter((c) => !usedCountries.has(countryOf(c)));
+    const options = candidates.length > 0 ? candidates : pool;
+    const pick = options[Math.floor(Math.random() * options.length)];
+    followers.push(pick);
+    usedCountries.add(countryOf(pick));
+    pool.splice(pool.indexOf(pick), 1);
+  }
+  return [anchor, ...followers];
+}
 
 const OVERLAP        = 40;
 const INTRO_DURATION = 2200; // ms
@@ -111,7 +174,7 @@ const linkBaseCls =
 // ─── component ────────────────────────────────────────────────────────────────
 
 export const ContactFooterV3 = forwardRef<HTMLElement, ContactFooterV3Props>(
-  function ContactFooterV3({ theme = 'auto', className, bgColor, onLogoClick }, ref) {
+  function ContactFooterV3({ theme = 'auto', className, bgColor, onLogoClick, randomizeCitiesOnClick = false }, ref) {
     const textColor =
       theme === 'dark'  ? 'var(--color-white)'
       : theme === 'light' ? 'var(--color-black)'
@@ -164,7 +227,7 @@ export const ContactFooterV3 = forwardRef<HTMLElement, ContactFooterV3Props>(
                 <ContactLinks />
               </motion.div>
               <motion.div variants={itemVariants} className="pb-[24px] md:pb-0">
-                <InteractiveClocksRowV3 theme={theme} />
+                <InteractiveClocksRowV3 theme={theme} randomizeCitiesOnClick={randomizeCitiesOnClick} />
               </motion.div>
             </div>
           </div>
@@ -184,7 +247,13 @@ ContactFooterV3.displayName = 'ContactFooterV3';
 
 // ─── InteractiveClocksRowV3 (private) ─────────────────────────────────────────
 
-function InteractiveClocksRowV3({ theme }: { theme: 'auto' | 'light' | 'dark' }) {
+function InteractiveClocksRowV3({
+  theme,
+  randomizeCitiesOnClick = false,
+}: {
+  theme: 'auto' | 'light' | 'dark';
+  randomizeCitiesOnClick?: boolean;
+}) {
   // Before the user interacts, clocks follow the section theme:
   //   section dark  → light clocks   (contrast)
   //   section light → dark clocks    (contrast)
@@ -194,6 +263,10 @@ function InteractiveClocksRowV3({ theme }: { theme: 'auto' | 'light' | 'dark' })
   const [isOverCircle, setIsOverCircle] = useState(false);
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [anchorIndex, setAnchorIndex] = useState(0);
+  const [clocks, setClocks] = useState<ClockEntry[]>(
+    () => randomizeCitiesOnClick ? buildClocksForAnchor(0) : CLOCKS.map((c) => ({ ...c })),
+  );
   const wrapperRef = useRef<HTMLDivElement>(null);
   const lastTouchRef = useRef(0);
   // Persists across clock mode changes so the intro doesn't replay when user toggles
@@ -248,6 +321,11 @@ function InteractiveClocksRowV3({ theme }: { theme: 'auto' | 'light' | 'dark' })
       'light';
     setHasInteracted(true);
     setClockMode(next);
+    if (randomizeCitiesOnClick) {
+      const nextAnchor = anchorIndex === 0 ? 1 : 0;
+      setAnchorIndex(nextAnchor);
+      setClocks(buildClocksForAnchor(nextAnchor));
+    }
   }
 
   const clockFaces: readonly string[] =
@@ -263,7 +341,11 @@ function InteractiveClocksRowV3({ theme }: { theme: 'auto' | 'light' | 'dark' })
         ref={wrapperRef}
         role="button"
         tabIndex={0}
-        aria-label="Toggle clock theme — click to switch between light, dark, and colour"
+        aria-label={
+          randomizeCitiesOnClick
+            ? 'Toggle clock theme and shuffle cities — click to cycle light, dark, and colour, and randomize each clock\'s city'
+            : 'Toggle clock theme — click to switch between light, dark, and colour'
+        }
         onClick={handleToggle}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleToggle(); } }}
         onTouchStart={() => { lastTouchRef.current = Date.now(); setIsOverCircle(false); setCursorPos(null); }}
@@ -281,10 +363,11 @@ function InteractiveClocksRowV3({ theme }: { theme: 'auto' | 'light' | 'dark' })
             className="w-full"
           >
             <SolidClocksRow
+              clocks={clocks}
               clockFaces={clockFaces}
               clockBorder={clockBorder}
               showCircleBorder={effectiveMode !== 'color-full'}
-              skipIntro={hasPlayedIntroRef.current}
+              skipIntro={randomizeCitiesOnClick ? false : hasPlayedIntroRef.current}
               onIntroComplete={handleIntroComplete}
             />
           </motion.div>
@@ -323,7 +406,9 @@ function InteractiveClocksRowV3({ theme }: { theme: 'auto' | 'light' | 'dark' })
 // ─── SolidClocksRow (private) ─────────────────────────────────────────────────
 
 interface SolidClocksRowProps {
-  /** One fill colour per clock (index matches CLOCKS order). */
+  /** Cities/timezones to render, in order. */
+  clocks: readonly ClockEntry[];
+  /** One fill colour per clock (index matches `clocks` order). */
   clockFaces: readonly string[];
   clockBorder: string;
   /** Whether to show the ring stroke on each circle. Defaults to true. */
@@ -334,14 +419,14 @@ interface SolidClocksRowProps {
   onIntroComplete?: () => void;
 }
 
-function SolidClocksRow({ clockFaces, clockBorder, showCircleBorder = true, skipIntro = false, onIntroComplete }: SolidClocksRowProps) {
+function SolidClocksRow({ clocks, clockFaces, clockBorder, showCircleBorder = true, skipIntro = false, onIntroComplete }: SolidClocksRowProps) {
   return (
     <div className="flex items-center w-full" style={{ paddingRight: OVERLAP }}>
-      {CLOCKS.map((clock, i) => (
+      {clocks.map((clock, i) => (
         <div
-          key={clock.city}
+          key={i}
           className="relative flex-1 min-w-0"
-          style={{ marginRight: -OVERLAP, zIndex: CLOCKS.length - i }}
+          style={{ marginRight: -OVERLAP, zIndex: clocks.length - i }}
         >
           <SolidClockFace
             timezone={clock.timezone}

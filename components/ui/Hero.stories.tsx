@@ -64,6 +64,12 @@ Full-viewport hero section — the first impression of Globo Studio.
       description: 'Render the "Studio" SVG wordmark over the shader.',
       table: { defaultValue: { summary: 'true' } },
     },
+    wordmarkVariant: {
+      control: 'radio',
+      options: ['v1', 'v2'],
+      description: 'Which "Studio" artwork to render: v1 (original, 1010:38630) or v2 (new hand-lettered lockup, Hero-2 1992:58507).',
+      table: { defaultValue: { summary: 'v1' } },
+    },
   },
 };
 
@@ -118,6 +124,18 @@ export const Tablet: Story = {
     viewport: { defaultViewport: 'tablet' },
   },
   args: { animate: false },
+};
+
+// ─── wordmark v2 ──────────────────────────────────────────────────────────────
+
+/**
+ * WordmarkV2 — new hand-lettered "STUDIO" logotype from Figma (Hero-2, 1992:58507).
+ * Compare against Default (v1, the original serif-style wordmark) to see both
+ * artwork options side by side.
+ */
+export const WordmarkV2: Story = {
+  name: 'Wordmark V2 (new)',
+  args: { animate: false, wordmarkVariant: 'v2' },
 };
 
 // ─── no wordmark ──────────────────────────────────────────────────────────────
