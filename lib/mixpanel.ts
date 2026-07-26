@@ -6,10 +6,16 @@ import mixpanel from 'mixpanel-browser';
  */
 const MIXPANEL_TOKEN = '76720e863d1907710bd91224cddb06f6';
 
-/** Call once on app mount (client-only). Also fires the initial page view. */
+/**
+ * Call once on app mount (client-only). Config matches the project's
+ * dashboard install snippet: autocapture (clicks/pageviews/forms), 100%
+ * session recording, and EU data residency (api-eu.mixpanel.com).
+ */
 export function initMixpanel() {
   mixpanel.init(MIXPANEL_TOKEN, {
-    track_pageview: true,
+    autocapture: true,
+    record_sessions_percent: 100,
+    api_host: 'https://api-eu.mixpanel.com',
     persistence: 'localStorage',
   });
 }
