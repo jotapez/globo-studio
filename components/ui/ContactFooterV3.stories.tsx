@@ -80,6 +80,11 @@ Fills \`min-h-lvh\` and contains three vertically distributed rows:
       control: 'color',
       description: 'Background colour override. Defaults to var(--bg-page).',
     },
+    randomizeCitiesOnClick: {
+      control: 'boolean',
+      description: "Click an individual clock to swap it to a random different city.",
+      table: { defaultValue: { summary: 'false' } },
+    },
   },
 };
 
@@ -137,6 +142,20 @@ export const Tablet: Story = {
     viewport: { defaultViewport: 'tablet' },
   },
   args: { theme: 'auto' },
+};
+
+// ─── random city clocks ───────────────────────────────────────────────────────
+
+/**
+ * RandomCityClocks — click any individual clock to swap it to a random
+ * different city, independently of the other clocks. Hands and label update
+ * immediately; no two clocks ever show the same city. This is separate from
+ * the whole-row click (outside the clock circles), which still cycles the
+ * light/dark/colour mode as before.
+ */
+export const RandomCityClocks: Story = {
+  name: 'Random city clocks',
+  args: { theme: 'auto', randomizeCitiesOnClick: true },
 };
 
 // ─── playground ───────────────────────────────────────────────────────────────
