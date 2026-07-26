@@ -41,6 +41,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { trackProjectOpened } from '@/lib/mixpanel';
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -136,13 +137,18 @@ export function ProjectCard({
   const leave = useCallback(() => { setHovered(false); setCursorPos(null); }, []);
 
   const handleClick = useCallback(() => {
+    trackProjectOpened(title, 'internal');
     if (targetBg) {
       try {
         sessionStorage.setItem('entry-bg', targetBg);
         sessionStorage.setItem('skip-nav-entrance', '1');
       } catch {}
     }
-  }, [targetBg]);
+  }, [targetBg, title]);
+
+  const handleExternalClick = useCallback(() => {
+    trackProjectOpened(title, 'external');
+  }, [title]);
 
   // Shared classes for both link variants
   const linkClasses = 'group flex flex-col h-full focus-visible:outline-none pointer-events-none';
@@ -257,6 +263,7 @@ export function ProjectCard({
           rel="noopener noreferrer"
           aria-label={`${title} (opens in a new tab)`}
           className={linkClasses}
+          onClick={handleExternalClick}
         >
           {inner}
         </a>

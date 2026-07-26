@@ -20,6 +20,7 @@ import { AnimatePresence, motion, useInView, useReducedMotion, type Variants } f
 import { toZonedTime } from 'date-fns-tz';
 import { LiquidMetal } from '@paper-design/shaders-react';
 import { cn } from '@/lib/utils';
+import { trackContactClick } from '@/lib/mixpanel';
 // ─── types ────────────────────────────────────────────────────────────────────
 
 export interface ContactFooterV3Props {
@@ -663,7 +664,7 @@ function HoverPillLink({ href, pill, children, className, ...props }: HoverPillL
 
 // ─── HoverPillCopyButton (private) ────────────────────────────────────────────
 
-function HoverPillCopyButton({ value, children, className }: { value: string; children: React.ReactNode; className?: string }) {
+function HoverPillCopyButton({ value, children, className, onClick }: { value: string; children: React.ReactNode; className?: string; onClick?: () => void }) {
   const [hovered, setHovered] = useState(false);
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -679,6 +680,7 @@ function HoverPillCopyButton({ value, children, className }: { value: string; ch
           navigator.clipboard.writeText(value);
           setCopied(true);
           setTimeout(() => setCopied(false), 2000);
+          onClick?.();
         }}
         onTouchStart={() => { lastTouchRef.current = Date.now(); setHovered(false); setCursorPos(null); }}
         onMouseEnter={() => { if (Date.now() - lastTouchRef.current < 500) return; setHovered(true); }}
@@ -738,8 +740,8 @@ function ContactLinks() {
           'md:[font-size:var(--text-h2-size)] md:[line-height:var(--text-h2-leading)]',
           '[letter-spacing:var(--text-h2-tracking)]',
         )}>
-          <HoverPillCopyButton value="jp@globo.studio">jp@globo.studio</HoverPillCopyButton>
-          <HoverPillLink href="tel:+61432520578" pill="Call now!">04 3252 0578</HoverPillLink>
+          <HoverPillCopyButton value="jp@globo.studio" onClick={() => trackContactClick('email')}>jp@globo.studio</HoverPillCopyButton>
+          <HoverPillLink href="tel:+61432520578" pill="Call now!" onClick={() => trackContactClick('phone')}>04 3252 0578</HoverPillLink>
         </div>
       </div>
 
@@ -758,8 +760,8 @@ function ContactLinks() {
           'md:[font-size:var(--text-h2-size)] md:[line-height:var(--text-h2-leading)]',
           '[letter-spacing:var(--text-h2-tracking)]',
         )}>
-          <HoverPillLink href="https://www.linkedin.com/in/juanpablo-design/" target="_blank" rel="noopener noreferrer" pill="Necessary evil">LinkedIn</HoverPillLink>
-          <HoverPillLink href="https://onlyme.life/" target="_blank" rel="noopener noreferrer" pill="See more of me">OnlyMe</HoverPillLink>
+          <HoverPillLink href="https://www.linkedin.com/in/juanpablo-design/" target="_blank" rel="noopener noreferrer" pill="Necessary evil" onClick={() => trackContactClick('linkedin')}>LinkedIn</HoverPillLink>
+          <HoverPillLink href="https://onlyme.life/" target="_blank" rel="noopener noreferrer" pill="See more of me" onClick={() => trackContactClick('onlyme')}>OnlyMe</HoverPillLink>
         </div>
       </div>
 
