@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Bricolage_Grotesque, Instrument_Serif } from 'next/font/google';
+import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
@@ -74,6 +75,8 @@ export default function RootLayout({
             __html: `(function(){try{var t=localStorage.getItem('gs-theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);var p=window.location.pathname.indexOf('/work/')===0;if(d&&!p)document.documentElement.classList.add('dark');var c=(d&&!p)?'#000000':'#f8f8f7';var metas=document.querySelectorAll('meta[name="theme-color"]');metas.forEach(function(m){m.setAttribute('content',c)});}catch(e){}})();`,
           }}
         />
+        {/* Contentsquare — UX analytics / session tracking, loads on every route via this root layout. */}
+        <Script src="https://t.contentsquare.net/uxa/d48835e25c19f.js" strategy="afterInteractive" />
         {children}
         <Analytics />
       </body>

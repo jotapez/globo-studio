@@ -591,8 +591,8 @@ function SolidClockFace({ timezone, city, clockFace, clockBorder, showCircleBord
       <p
         aria-hidden="true"
         className={cn(
-          'font-sans [font-weight:var(--text-body-light-weight)] md:[font-weight:var(--text-h2-weight)] text-center w-full',
-          '[font-size:var(--text-body-mobile-size)] [line-height:var(--text-body-mobile-leading)]',
+          'font-sans [font-weight:var(--text-body-weight)] md:[font-weight:var(--text-h2-weight)] text-center w-full',
+          '[font-size:var(--text-xs-size)] [line-height:var(--text-xs-leading)]',
           'md:[font-size:var(--text-body-size)] md:[line-height:var(--text-body-leading)]',
         )}
       >
