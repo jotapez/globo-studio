@@ -57,10 +57,8 @@ const ANCHORS: ClockEntry[] = [
 
 /** Cities to randomly fill the other 3 clocks when `randomizeCitiesOnClick` is on. */
 const FOLLOWER_CITY_POOL: ClockEntry[] = [
-  { city: 'Buenos Aires, Argentina', timezone: 'America/Argentina/Buenos_Aires' },
   { city: 'Rio de Janeiro, Brazil',  timezone: 'America/Sao_Paulo'              },
-  { city: 'Mexico City, Mexico',     timezone: 'America/Mexico_City'            },
-  { city: 'San Francisco, USA',      timezone: 'America/Los_Angeles'            },
+  { city: 'Pichilemu, Chile',        timezone: 'America/Santiago'               },
   { city: 'New York, USA',           timezone: 'America/New_York'               },
   { city: 'Barcelona, Spain',        timezone: 'Europe/Madrid'                  },
   { city: 'Girona, Spain',           timezone: 'Europe/Madrid'                  },
@@ -75,7 +73,6 @@ const FOLLOWER_CITY_POOL: ClockEntry[] = [
   { city: 'Marseille, France',       timezone: 'Europe/Paris'                   },
   { city: 'Stockholm, Sweden',       timezone: 'Europe/Stockholm'               },
   { city: 'Copenhagen, Denmark',     timezone: 'Europe/Copenhagen'              },
-  { city: 'Easter Island, Chile',    timezone: 'Pacific/Easter'                 },
   { city: 'Singapore',               timezone: 'Asia/Singapore'                 },
   { city: 'Amsterdam, Netherlands',  timezone: 'Europe/Amsterdam'               },
 ];
@@ -145,8 +142,8 @@ function easeInOutCubic(t: number): number {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
-function getAngles(timezone: string): { second: number; minute: number; hour: number } {
-  const d   = toZonedTime(new Date(), timezone);
+function getAngles(timezone: string, at: Date = new Date()): { second: number; minute: number; hour: number } {
+  const d   = toZonedTime(at, timezone);
   const ms  = d.getMilliseconds();
   const sec = d.getSeconds() + ms / 1000;
   const min = d.getMinutes() + sec / 60;
@@ -497,7 +494,10 @@ function SolidClockFace({ timezone, city, clockFace, clockBorder, showCircleBord
     if (phase === 'idle') return;
 
     if (phase === 'animating') {
-      const target    = getAngles(timezone);
+      // Target the angle the clock WILL show when the intro finishes (not when it
+      // starts), so the handoff to real-time ticking lands exactly in place instead
+      // of snapping forward by ~INTRO_DURATION worth of elapsed time.
+      const target    = getAngles(timezone, new Date(Date.now() + INTRO_DURATION));
       const startTime = performance.now();
 
       function frame(now: number) {
