@@ -190,6 +190,7 @@ export default async function ProjectPage({
         <ContactFooterV3
           bgColor={project.footerBgColor}
           theme={project.footerTheme}
+          randomizeCitiesOnClick
         />
       </main>
     </>
@@ -204,6 +205,7 @@ export default async function ProjectPage({
         accentColor={project.footerThemeColor ?? '#000000'}
         footerBgColor={project.footerBgColor}
         footerTheme={project.footerTheme}
+        randomizeCitiesOnClick
       >
         {projectContent}
       </PasswordGate>

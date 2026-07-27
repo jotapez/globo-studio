@@ -35,6 +35,8 @@ interface PasswordGateProps {
   accentColor: string;
   footerBgColor?: string;
   footerTheme?: 'auto' | 'light' | 'dark';
+  /** Click an individual clock to swap it to a random different city. Default: false. */
+  randomizeCitiesOnClick?: boolean;
   children: React.ReactNode;
 }
 
@@ -47,6 +49,7 @@ export function PasswordGate({
   accentColor,
   footerBgColor,
   footerTheme,
+  randomizeCitiesOnClick,
   children,
 }: PasswordGateProps) {
   const storageKey = `gs-unlocked-${slug}`;
@@ -231,7 +234,7 @@ export function PasswordGate({
           </div>
 
           {/* ── Footer ── */}
-          <ContactFooterV3 bgColor={footerBgColor} theme={footerTheme} />
+          <ContactFooterV3 bgColor={footerBgColor} theme={footerTheme} randomizeCitiesOnClick={randomizeCitiesOnClick} />
         </motion.div>
       ) : (
         <motion.div
