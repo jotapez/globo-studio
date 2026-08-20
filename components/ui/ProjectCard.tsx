@@ -101,6 +101,13 @@ export interface ProjectCardProps {
   cursorLabel?: string;
   /** When true, shows the arrow icon inside the cursor pill. Default: false. */
   cursorIcon?: boolean;
+  /**
+   * When false, the card is not a link — clicking/tapping does nothing (no
+   * navigation, no analytics). Hover/tap on the image still shows the
+   * cursor-pill (e.g. "Coming soon") and, unlike `disabled`, the card stays
+   * at full opacity. Default: true.
+   */
+  interactive?: boolean;
 }
 
 // ─── component ────────────────────────────────────────────────────────────────
@@ -122,6 +129,7 @@ export function ProjectCard({
   showDescriptionOnHover = false,
   cursorLabel,
   cursorIcon = false,
+  interactive = true,
 }: ProjectCardProps) {
   const [hovered, setHovered] = useState(false);
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
@@ -162,7 +170,8 @@ export function ProjectCard({
         onMouseLeave={leave}
         onMouseMove={(e) => { if (Date.now() - lastTouchRef.current < 500) return; setCursorPos({ x: e.clientX, y: e.clientY }); }}
         className={cn(
-          'relative min-h-0 h-[390px] md:flex-1 md:h-auto md:max-h-[var(--card-image-max-h)] overflow-hidden pointer-events-auto cursor-pointer',
+          'relative min-h-0 h-[390px] md:flex-1 md:h-auto md:max-h-[var(--card-image-max-h)] overflow-hidden pointer-events-auto',
+          interactive ? 'cursor-pointer' : 'cursor-default',
           // border-radius: morphs to circle on hover (standard variant only)
           !hoverImageSrc && !staticImage && hovered
             ? 'rounded-[var(--radius-card-circle)]'
@@ -256,7 +265,11 @@ export function ProjectCard({
       )}
       aria-disabled={disabled || undefined}
     >
-      {external ? (
+      {!interactive ? (
+        <div className={linkClasses}>
+          {inner}
+        </div>
+      ) : external ? (
         <a
           href={href}
           target="_blank"
