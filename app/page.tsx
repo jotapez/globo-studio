@@ -120,6 +120,30 @@ const PERSONAL_PROJECTS = [
     cursorIcon: true,
     external: true,
   },
+  {
+    title: 'Halfspace',
+    description:
+      "Halfspace's five-a-side tournaments were being organised over group chats and spreadsheets. I designed and built a tool to run the whole thing on the spot — creating tournaments, communicating with players, and managing the games in real time.",
+    href: '#',
+    imageSrc: '/Homepage/Halfspace-project-card-second-desktop.png',
+    hoverMobileSrc: '/Homepage/Halfspace-project-card-second-mobile.png',
+    staticImage: true,
+    showDescriptionOnHover: true,
+    cursorLabel: 'Coming soon',
+    interactive: false,
+  },
+  {
+    title: 'Onrecord',
+    description:
+      "It's hard to know if the people you voted for actually kept their word. I designed and built Onrecord to check automatically — pulling every vote from the House of Representatives and the Senate and matching it against the promises each candidate campaigned on.",
+    href: '#',
+    imageSrc: '/Homepage/Onrecord-project-card-second-desktop.png',
+    hoverMobileSrc: '/Homepage/Onrecord-project-card-second-mobile.png',
+    staticImage: true,
+    showDescriptionOnHover: true,
+    cursorLabel: 'Coming soon',
+    interactive: false,
+  },
 ] as const;
 
 // ─── CardMotion ───────────────────────────────────────────────────────────────
