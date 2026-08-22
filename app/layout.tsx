@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Bricolage_Grotesque, Instrument_Serif } from 'next/font/google';
 import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { MixpanelInit } from '@/components/ui/MixpanelInit';
 import './globals.css';
 
@@ -82,6 +83,7 @@ export default function RootLayout({
         <MixpanelInit />
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
