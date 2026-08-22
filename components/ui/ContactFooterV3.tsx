@@ -761,7 +761,7 @@ function ContactLinks() {
           '[letter-spacing:var(--text-h2-tracking)]',
         )}>
           <HoverPillLink href="https://www.linkedin.com/in/juanpablo-design/" target="_blank" rel="noopener noreferrer" pill="Necessary evil" onClick={() => trackContactClick('linkedin')}>LinkedIn</HoverPillLink>
-          <HoverPillLink href="https://onlyme.life/" target="_blank" rel="noopener noreferrer" pill="See more of me" onClick={() => trackContactClick('onlyme')}>OnlyMe</HoverPillLink>
+          <HoverPillLink href="https://www.onlyme.life/juanpablo" target="_blank" rel="noopener noreferrer" pill="See more of me" onClick={() => trackContactClick('onlyme')}>OnlyMe</HoverPillLink>
         </div>
       </div>
 
