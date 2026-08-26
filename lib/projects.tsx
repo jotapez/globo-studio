@@ -70,7 +70,7 @@ const PROJECTS: Project[] = [
     clientName: 'Officeworks',
     nextSlug: 'open-insurance',
     passwordProtected: true,
-    password: 'officeworks',
+    password: '2026',
     bgColor: 'var(--bg-page-project-ow)',
     wrapperColor: 'var(--bg-page)',
     footerBgColor: 'var(--bg-footer-project-ow)',
