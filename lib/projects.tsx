@@ -412,6 +412,8 @@ const PROJECTS: Project[] = [
     slug: 'kicbox',
     clientName: 'kicbox',
     nextSlug: 'retro',
+    passwordProtected: true,
+    password: '2026',
     bgColor: 'var(--bg-page-project-kicbox)',
     footerBgColor: 'var(--bg-footer-project-kicbox)',
     footerTheme: 'dark',
